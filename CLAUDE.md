@@ -32,6 +32,9 @@ await b.close();
 | `jaegaebal/index.html` | «광명재개발바로알기» 홈페이지형 블로그 (단일 파일, 외부 의존성 없음) |
 | `jaegaebal/README.md` | 위 페이지의 설정·적용 가이드 |
 | `jaegaebal/samkkeut-logo.png` | 삼끝대책위 로고 원본(페이지에는 data URI로 내장) |
+| `jaegaebal/hero-bg.jpg` | 히어로 배경 조감도 원본(페이지에는 data URI로 내장) |
+| `jaegaebal/blog-analysis-kmrich2016.md` | 광명리치 블로그 분석 문서 |
+| `gm11/index.html` | «광명11구역 재개발 — 정관 개정안 바로알기» (jaegaebal과 같은 디자인 토큰 사용) |
 
 - 두 HTML 모두 **외부 라이브러리·폰트·이미지 의존성이 없는 단일 파일**로 유지한다.
   이미지는 data URI로 내장한다.
