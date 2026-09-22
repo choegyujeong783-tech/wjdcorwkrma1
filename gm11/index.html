@@ -32,6 +32,7 @@
   --good-soft:#e3f1ea;
   --warn:#9a3412;
   --warn-soft:#fdeadf;
+  --glow:rgba(246,244,240,.92);   /* 사진 위 글자 번짐 — 배경색과 같은 색 */
   --shadow:0 1px 2px rgba(21,26,33,.06), 0 8px 24px rgba(21,26,33,.07);
   --shadow-lg:0 2px 4px rgba(21,26,33,.06), 0 18px 48px rgba(21,26,33,.12);
   --radius:14px;
@@ -46,6 +47,7 @@
     --accent:#eb9a5e; --accent-soft:#2a1d14;
     --good:#6cc39c; --good-soft:#12241c;
     --warn:#f0a07a; --warn-soft:#2a1711;
+    --glow:rgba(14,19,25,.92);
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
     --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 18px 48px rgba(0,0,0,.5);
   }
@@ -57,6 +59,7 @@
   --accent:#eb9a5e; --accent-soft:#2a1d14;
   --good:#6cc39c; --good-soft:#12241c;
   --warn:#f0a07a; --warn-soft:#2a1711;
+  --glow:rgba(14,19,25,.92);
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
   --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 18px 48px rgba(0,0,0,.5);
 }
@@ -126,22 +129,43 @@ button{font-family:inherit}
 .hero__bg::after{
   content:""; position:absolute; inset:0;
   background:
+    /* 글이 놓이는 자리에만 테두리 없는 부드러운 페이드 — 사각 패널이 아니라 번짐 */
+    radial-gradient(ellipse 820px 400px at 24% 44%,
+      color-mix(in srgb, var(--paper) 88%, transparent) 0%,
+      color-mix(in srgb, var(--paper) 62%, transparent) 42%,
+      transparent 74%),
     linear-gradient(to bottom, transparent 58%, var(--paper) 100%),
     linear-gradient(to bottom, color-mix(in srgb, var(--paper) 22%, transparent) 0%, transparent 46%);
 }
 @media (max-width:767px){
   .hero__bg img{object-position:62% 50%}
+  .hero__bg::after{
+    /* 좁은 화면에서는 사진의 글씨와 제목이 같은 높이에 놓인다 —
+       위쪽을 넉넉히 덮고 아래로 풀어 사진이 드러나게 한다 */
+    background:
+      /* 큰 글씨는 6%만 비쳐도 읽힌다 — 제목이 놓이는 구간은 완전히 덮는다 */
+      linear-gradient(to bottom,
+        var(--paper) 0%, var(--paper) 30%,
+        color-mix(in srgb, var(--paper) 55%, transparent) 52%,
+        transparent 74%),
+      linear-gradient(to bottom, transparent 66%, var(--paper) 100%);
+  }
 }
 .hero__in{position:relative; z-index:1; padding:54px 0 44px}
-/* 배경 사진을 가리지 않으면서 글자 대비를 확보하는 패널 */
-.hero__panel{
-  max-width:740px; padding:26px 28px 30px; border-radius:18px;
-  background:color-mix(in srgb, var(--paper) 86%, transparent);
-  backdrop-filter:blur(14px) saturate(1.1);
-  border:1px solid color-mix(in srgb, var(--line) 70%, transparent);
-  box-shadow:var(--shadow-lg);
+/* 패널은 투명 — 배경 사진을 조금도 가리지 않는다.
+   글자 대비는 배경색과 같은 색의 번짐(text-shadow)으로만 만든다. */
+.hero__panel{max-width:760px; padding:0; background:none; border:0; box-shadow:none}
+/* 같은 번짐을 여러 겹 쌓아야 사진의 복잡한 부분 위에서도 글자가 뜬다 */
+.hero__panel h1{
+  text-shadow:0 1px 2px var(--glow), 0 0 14px var(--glow),
+              0 0 14px var(--glow), 0 0 32px var(--glow);
 }
-@media (max-width:640px){ .hero__panel{padding:22px 20px 24px; border-radius:15px} }
+.hero__panel p.lead{
+  color:var(--ink); font-weight:700;
+  text-shadow:0 0 5px var(--glow), 0 0 5px var(--glow), 0 0 5px var(--glow),
+              0 0 13px var(--glow), 0 0 26px var(--glow);
+}
+.hero__panel .eyebrow{text-shadow:none}
 @media (min-width:768px){ .hero__in{padding:78px 0 66px} }
 .eyebrow{
   display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:800;
