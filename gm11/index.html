@@ -90,14 +90,14 @@ button{font-family:inherit}
 .brand__s{display:none; white-space:nowrap; font-size:12px; font-weight:600; color:var(--ink-3); letter-spacing:0}
 @media (min-width:900px){ .brand__s{display:inline} }
 .gnb{display:none; margin-left:auto; gap:2px}
-@media (min-width:1000px){ .gnb{display:flex} }
+@media (min-width:1180px){ .gnb{display:flex} }
 .gnb a{
   white-space:nowrap; text-decoration:none; font-size:14.5px; font-weight:600; color:var(--ink-2);
-  padding:8px 11px; border-radius:9px;
+  padding:8px 10px; border-radius:9px;
 }
 .gnb a:hover{background:var(--brand-soft); color:var(--brand)}
 .topbar__act{margin-left:auto; display:flex; align-items:center; gap:8px}
-@media (min-width:1000px){ .topbar__act{margin-left:10px} }
+@media (min-width:1180px){ .topbar__act{margin-left:10px} }
 .iconbtn{
   width:38px; height:38px; flex:none; border:1px solid var(--line); background:var(--card);
   border-radius:10px; color:var(--ink-2); cursor:pointer; display:grid; place-items:center; font-size:15px;
@@ -422,13 +422,12 @@ footer ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
       <span class="brand__s">· 정관 개정안 바로알기</span>
     </a>
     <nav class="gnb" aria-label="주요 메뉴">
-      <a href="#why">정관이란</a>
+      <a href="#status">구역 현황</a>
       <a href="#damage">조합원 피해</a>
       <a href="#issue">개정안 쟁점</a>
       <a href="#quorum">의결 정족수</a>
       <a href="#proxy">서면결의·위임장</a>
-      <a href="#check">총회 전 확인</a>
-      <a href="#rights">내 권리</a>
+      <a href="#avoid">서명 전 확인</a>
     </nav>
     <div class="topbar__act">
       <button class="iconbtn" id="themeBtn" type="button" aria-label="화면 밝기 전환" title="밝게/어둡게">◐</button>
@@ -469,9 +468,9 @@ footer ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
 <nav class="widgets" id="menu" aria-label="바로가기 메뉴">
   <div class="wrap">
     <div class="widgets__grid">
-      <a class="widget" href="#why">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v18H6.5A1.5 1.5 0 0 1 5 19.5z"/><path d="M9 8h7M9 12h5"/></svg>
-        <b>정관이란</b><span>조합의 헌법</span>
+      <a class="widget" href="#status">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 3 3 5.5v15L9 18l6 3 6-2.5v-15L15 6z"/><path d="M9 3v15M15 6v15"/></svg>
+        <b>구역 추진현황</b><span>지금 어느 단계인가</span>
       </a>
       <a class="widget" href="#damage">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3 2.5 20h19z"/><path d="M12 9.5v5M12 17.2v.1"/></svg>
@@ -493,9 +492,9 @@ footer ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4.5 7.5 7 10l3.5-4"/><path d="M4.5 16.5 7 19l3.5-4"/><path d="M14 8h6M14 17h6"/></svg>
         <b>총회 전 확인</b><span>10가지 점검</span>
       </a>
-      <a class="widget" href="#rights">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="m9.5 12 2 2 3.4-3.6"/></svg>
-        <b>내 권리 지키기</b><span>열람·철회·직접 출석</span>
+      <a class="widget" href="#avoid">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 8.5 15.5 15.5M15.5 8.5 8.5 15.5"/></svg>
+        <b>서명 전 확인</b><span>이럴 땐 서명 금지</span>
       </a>
       <a class="widget" data-yt href="#" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="2.5" y="5" width="19" height="14" rx="4"/><path d="M10.5 9.2v5.6l4.8-2.8z" fill="currentColor" stroke="none"/></svg>
@@ -504,6 +503,122 @@ footer ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
     </div>
   </div>
 </nav>
+
+<!-- ===================== 고정 공지 ===================== -->
+<section id="notice" style="padding-top:34px; padding-bottom:8px">
+  <div class="wrap">
+    <div style="display:flex; align-items:center; gap:9px; margin-bottom:13px">
+      <span class="tag tag--accent">NOTICE</span>
+      <b style="font-size:14.5px; letter-spacing:-.02em">먼저 보고 시작하세요</b>
+    </div>
+    <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))">
+      <a class="card" href="#status" style="text-decoration:none; display:block">
+        <h3>▶ 광명11구역 사업 추진현황 ◀</h3>
+        <p>지금 어느 단계인지, 최근 어떤 인가와 총회가 있었는지 날짜와 함께 정리했습니다.</p>
+      </a>
+      <a class="card" href="#households" style="text-decoration:none; display:block">
+        <h3>* 평형별 세대수 · 조합원 분양 *</h3>
+        <p>어떤 평형이 몇 세대인지, 경쟁이 몰리는 평형은 어디인지 표로 확인하십시오.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 사업 추진현황 ===================== -->
+<section id="status">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Status</div>
+      <h2>광명11구역, 지금 어느 단계입니까</h2>
+      <p>정비사업은 단계마다 <b>되돌릴 수 없는 결정</b>이 하나씩 끝납니다.
+         지난 일은 지우지 않고 날짜와 함께 남겨 두었습니다 — 무엇이 언제 확정됐는지가 곧 근거입니다.</p>
+    </div>
+
+    <div class="notice" style="margin-bottom:20px">
+      <b>아래 표의 값은 예시입니다.</b> 실제 단계·일자·세대수는 반드시
+      광명시 고시·공고, 조합 공고문 원문으로 확인해 최신 값으로 교체하십시오.
+      확인되지 않은 항목은 «확인 필요»로 두는 편이 안전합니다.
+    </div>
+
+    <div class="tablewrap" style="margin-bottom:18px">
+      <table>
+        <caption class="sr">광명11구역 사업 추진 이력</caption>
+        <thead>
+          <tr><th>단계</th><th>내용</th><th>일자</th><th>상태</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>4</b></td><td>조합설립인가</td><td>확인 필요</td><td><span class="tag tag--good">완료</span></td></tr>
+          <tr><td><b>5</b></td><td>시공자 선정</td><td>확인 필요</td><td><span class="tag tag--good">완료</span></td></tr>
+          <tr><td><b>6</b></td><td>사업시행계획인가</td><td>확인 필요</td><td><span class="tag tag--good">완료</span></td></tr>
+          <tr><td><b>7</b></td><td>종전자산 감정평가 · 조합원 분양신청</td><td>확인 필요</td><td><span class="tag tag--good">완료</span></td></tr>
+          <tr><td><b>8</b></td><td>관리처분계획인가</td><td>확인 필요</td><td><span class="tag tag--good">완료</span></td></tr>
+          <tr><td><b>9</b></td><td>이주 · 명도 · 철거</td><td>확인 필요</td><td><span class="tag">진행</span></td></tr>
+          <tr><td><b>10</b></td><td>착공 · 일반분양</td><td>확인 필요</td><td><span class="tag">예정</span></td></tr>
+          <tr><td><b>—</b></td><td><b>임시총회 — 정관 개정안 상정</b></td><td><b>확인 필요</b></td><td><span class="tag tag--warn">쟁점</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <h3>이 표를 쓰는 법</h3>
+        <ul>
+          <li><b>날짜를 채우십시오.</b> 인가일은 각종 기간의 기산점이 됩니다</li>
+          <li><b>고시문 원문 링크를 붙이십시오.</b> 주장보다 원문이 강합니다</li>
+          <li><b>총회는 지나가도 지우지 마십시오.</b> 의결 이력이 쌓이면 흐름이 보입니다</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>지금 단계에서 특히 중요한 것</h3>
+        <p>관리처분계획인가 이후 단계에서는 <b>조합원 지위 양도 제한</b>과 <b>이주비·분담금 일정</b>이
+           개인의 자금계획을 직접 좌우합니다.</p>
+        <p style="margin-top:9px">여기에 <b>정관 개정</b>이 겹치면, 통지 방법과 의결 방법이 함께 바뀌어
+           «몰라서 놓치는» 위험이 커집니다.</p>
+      </div>
+      <div class="card">
+        <h3>절차 전체가 궁금하다면</h3>
+        <p>정비기본계획부터 청산까지 11단계 전체와 비례율·분담금 계산은 별도 페이지에 정리해 두었습니다.</p>
+        <p style="margin-top:10px">
+          <a class="btn btn--ghost btn--sm" href="../jaegaebal/" target="_blank" rel="noopener">광명재개발바로알기 열기 →</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 평형별 세대수 ===================== -->
+<section id="households" class="alt">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Units</div>
+      <h2>평형별 세대수 · 조합원 분양</h2>
+      <p>어떤 평형이 많고 어디에 경쟁이 몰리는지는 <b>평형 배정</b>과 직결됩니다.
+         권리가액이 큰 순서로 우선권이 주어지고, 몰리는 평형은 추첨으로 갈립니다.</p>
+    </div>
+
+    <div class="tablewrap" style="margin-bottom:18px">
+      <table>
+        <caption class="sr">광명11구역 평형별 세대수</caption>
+        <thead>
+          <tr><th>평형(전용)</th><th>세대수</th><th>조합원 분양</th><th>일반분양</th><th>비고</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><b>59㎡</b> (A·B·C)</td><td>확인 필요</td><td>확인 필요</td><td>확인 필요</td><td>소형 — 수요 많음</td></tr>
+          <tr><td><b>74㎡</b> (A·B)</td><td>확인 필요</td><td>확인 필요</td><td>확인 필요</td><td>중형</td></tr>
+          <tr><td><b>84㎡</b> (A·B)</td><td>확인 필요</td><td>확인 필요</td><td>확인 필요</td><td>경쟁 집중 구간</td></tr>
+          <tr><td>그 밖의 평형</td><td>확인 필요</td><td>확인 필요</td><td>확인 필요</td><td></td></tr>
+          <tr><td><b>합계</b></td><td colspan="4"><b>약 4,291세대</b> <span class="tag tag--warn">2차 자료 · 원문 확인 필요</span> — 광명뉴타운 최대 규모로 알려져 있습니다</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="notice">
+      <b>숫자의 출처를 구분하십시오.</b> 위 합계는 언론·중개 블로그 등 <b>2차 자료</b>에서 확인된 수치입니다.
+      조합 공고문이나 사업시행계획인가 고시의 <b>1차 자료</b>로 반드시 대조하십시오.
+      세대수는 설계 변경으로 바뀝니다.
+    </div>
+  </div>
+</section>
 
 <!-- ===================== 정관이란 ===================== -->
 <section id="why">
@@ -835,6 +950,58 @@ footer ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
   </div>
 </section>
 
+<!-- ===================== 서명하지 마십시오 ===================== -->
+<section id="avoid">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker" style="color:var(--warn)">Stop</div>
+      <h2>이럴 때는 서명하지 마십시오</h2>
+      <p>조합 안내문도, 대책위 안내문도 «무엇을 하라»고 말합니다.
+         정작 조합원에게 필요한 말은 <b>«무엇을 하지 말라»</b>입니다. 아래 여섯 가지에 해당하면
+         그 자리에서 서명하지 말고, 집에 가져가 읽으십시오.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card" style="border-left:3px solid var(--warn)">
+        <h3>① 신·구 조문 대비표를 못 받았을 때</h3>
+        <p>«정관 일부 개정»이라는 제목만 있고 어느 조문이 어떻게 바뀌는지 표가 없다면,
+           <b>무엇에 찬성하는지 모르는 상태</b>입니다. 대비표를 요구하십시오.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--warn)">
+        <h3>② 안건이 특정되지 않은 위임일 때</h3>
+        <p>수임인·안건·찬반란이 비어 있는 <b>백지 위임</b>은 내 의사와 정반대로 쓰일 수 있습니다.
+           «일체의 권한을 위임한다»는 문구도 마찬가지입니다.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--warn)">
+        <h3>③ 현장에서 재촉받을 때</h3>
+        <p>«지금 안 하면 총회가 무산된다», «다들 하셨다»는 말은 판단이 아니라 압박입니다.
+           서면결의서는 <b>총회 전까지</b> 내면 됩니다. 시간을 가지십시오.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--warn)">
+        <h3>④ 서류를 사진으로 보내라고 할 때</h3>
+        <p>카카오톡 사진 한 장으로는 본인 확인이 되지 않아, <b>나중에 무효로 다투어지는 1순위</b>입니다.
+           원본 제출이나 본인인증이 결합된 전자서명으로 하십시오.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--warn)">
+        <h3>⑤ 인감증명서를 통째로 넘기라 할 때</h3>
+        <p>인감증명서는 용도가 적힌 것을 <b>해당 안건에만</b> 쓰도록 하십시오.
+           «보관하겠다»는 요구는 거절해도 됩니다. 사본에 용도를 적어 두십시오.</p>
+      </div>
+      <div class="card" style="border-left:3px solid var(--warn)">
+        <h3>⑥ 무슨 뜻인지 설명을 못 들을 때</h3>
+        <p>«도달», «정족수 산입», «갈음» 같은 단어의 뜻을 묻고 답을 못 받으면
+           그 자리에서 서명하지 마십시오. <b>설명을 못 하는 조항이 가장 위험한 조항</b>입니다.</p>
+      </div>
+    </div>
+
+    <div class="notice" style="margin-top:20px">
+      <b>서명을 미루는 것은 반대가 아닙니다.</b> 다만 안건을 이해하지 못한 상태의 찬성보다,
+      이해한 뒤의 찬성 또는 반대가 언제나 낫습니다. 이미 제출했더라도 <b>총회 전 철회</b>가
+      대체로 가능하니 포기하지 마십시오.
+    </div>
+  </div>
+</section>
+
 <!-- ===================== 총회 전 체크리스트 ===================== -->
 <section id="check" class="alt">
   <div class="wrap">
@@ -948,6 +1115,68 @@ footer ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
   </div>
 </section>
 
+<!-- ===================== 관련 글 ===================== -->
+<section id="posts">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Posts</div>
+      <h2>더 자세히 — 숫자로 확인하는 글</h2>
+      <p>제목에 <b>숫자와 조문 번호</b>를 넣었습니다. 본문을 열지 않아도 무엇을 다루는지 보이도록,
+         그리고 검색으로 찾아올 수 있도록. 각 카드의 링크를 실제 글 주소로 바꿔 쓰시면 됩니다.</p>
+    </div>
+    <div class="posts">
+      <a class="post" href="#" data-post>
+        <span class="post__thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v18H6.5A1.5 1.5 0 0 1 5 19.5z"/><path d="M9 8h7M9 12h5"/></svg></span>
+        <span class="post__body">
+          <b>정관 개정안 12개 조문, 한 줄씩 읽으면 이렇게 됩니다</b>
+          <p>신·구 조문 대비표를 조문 번호 순서대로 풀어 씁니다. 바뀌는 단어 하나까지.</p>
+          <span class="post__meta">해설편 · 읽는 시간 9분</span>
+        </span>
+      </a>
+      <a class="post" href="#" data-post>
+        <span class="post__thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 18V7m5 11V4m5 14v-8m5 8V9"/></svg></span>
+        <span class="post__body">
+          <b>조합원 1,200명 기준, 부결에 필요한 반대표는 401명입니다</b>
+          <p>2/3 요건과 과반 요건의 차이, 직접 출석 정족수까지 숫자로 계산해 봤습니다.</p>
+          <span class="post__meta">숫자편 · 읽는 시간 6분</span>
+        </span>
+      </a>
+      <a class="post" href="#" data-post>
+        <span class="post__thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 7h11l5 5v5H4z"/><path d="M7 12h6"/><circle cx="8" cy="17" r="1.6"/></svg></span>
+        <span class="post__body">
+          <b>«발송한 때 도달» 한 줄이 분양신청 기간을 없애는 방법</b>
+          <p>도달주의와 발송주의의 차이가 실제로 어떤 결과를 만드는지 사례로 설명합니다.</p>
+          <span class="post__meta">주의편 · 읽는 시간 5분</span>
+        </span>
+      </a>
+      <a class="post" href="#" data-post>
+        <span class="post__thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m8 12 3 3 5-6"/></svg></span>
+        <span class="post__body">
+          <b>위임장 사진 제출, 왜 가장 먼저 무효가 되는가</b>
+          <p>본인 확인이 안 되는 서류의 운명. 전자서명 인증 로그가 무엇을 대신하는지.</p>
+          <span class="post__meta">실전편 · 읽는 시간 7분</span>
+        </span>
+      </a>
+      <a class="post" href="#" data-post>
+        <span class="post__thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l8 3v6c0 5-3.4 8-8 9-4.6-1-8-4-8-9V6z"/><path d="m9.5 12 2 2 3.4-3.6"/></svg></span>
+        <span class="post__body">
+          <b>2/3 요건 안건과 과반 요건 안건, 3초 만에 구분하는 법</b>
+          <p>조합원 자격·분담금 부담·시공자 계약이 들어가면 3분의 2입니다.</p>
+          <span class="post__meta">기초편 · 읽는 시간 4분</span>
+        </span>
+      </a>
+      <a class="post" href="#" data-post>
+        <span class="post__thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 3h9l4 4v14H6z"/><path d="M9 12h7M9 16h5"/></svg></span>
+        <span class="post__body">
+          <b>총회 의사록에서 확인해야 할 숫자 4가지</b>
+          <p>직접 출석 수, 서면결의 수, 무효표 수, 그리고 무효 사유. 여기서 갈립니다.</p>
+          <span class="post__meta">검증편 · 읽는 시간 6분</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== FAQ ===================== -->
 <section id="faq">
   <div class="wrap">
@@ -1039,12 +1268,15 @@ footer ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
       <div>
         <b class="ft">콘텐츠</b>
         <ul>
+          <li><a href="#status">구역 추진현황</a></li>
+          <li><a href="#households">평형별 세대수</a></li>
           <li><a href="#why">정관이란</a></li>
           <li><a href="#damage">조합원 피해 7가지</a></li>
           <li><a href="#issue">개정안 쟁점</a></li>
           <li><a href="#quorum">의결 정족수 계산</a></li>
           <li><a href="#proxy">서면결의·위임장</a></li>
           <li><a href="#check">총회 전 확인 10가지</a></li>
+          <li><a href="#avoid">이럴 때는 서명하지 마십시오</a></li>
           <li><a href="#rights">내 권리 지키기</a></li>
         </ul>
       </div>
@@ -1211,7 +1443,10 @@ footer ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
     ['열람·등사 청구','조합의 정관·의사록·회계자료·계약서 등을 보거나 복사해 달라고 요청하는 것. 조합 임원에게는 공개 의무가 있다.'],
     ['현금청산','분양 대상에서 제외되어 아파트 대신 감정평가액 기준 현금만 받는 것. 분양신청 기간을 놓치면 여기에 해당할 수 있다.'],
     ['정비사업비 부담','조합원이 부담하는 사업비. 부과 시기와 절차를 정관으로 정하며, 이를 바꾸는 개정은 조합원 3분의 2 이상의 찬성이 필요한 항목에 해당한다.'],
-    ['인가','총회 의결만으로는 정관 변경의 효력이 생기지 않고, 시장·군수등의 인가를 받아야 한다. 경미한 사항은 신고로 갈음한다.']
+    ['인가','총회 의결만으로는 정관 변경의 효력이 생기지 않고, 시장·군수등의 인가를 받아야 한다. 경미한 사항은 신고로 갈음한다.'],
+    ['프리미엄(P)','조합원 입주권이 거래될 때 권리가액 위에 얹히는 웃돈. 현장에서는 «8억P»처럼 만원 단위로 적는다. 매매가에서 권리가액을 뺀 금액이다.'],
+    ['실투자금','매수할 때 지금 당장 필요한 현금. 총매수가에서 이주비·중도금 대출처럼 승계하거나 나중에 내는 금액을 뺀 값이다.'],
+    ['총매수가','입주까지 들어가는 전체 금액. 매매가에 추가 분담금과 옵션 등을 더한 값으로, «실투자금»과의 차이가 곧 뒤에 붙는 부담이다.']
   ];
   function renderTerms(q){
     var box = $('#glossaryList'); if(!box) return;
@@ -1226,6 +1461,15 @@ footer ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
   }
   var ts = $('#termSearch');
   if(ts){ ts.addEventListener('input', function(){ renderTerms(ts.value); }); renderTerms(''); }
+
+  $$('[data-post]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      if(a.getAttribute('href') === '#'){
+        e.preventDefault();
+        alert('이 카드의 href를 실제 글 주소로 바꿔 연결하세요.');
+      }
+    });
+  });
 
   var yy = $('#yy'); if(yy) yy.textContent = String(new Date().getFullYear());
 })();
