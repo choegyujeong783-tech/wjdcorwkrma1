@@ -37,7 +37,9 @@ await b.close();
 | `gm11/hero-bg.jpg` | 광명11구역 히어로 배경 사진 원본(페이지에는 data URI로 내장). 광명재개발바로알기는 배경 사진 없이 벡터 스카이라인을 쓴다 |
 | `export/index.html` | 두 페이지로 연결되는 입구 페이지(배포 꾸러미의 루트) |
 | `export/build.py` | 배포 꾸러미 zip 생성 — `python3 export/build.py` |
-| `export/gwangmyeong-blogs-export.zip` | 만들어진 배포 꾸러미(어느 정적 호스팅에나 폴더째 업로드) |
+| `export/gwangmyeong-blogs-export.zip` | 배포 꾸러미 — 두 페이지 + 입구 페이지 |
+| `export/gm11-export.zip` | 배포 꾸러미 — 광명11구역 단독(파일 한 장) |
+| `export/읽어보세요-광명11구역.txt` | 단독 꾸러미에 들어가는 안내문 |
 
 - 두 HTML 모두 **외부 라이브러리·폰트·이미지 의존성이 없는 단일 파일**로 유지한다.
   이미지는 data URI로 내장한다.
