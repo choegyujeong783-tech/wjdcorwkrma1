@@ -32,8 +32,6 @@
   --good-soft:#e3f1ea;
   --warn:#9a3412;
   --warn-soft:#fdeadf;
-  --glow-a:rgba(201,96,31,.85);    /* 대책위 버튼 강조 빛 */
-  --glow-a0:rgba(201,96,31,0);
   --shadow:0 1px 2px rgba(21,26,33,.06), 0 8px 24px rgba(21,26,33,.07);
   --shadow-lg:0 2px 4px rgba(21,26,33,.06), 0 18px 48px rgba(21,26,33,.12);
   --radius:14px;
@@ -48,7 +46,6 @@
     --accent:#eb9a5e; --accent-soft:#2a1d14;
     --good:#6cc39c; --good-soft:#12241c;
     --warn:#f0a07a; --warn-soft:#2a1711;
-  --glow-a:rgba(235,154,94,.9); --glow-a0:rgba(235,154,94,0);
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
     --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 18px 48px rgba(0,0,0,.5);
   }
@@ -60,7 +57,6 @@
   --accent:#eb9a5e; --accent-soft:#2a1d14;
   --good:#6cc39c; --good-soft:#12241c;
   --warn:#f0a07a; --warn-soft:#2a1711;
-  --glow-a:rgba(235,154,94,.9); --glow-a0:rgba(235,154,94,0);
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
   --shadow-lg:0 2px 4px rgba(0,0,0,.4), 0 18px 48px rgba(0,0,0,.5);
 }
@@ -119,23 +115,21 @@ button{font-family:inherit}
 .btn--sm{padding:8px 13px; font-size:14px; border-radius:9px}
 .btn--wide{width:100%}
 /* ---------- 삼끝대책위 버튼 강조 ---------- */
-/* 빛이 퍼져 나갔다가 사라지는 맥박 + 아주 약한 밝기 변화 */
-@keyframes ytPulse{
-  0%   {box-shadow:0 0 0 0 var(--glow-a), 0 0 10px 0 var(--glow-a);
-        filter:brightness(1) saturate(1); transform:scale(1)}
-  50%  {box-shadow:0 0 0 16px var(--glow-a0), 0 0 34px 10px var(--glow-a);
-        filter:brightness(1.14) saturate(1.12); transform:scale(1.035)}
-  100% {box-shadow:0 0 0 0 var(--glow-a), 0 0 10px 0 var(--glow-a);
-        filter:brightness(1) saturate(1); transform:scale(1)}
+/* 후광 없이 버튼 자체만 깜빡인다 — box-shadow는 건드리지 않아 기본 그림자가 유지된다 */
+@keyframes ytBlink{
+  0%   {opacity:1;   transform:scale(1)}
+  45%  {opacity:.5;  transform:scale(1.035)}
+  70%  {opacity:1;   transform:scale(1.01)}
+  100% {opacity:1;   transform:scale(1)}
 }
-.btn[data-yt]{animation:ytPulse 1.7s ease-in-out infinite}
+.btn[data-yt]{animation:ytBlink 1.5s ease-in-out infinite}
+/* 누르려는 순간에는 멈춘다 */
 .btn[data-yt]:hover,
-.btn[data-yt]:focus-visible{animation-play-state:paused; filter:brightness(1.08); transform:scale(1.03)}
-/* 움직임을 줄이도록 설정한 이용자에게는 깜빡이지 않고 은은한 빛만 */
+.btn[data-yt]:focus-visible{animation-play-state:paused; opacity:1; transform:scale(1.03)}
+/* 움직임을 줄이도록 설정한 이용자에게는 깜빡이지 않는다 */
 @media (prefers-reduced-motion: reduce){
-  .btn[data-yt]{animation:none; transform:none; box-shadow:0 0 22px 5px var(--glow-a)}
+  .btn[data-yt]{animation:none; opacity:1; transform:none}
 }
-
 
 /* ---------- 히어로(타이틀 배너) ---------- */
 .hero{position:relative; overflow:hidden; border-bottom:1px solid var(--line); padding:0}
