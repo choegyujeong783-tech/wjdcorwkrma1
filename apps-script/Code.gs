@@ -63,7 +63,7 @@ function doGet() {
 
 // ── 구글 시트 저장 ─────────────────────────────────────────────
 function saveToSheet_(data) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = getSpreadsheet_();
   var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
 
   // 헤더(1행): 처음이면 만들고, 새 항목이 들어오면 오른쪽에 추가
@@ -95,7 +95,7 @@ function sendMail_(data) {
              '<table style="border-collapse:collapse;font-size:14px" border="1" bordercolor="#ddd">' +
              rows + '</table>' +
              '<p style="color:#888;font-size:12px">전체 접수 내역: ' +
-             SpreadsheetApp.getActiveSpreadsheet().getUrl() + '</p>';
+             getSpreadsheet_().getUrl() + '</p>';
 
   var plain = Object.keys(data).map(function (k) { return label_(k) + ': ' + data[k]; }).join('\n');
 
@@ -109,6 +109,17 @@ function sendMail_(data) {
 }
 
 // ── 도우미 ─────────────────────────────────────────────────────
+// 시트에서 연 스크립트면 그 시트를, 단독 프로젝트면 '랜딩 신청서' 시트를 자동으로 만들어 씀
+function getSpreadsheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (ss) return ss;
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty('SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id);
+  ss = SpreadsheetApp.create('랜딩 신청서');
+  props.setProperty('SHEET_ID', ss.getId());
+  return ss;
+}
 function label_(k) { return LABELS[k] || k; }
 function labelToKey_(label) {
   for (var k in LABELS) if (LABELS[k] === label) return k;
