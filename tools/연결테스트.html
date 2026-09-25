@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KBSS 접수 연결 테스트</title>
+<style>
+:root{
+  color-scheme:light;
+  --navy:#2A4A7F; --navy-700:#1F3760; --ink:#0A0F1A; --gray:#9CA3AF;
+  --border:#E3E7EC; --light:#F5F7FA; --gold:#C8922A; --alert:#C0392B; --ok:#1B7F4B;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0; background:var(--light); color:var(--ink); word-break:keep-all;
+  font-family:'Pretendard','Noto Sans KR',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;
+  font-size:15px; line-height:1.7}
+.wrap{max-width:760px; margin:0 auto; padding:40px 20px 80px}
+header{background:var(--ink); color:#fff; padding:28px 20px}
+header .in{max-width:760px; margin:0 auto}
+header h1{margin:0; font-size:22px; font-weight:800}
+header p{margin:8px 0 0; font-size:14px; color:#9FB0C9}
+.card{background:#fff; border:1px solid var(--border); padding:24px; margin-top:20px}
+.card h2{margin:0 0 6px; font-size:17px; font-weight:700}
+.card .hint{margin:0 0 16px; font-size:13px; color:#5C6879}
+label{display:block; font-size:13px; font-weight:600; margin-bottom:6px}
+input[type=text]{width:100%; font:inherit; font-size:14px; padding:12px 14px; border:1px solid var(--border); border-radius:0; background:#fff}
+input[type=text]:focus{outline:none; border-color:var(--navy); box-shadow:0 0 0 3px rgba(42,74,127,.15)}
+.btns{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
+button{font:inherit; font-weight:700; font-size:15px; border:0; border-radius:999px; padding:13px 26px; cursor:pointer;
+  background:var(--navy); color:#fff; transition:background-color .15s}
+button:hover:not(:disabled){background:var(--navy-700)}
+button.ghost{background:#fff; color:var(--navy); border:1px solid var(--navy)}
+button.ghost:hover:not(:disabled){background:#EEF2F8}
+button:disabled{opacity:.5; cursor:progress}
+.out{margin-top:18px; display:none}
+.out.on{display:block}
+.badge{display:inline-block; font-size:13px; font-weight:700; padding:5px 12px; border-radius:999px}
+.badge.ok{background:#E6F4EC; color:var(--ok)}
+.badge.ng{background:#FBEAE8; color:var(--alert)}
+.msg{margin:12px 0 0; font-size:14px; line-height:1.8}
+pre{margin:12px 0 0; background:#0A0F1A; color:#D7E1F0; padding:14px 16px; font-size:12.5px; line-height:1.65;
+  overflow-x:auto; white-space:pre-wrap; word-break:break-all; font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.fix{margin-top:14px; border-left:3px solid var(--gold); background:#FDF8EE; padding:12px 16px; font-size:13.5px}
+.fix b{color:var(--ink)}
+.snippet{position:relative; margin-top:14px}
+.snippet .copy{position:absolute; top:8px; right:8px; padding:6px 14px; font-size:12px; border-radius:4px}
+ol{margin:10px 0 0; padding-left:20px; font-size:14px}
+ol li{margin-bottom:6px}
+.small{font-size:12.5px; color:#5C6879}
+</style>
+</head>
+<body>
+<header><div class="in">
+  <h1>KBSS 접수 연결 테스트</h1>
+  <p>Apps Script 웹 앱 주소가 신청폼과 제대로 연결되는지 확인합니다.</p>
+</div></header>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>웹 앱 주소 입력</h2>
+    <p class="hint">Apps Script에서 <b>배포 → 새 배포 → 웹 앱</b> 후 나온 주소입니다. <code>/exec</code> 로 끝나야 합니다.</p>
+    <label for="url">웹 앱 URL</label>
+    <input type="text" id="url" placeholder="https://script.google.com/macros/s/AKfyc..../exec" spellcheck="false" autocomplete="off">
+    <div class="btns">
+      <button id="btnGet" class="ghost">① 배포 확인</button>
+      <button id="btnPost">② 테스트 신청 보내기</button>
+    </div>
+    <div class="out" id="out"></div>
+  </div>
+
+  <div class="card">
+    <h2>확인 순서</h2>
+    <ol>
+      <li><b>① 배포 확인</b> — 주소가 살아 있는지 봅니다. <code>KBSS 접수 엔드포인트 정상 동작 중</code> 이 나오면 통과.</li>
+      <li><b>② 테스트 신청 보내기</b> — 신청폼과 똑같은 데이터를 실제로 보냅니다. 성공하면 시트에 <b>「연결테스트」</b> 행이 들어옵니다.</li>
+      <li>둘 다 통과하면 아래에 <b>index.html에 넣을 줄</b>이 만들어집니다. 복사해서 붙여넣으면 끝입니다.</li>
+      <li>시트에 들어간 테스트 행은 Apps Script의 <code>테스트행삭제</code> 함수로 지우거나 직접 삭제하세요.</li>
+    </ol>
+  </div>
+
+</div>
+
+<script>
+var $ = function(s){ return document.querySelector(s); };
+var out = $('#out');
+
+function show(html){ out.innerHTML = html; out.classList.add('on'); }
+function esc(s){ return String(s).replace(/[&<>]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+
+function urlValue(){
+  var v = $('#url').value.trim();
+  if(!v){ show('<span class="badge ng">주소 없음</span><p class="msg">웹 앱 URL을 먼저 입력해 주세요.</p>'); return null; }
+  if(!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec/.test(v)){
+    show('<span class="badge ng">주소 형식이 다릅니다</span>'
+      + '<p class="msg">입력하신 주소 : <code>' + esc(v) + '</code></p>'
+      + '<div class="fix"><b>필요한 주소는 스프레드시트 주소가 아닙니다.</b><br>'
+      + 'Apps Script 편집기에서 <b>배포 → 새 배포 → 유형 [웹 앱]</b> 을 선택하고 배포하면 나오는<br>'
+      + '<code>https://script.google.com/macros/s/......../exec</code> 형태의 주소를 넣어 주세요.<br>'
+      + '<span class="small">주소 끝이 <code>/dev</code> 이면 본인만 접근 가능한 테스트용입니다. <code>/exec</code> 를 사용하세요.</span></div>');
+    return null;
+  }
+  return v;
+}
+
+function diagnose(kind, detail){
+  var fix = '';
+  if(kind === 'network'){
+    fix = '<div class="fix"><b>가장 흔한 원인 : 배포 시 액세스 권한이 「나만」 으로 되어 있습니다.</b><br>'
+        + 'Apps Script → <b>배포 → 배포 관리 → 연필 아이콘</b> 에서<br>'
+        + '· 실행 계정 : <b>나</b><br>· 액세스 권한 : <b>모든 사용자</b><br>'
+        + '로 바꾸고 <b>버전 [새 버전]</b> 선택 후 다시 배포해 주세요.<br>'
+        + '<span class="small">그 외 원인 : 인터넷 연결 끊김, 주소 오타, 배포가 삭제됨</span></div>';
+  } else if(kind === 'script'){
+    fix = '<div class="fix"><b>주소는 살아 있지만 스크립트 안에서 오류가 났습니다.</b><br>'
+        + '시트에 <code>_오류로그</code> 탭이 생겼는지 확인해 보세요. 원인이 기록됩니다.<br>'
+        + '코드를 붙여넣은 뒤 <b>저장(Ctrl+S)</b> 과 <b>새 버전으로 재배포</b> 를 했는지도 확인해 주세요.</div>';
+  } else if(kind === 'login'){
+    fix = '<div class="fix"><b>구글 로그인 화면이 돌아왔습니다.</b> 액세스 권한이 「모든 사용자」 가 아닙니다.<br>'
+        + '<b>배포 관리 → 연필 → 액세스 권한 [모든 사용자] → 버전 [새 버전] → 배포</b></div>';
+  }
+  return fix + (detail ? '<pre>' + esc(detail) + '</pre>' : '');
+}
+
+$('#btnGet').addEventListener('click', function(){
+  var url = urlValue(); if(!url) return;
+  var b = this; b.disabled = true;
+  show('<span class="badge">확인 중…</span>');
+  fetch(url, {method:'GET'})
+    .then(function(r){ return r.text().then(function(t){ return {status:r.status, text:t}; }); })
+    .then(function(r){
+      if(/<!doctype html|<html/i.test(r.text) || /accounts\.google\.com/i.test(r.text)){
+        show('<span class="badge ng">로그인 화면이 돌아왔습니다</span>' + diagnose('login', r.text.slice(0,300)));
+      } else if(r.text.indexOf('KBSS 접수 엔드포인트') === 0){
+        show('<span class="badge ok">배포 정상</span><p class="msg">엔드포인트가 살아 있습니다. 이어서 <b>② 테스트 신청 보내기</b> 를 눌러 주세요.</p><pre>' + esc(r.text) + '</pre>');
+      } else {
+        show('<span class="badge ng">예상과 다른 응답</span>'
+          + '<p class="msg">주소는 응답하지만 우리 스크립트가 아닌 것 같습니다. 코드를 붙여넣고 저장했는지, 새 버전으로 배포했는지 확인해 주세요.</p>'
+          + '<pre>' + esc(r.text.slice(0,500)) + '</pre>');
+      }
+    })
+    .catch(function(err){ show('<span class="badge ng">연결 실패</span>' + diagnose('network', err)); })
+    .then(function(){ b.disabled = false; });
+});
+
+$('#btnPost').addEventListener('click', function(){
+  var url = urlValue(); if(!url) return;
+  var b = this; b.disabled = true;
+
+  var payload = {
+    submitted_at : new Date().toISOString(),
+    name         : '연결테스트',
+    phone        : '010-0000-0000',
+    company      : '(주)연결확인',
+    years        : '3년~7년',
+    region       : '서울',
+    industry     : '제조업',
+    sales        : '10억~30억원',
+    calltime     : '오전 (09:00~12:00)',
+    agree_privacy: 'Y',
+    utm_source   : 'connection-test',
+    utm_campaign : '연결테스트',
+    utm_content  : '테스트도구',
+    referrer     : '연결테스트 도구'
+  };
+
+  show('<span class="badge">전송 중…</span>');
+  fetch(url, {
+    method : 'POST',
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body   : JSON.stringify(payload)
+  })
+  .then(function(r){ return r.text().then(function(t){ return {ok:r.ok, status:r.status, text:t}; }); })
+  .then(function(r){
+    if(r.text.indexOf('error:') === 0){
+      show('<span class="badge ng">스크립트 오류</span>' + diagnose('script', r.text));
+    } else if(r.ok && r.text.trim() === 'ok'){
+      var line = 'ENDPOINT   : "' + url + '",';
+      show('<span class="badge ok">연결 성공</span>'
+        + '<p class="msg">시트를 열어 <b>「연결테스트」</b> 행이 들어왔는지 확인해 주세요.<br>'
+        + '들어왔다면 아래 한 줄을 <code>index.html</code> 맨 아래 <code>CONFIG</code> 의 <code>ENDPOINT</code> 자리에 붙여넣으면 연동이 끝납니다.</p>'
+        + '<div class="snippet"><button class="copy" id="cp">복사</button><pre id="snip">var CONFIG = {\n  ' + esc(line)
+        + '\n  PIXEL_ID   : "",\n  LEAD_EVENT : "Lead"\n};</pre></div>'
+        + '<p class="msg small">전송한 데이터</p><pre>' + esc(JSON.stringify(payload, null, 2)) + '</pre>');
+      var cp = document.getElementById('cp');
+      cp.addEventListener('click', function(){
+        navigator.clipboard.writeText(document.getElementById('snip').textContent)
+          .then(function(){ cp.textContent = '복사됨'; setTimeout(function(){ cp.textContent = '복사'; }, 1800); });
+      });
+    } else {
+      show('<span class="badge ng">HTTP ' + r.status + '</span>' + diagnose('script', r.text.slice(0,500)));
+    }
+  })
+  .catch(function(err){ show('<span class="badge ng">전송 실패</span>' + diagnose('network', err)); })
+  .then(function(){ b.disabled = false; });
+});
+
+$('#url').addEventListener('keydown', function(e){ if(e.key === 'Enter') $('#btnGet').click(); });
+</script>
+</body>
+</html>
