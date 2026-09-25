@@ -227,6 +227,7 @@ a:hover{color:var(--color-primary-700)}
 .agree.bad span{color:var(--color-alert)}
 .submitwrap{margin-top:24px}
 .submitwrap .ds-btn{width:100%; text-align:center}
+.apply__err{margin:14px 0 0; padding:12px 14px; border-radius:12px; background:#FDF1EF; border:1px solid #F0C4BD; color:var(--color-alert); font-size:14px; font-weight:600; text-align:center; line-height:1.6}
 .apply__note{margin:14px 0 0; font-size:13px; font-weight:700; color:var(--color-primary); text-align:center}
 .apply__done{text-align:center; padding:24px 0}
 .apply__done h3{margin:0 0 10px; font-weight:700; font-size:22px}
@@ -631,6 +632,7 @@ a:hover{color:var(--color-primary-700)}
         <div class="submitwrap">
           <button type="submit" class="ds-btn ds-btn--primary">무료 진단 신청서 제출</button>
         </div>
+        <p class="apply__err" id="applyErr" hidden role="alert"></p>
         <p class="apply__note">제출 즉시 담당 자문위원에게 전달되며, 영업일 기준 1일 이내 연락드립니다.</p>
       </form>
 
@@ -778,15 +780,25 @@ document.querySelectorAll('[data-phone]').forEach(function(el){
     });
   });
 
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
+  var btn = form.querySelector('button[type=submit]');
+  var errBox = document.getElementById('applyErr');
+  var sending = false;
+
+  // 제출 버튼 클릭으로 직접 처리합니다. 미리보기 창·일부 인앱 브라우저처럼
+  // 폼 제출(submit)이 막힌 환경에서도 동작하게 하기 위함입니다.
+  // (입력칸에서 Enter 를 눌러도 브라우저가 이 버튼 클릭을 발생시킵니다.)
+  btn.addEventListener('click', function(e){ e.preventDefault(); submitLead(); });
+  form.addEventListener('submit', function(e){ e.preventDefault(); submitLead(); });
+
+  function submitLead(){
+    if(sending) return;
+    errBox.hidden = true;
     if(form.querySelector('[name=company_url]').value) return;   // 스팸 봇 차단
     var bad = check();
     if(bad){ bad.focus(); bad.scrollIntoView({block:'center', behavior:'smooth'}); return; }
 
-    var btn = form.querySelector('button[type=submit]');
     var label = btn.textContent;
-    btn.disabled = true; btn.textContent = '전송 중…';
+    sending = true; btn.disabled = true; btn.textContent = '전송 중…';
 
     var payload = { submitted_at: new Date().toISOString() };
     new FormData(form).forEach(function(v,k){ if(k !== 'company_url') payload[k] = v; });
@@ -799,12 +811,11 @@ document.querySelectorAll('[data-phone]').forEach(function(el){
       track(CONFIG.LEAD_EVENT, {content_name:'정책자금 무료 진단'});
     };
     var fail = function(err){
-      btn.disabled = false; btn.textContent = label;
+      sending = false; btn.disabled = false; btn.textContent = label;
       console.error('[접수 실패]', err || '(원인 미상)', '\n엔드포인트:', CONFIG.ENDPOINT, '\n전송하려던 값:', payload);
-      // 버튼 상태가 화면에 반영된 뒤 알림이 뜨도록 한 프레임 미룹니다.
-      setTimeout(function(){
-        alert('전송 중 문제가 발생했습니다.\n잠시 후 다시 시도하시거나 02-865-1516으로 연락 주세요.');
-      }, 30);
+      // 알림창(alert)이 막힌 환경도 있어 폼 안에 안내 문구로 표시합니다.
+      errBox.textContent = '전송 중 문제가 발생했습니다. 잠시 후 다시 시도하시거나 02-865-1516으로 연락 주세요.';
+      errBox.hidden = false;
     };
 
     if(!CONFIG.ENDPOINT){ console.log('[테스트 모드] 수집된 리드:', payload); finish(); return; }
@@ -816,7 +827,7 @@ document.querySelectorAll('[data-phone]').forEach(function(el){
     }).then(function(res){
       res.ok ? finish() : fail('HTTP ' + res.status);
     }).catch(fail);
-  });
+  }
 })();
 </script>
 </body>
