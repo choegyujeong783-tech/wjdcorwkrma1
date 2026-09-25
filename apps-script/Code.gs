@@ -13,7 +13,7 @@
  */
 
 // ───────── 설정 ─────────
-var NOTIFY_EMAIL = 'info@kbss.co.kr';   // 신규 접수 알림 메일 주소 ('' 이면 발송 안 함)
+var NOTIFY_EMAIL = 'choegyujeong783@gmail.com';   // 신규 접수 알림 메일 주소 (여러 개는 쉼표로 구분) ('' 이면 발송 안 함)
 var SHEET_NAME   = '';                  // 특정 시트 탭 이름 (''이면 첫 번째 탭)
 var TIMEZONE     = 'Asia/Seoul';
 
