@@ -1,0 +1,8 @@
+# 주소(도메인)에 따라 다른 랜딩페이지를 보여줍니다.
+#   semoon.store / www.semoon.store      -> semoon.html (세문 경정청구)
+#   kbss15162606.mycafe24.com 등 그 외   -> index.html  (KBSS 정책자금)
+DirectoryIndex index.html
+
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^(www\.)?semoon\.store$ [NC]
+RewriteRule ^(index\.html)?$ semoon.html [L]
