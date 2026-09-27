@@ -833,7 +833,37 @@ document.querySelectorAll('[data-phone]').forEach(function(el){
       body: JSON.stringify(payload)
     }).then(function(res){
       res.ok ? finish() : fail('HTTP ' + res.status);
-    }).catch(fail);
+    }).catch(function(err){
+      // fetch 자체가 막힌 환경(미리보기 창·일부 인앱 브라우저의 보안 정책 등)에서는
+      // 숨은 폼 전송으로 한 번 더 보냅니다. 폼 전송은 fetch 차단 규칙의 영향을 받지 않습니다.
+      console.warn('[접수] fetch 실패 → 폼 전송으로 재시도', err);
+      postViaForm(payload, finish, function(e2){ fail(err + ' / 폼 전송: ' + e2); });
+    });
+  }
+
+  // 숨은 iframe 으로 POST. 본문을 JSON 그대로 보내기 위해 text/plain 인코딩을 쓰며,
+  // 브라우저가 붙이는 '이름=값' 형식이 {"_":"=", ...나머지} 라는 올바른 JSON 이 되도록 나눠 담습니다.
+  // → Apps Script 의 doPost(JSON.parse) 를 고치지 않아도 그대로 접수됩니다.
+  function postViaForm(payload, onDone, onFail){
+    try {
+      var json = JSON.stringify(payload);
+      var name = 'kbss_submit_' + Date.now();
+      var frame = document.createElement('iframe');
+      frame.name = name; frame.style.display = 'none';
+      document.body.appendChild(frame);
+      var f = document.createElement('form');
+      f.method = 'POST'; f.action = CONFIG.ENDPOINT; f.target = name;
+      f.enctype = 'text/plain'; f.style.display = 'none';
+      var inp = document.createElement('input');
+      inp.type = 'hidden'; inp.name = '{"_":"'; inp.value = '",' + json.slice(1);
+      f.appendChild(inp);
+      document.body.appendChild(f);
+      var settled = false;
+      frame.addEventListener('load', function(){ if(settled) return; settled = true; onDone(); });
+      f.submit();
+      // 응답이 오지 않아도 12초 뒤에는 실패로 처리해 버튼이 멈춰 있지 않게 합니다.
+      setTimeout(function(){ if(settled) return; settled = true; onFail('응답 없음(시간 초과)'); }, 12000);
+    } catch (e) { onFail(e); }
   }
 })();
 </script>
