@@ -128,7 +128,7 @@ a:hover{color:var(--color-primary-700)}
 .ds-sh__sub{margin:0; font-family:var(--font-sans); font-weight:var(--weight-regular); font-size:var(--text-body); line-height:var(--line-height-body); color:var(--text-secondary)}
 
 .ds-stat{display:flex; flex-direction:column; gap:6px; font-family:var(--font-sans)}
-.ds-stat__value{font-weight:var(--weight-extrabold); font-size:56px; line-height:1; color:var(--color-primary); font-variant-numeric:tabular-nums}
+.ds-stat__value{font-variant-numeric:tabular-nums; font-weight:var(--weight-extrabold); font-size:56px; line-height:1; color:var(--color-primary); font-variant-numeric:tabular-nums}
 .ds-stat--dark .ds-stat__value{color:var(--text-inverse)}
 .ds-stat__suffix{font-size:28px}
 .ds-stat__label{font-weight:var(--weight-medium); font-size:15px; color:var(--text-secondary)}
@@ -722,31 +722,40 @@ document.querySelectorAll('[data-scroll-apply]').forEach(function(btn){
   });
 });
 
-/* ── 실적 카운트업 (#stats-2, threshold .4, 1400ms) ───────── */
+/* ── 실적 카운트업 (#stats-2) ─────────────────────────────
+   화면에 보일 때마다 0 → 목표 숫자까지 2.5초 동안 올라가고 멈춥니다. */
 (function(){
   var statTargets = [3799, 630, 10];
   var host = document.getElementById('stats-2');
   if(!host) return;
   var cells = host.querySelectorAll('[data-stat]');
   var fmt = function(n){ return n.toLocaleString('ko-KR'); };
-  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var done = false;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var dur = 2500, raf = null;
+  var show = function(p){
+    var eased = 1 - Math.pow(1 - p, 3);
+    cells.forEach(function(c,i){ c.textContent = fmt(Math.round(statTargets[i] * eased)); });
+  };
   var animate = function(){
-    if(done) return; done = true;
-    if(reduce){ cells.forEach(function(c,i){ c.textContent = fmt(statTargets[i]); }); return; }
-    var start = performance.now(), dur = 1400;
+    if(reduce){ show(1); return; }
+    if(raf) cancelAnimationFrame(raf);
+    var start = performance.now();
     var tick = function(t){
       var p = Math.min((t - start) / dur, 1);
-      var eased = 1 - Math.pow(1 - p, 3);
-      cells.forEach(function(c,i){ c.textContent = fmt(Math.round(statTargets[i] * eased)); });
-      if(p < 1) requestAnimationFrame(tick);
+      show(p);
+      raf = p < 1 ? requestAnimationFrame(tick) : null;
     };
-    requestAnimationFrame(tick);
+    show(0);
+    raf = requestAnimationFrame(tick);
   };
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(en){ if(en.isIntersecting){ animate(); io.disconnect(); } });
-  }, {threshold:.4});
-  io.observe(host);
+  if(!('IntersectionObserver' in window)){ animate(); return; }
+  var visible = false;
+  new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting && !visible){ visible = true; animate(); }
+      else if(!en.isIntersecting){ visible = false; }
+    });
+  }, {threshold:.4}).observe(host);
 })();
 
 /* ── 휴대전화 자동 하이픈 ─────────────────────────────────── */
