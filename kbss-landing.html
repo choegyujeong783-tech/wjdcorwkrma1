@@ -187,6 +187,39 @@ a:hover{color:var(--color-primary-700)}
 .split__photo{border:1px solid var(--color-border); background:#fff; padding:8px; display:flex}
 .split__photo img{width:100%; height:100%; object-fit:cover}
 
+
+/* 진행 순서 및 비용 */
+.flow{margin-top:36px; border:1px solid var(--color-border); border-radius:16px; padding:28px; background:var(--color-neutral-light)}
+.flow__head{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:8px 16px}
+.flow__title{margin:0; font-size:22px; font-weight:800; color:var(--text-primary)}
+.flow__region{margin:0; font-size:14px; color:var(--text-secondary)}
+.flow__region b{color:var(--color-primary)}
+.flow__grid{display:grid; grid-template-columns:1.15fr 1.25fr 1fr; gap:16px; margin-top:20px; position:relative}
+.phase{position:relative; background:#fff; border:1px solid var(--color-border); border-radius:16px; padding:22px; display:flex; flex-direction:column; gap:12px}
+.phase + .phase::before{content:"→"; position:absolute; left:-15px; top:50%; transform:translateY(-50%); width:22px; height:22px; border-radius:999px; background:var(--color-primary); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; z-index:1}
+.phase--free{border-top:5px solid var(--color-primary)}
+.phase--paid{border-top:5px solid var(--color-accent-gold); box-shadow:0 10px 26px rgba(200,146,42,.14)}
+.phase--after{border-top:5px solid var(--color-neutral-gray)}
+.phase__top{display:flex; justify-content:space-between; align-items:center; gap:8px}
+.phase__tag{font-size:12px; font-weight:700; letter-spacing:.08em; color:var(--color-neutral-gray)}
+.phase__price{font-size:14px; font-weight:800; padding:5px 12px; border-radius:999px; background:var(--color-primary-100); color:var(--color-primary); white-space:nowrap}
+.phase--paid .phase__price{background:#FBF1DE; color:#9A6B12}
+.phase__name{margin:0; font-size:19px; font-weight:700; color:var(--text-primary)}
+.phase__list{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+.phase__list li{display:flex; align-items:center; gap:10px; font-size:15px; font-weight:500; color:var(--text-primary); flex-wrap:wrap}
+.phase__list li > span{flex:none; width:28px; height:28px; border-radius:999px; background:var(--color-primary-100); color:var(--color-primary); font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center}
+.phase--paid .phase__list li > span{background:#FBF1DE; color:#9A6B12}
+.phase--after .phase__list li > span{background:#EEF0F3; color:#5D6879}
+.phase__chip{font-style:normal; font-size:12px; font-weight:700; padding:3px 9px; border-radius:999px; background:var(--color-primary-100); color:var(--color-primary)}
+.phase__chip--gray{background:#EEF0F3; color:#5D6879}
+.phase__note{margin:auto 0 0; padding:12px 14px; border-radius:12px; background:#FBF6EC; font-size:13px; line-height:1.65; color:#6B5A3A}
+.flow__foot{margin:16px 0 0; font-size:13px; color:var(--color-alert); font-weight:500}
+@media (max-width:900px){
+  .flow{padding:20px}
+  .flow__grid{grid-template-columns:1fr; gap:22px}
+  .phase + .phase::before{content:"↓"; left:50%; top:-19px; transform:translateX(-50%)}
+}
+
 /* ═══════════════════════════════════════════════════════════
    실적 섹션 (dark)
    ═══════════════════════════════════════════════════════════ */
@@ -385,22 +418,42 @@ a:hover{color:var(--color-primary-700)}
     </div>
     <p class="diagnosis__note">한국경영지원솔루션은 금융권 및 보증기관 출신 전문가가 상담하는 회사로서 업무추진비용[출장비, 서류작성 및 접수비용] 이외의 수수료를 받지 않습니다.</p>
 
-    <div class="tablewrap">
-      <table class="cmp">
-        <caption class="sr">시중은행 일반대출과 정책자금 비교</caption>
-        <thead>
-          <tr>
-            <th scope="col">구분</th>
-            <th scope="col">시중은행 일반대출</th>
-            <th scope="col">정책자금</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><th scope="row">금리</th><td>신용등급 연동, 변동 폭 큼</td><td>정책금리 기준, 상대적으로 낮은 고정·변동 선택</td></tr>
-          <tr><th scope="row">심사 기준</th><td>담보·신용등급·재무제표 중심</td><td>기술성·사업성·고용창출 등 정성 평가 비중</td></tr>
-          <tr><th scope="row">담보·보증</th><td>부동산 담보 요구 비중 높음</td><td>보증기관 보증서 활용, 신용 대출 운용 사례</td></tr>
-        </tbody>
-      </table>
+    <div class="flow">
+      <div class="flow__head">
+        <h3 class="flow__title">정책자금 진행 순서 및 비용</h3>
+        <p class="flow__region">서울 · 경기·수도권 · 지방 <b>전국 동일 절차</b></p>
+      </div>
+      <div class="flow__grid">
+        <div class="phase phase--free">
+          <div class="phase__top"><span class="phase__tag">STEP 01–04</span><span class="phase__price">무료</span></div>
+          <h4 class="phase__name">진단·상담</h4>
+          <ol class="phase__list">
+            <li><span>01</span>온라인 접수</li>
+            <li><span>02</span>1차 상담 (전화)</li>
+            <li><span>03</span>추가 서류 검토</li>
+            <li><span>04</span>전문가 상담 (전화)</li>
+          </ol>
+        </div>
+        <div class="phase phase--paid">
+          <div class="phase__top"><span class="phase__tag">STEP 05–07</span><span class="phase__price">20만~50만원</span></div>
+          <h4 class="phase__name">서류 준비·접수</h4>
+          <ol class="phase__list">
+            <li><span>05</span>계약서 작성·결제</li>
+            <li><span>06</span>현장 방문 (대면 상담)</li>
+            <li><span>07</span>정책기관 접수</li>
+          </ol>
+          <p class="phase__note">서류 검토·심사 보완·사전 심사 검토·접수까지 진단부터 접수 업무 전 과정을 상담 진행합니다. 비용은 지역·업무 범위에 따라 달라집니다.</p>
+        </div>
+        <div class="phase phase--after">
+          <div class="phase__top"><span class="phase__tag">STEP 08–09</span></div>
+          <h4 class="phase__name">결과·사후</h4>
+          <ol class="phase__list">
+            <li><span>08</span>결과 검토 <em class="phase__chip">무료</em></li>
+            <li><span>09</span>추가 업무 진행 <em class="phase__chip phase__chip--gray">별도 합의</em></li>
+          </ol>
+        </div>
+      </div>
+      <p class="flow__foot">* 정책자금 점검 및 접수 이외의 업무에는 별도의 자문료가 발생할 수 있습니다.</p>
     </div>
 
     <div class="fundgrid">
