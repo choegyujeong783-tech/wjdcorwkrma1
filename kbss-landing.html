@@ -333,6 +333,17 @@ a:hover{color:var(--color-primary-700)}
 .whybox{border-radius:16px}
 .notice__box{border-radius:16px}
 @media (prefers-reduced-motion: reduce){.submitwrap .ds-btn{transition:none}}
+/* 강조 띠 3칸 — 칸별 색상 + 글자 깜박임 */
+.strip__item{border:none; font-weight:800; font-size:20px; letter-spacing:-.01em}
+.strip__item--1{background:var(--color-primary); color:#fff; box-shadow:0 8px 20px rgba(42,74,127,.28)}
+.strip__item--2{background:var(--color-accent-gold); color:var(--color-secondary); box-shadow:0 8px 20px rgba(200,146,42,.30)}
+.strip__item--3{background:var(--color-alert); color:#fff; box-shadow:0 8px 20px rgba(192,57,43,.28)}
+.strip__item > span{display:inline-block; animation:stripBlink 1.4s ease-in-out infinite}
+.strip__item--2 > span{animation-delay:.45s}
+.strip__item--3 > span{animation-delay:.9s}
+@keyframes stripBlink{0%,100%{opacity:1} 50%{opacity:.25}}
+@media (prefers-reduced-motion: reduce){.strip__item > span{animation:none}}
+
 
 /* ═══════════════════════════════════════════════════════════
    반응형 보정 — 원본 캔버스에는 없는 부분입니다.
@@ -404,9 +415,9 @@ a:hover{color:var(--color-primary-700)}
 <!-- ══ STATS ══ -->
 <section class="strip">
   <div class="strip__inner">
-    <div class="strip__item strip__item--1">진단·상담 비용 0원</div>
-    <div class="strip__item strip__item--2">정책금융 자문위원 직접 상담</div>
-    <div class="strip__item strip__item--3">별도의 성과 수수료 강요 없음</div>
+    <div class="strip__item strip__item--1"><span>진단·상담 비용 0원</span></div>
+    <div class="strip__item strip__item--2"><span>정책금융 자문위원 직접 상담</span></div>
+    <div class="strip__item strip__item--3"><span>별도의 성과 수수료 강요 없음</span></div>
   </div>
 </section>
 
