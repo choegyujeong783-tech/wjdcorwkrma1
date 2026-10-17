@@ -19,6 +19,12 @@
 // 여러 명이면 쉼표로 구분: "a@gmail.com,b@gmail.com"
 var NOTIFY_TO = "";
 
+// 지원자를 저장할 구글 시트 ID. 시트 주소의
+// https://docs.google.com/spreadsheets/d/【이 부분】/edit 을 넣으세요.
+// 비워 두면 ① 이 스크립트가 붙어 있는 시트 → ② 없으면 'KBSS 지원자 명단' 시트를
+// 내 드라이브에 자동으로 만들어 그곳에 저장합니다.
+var SHEET_ID = "";
+
 var SHEET_NAME = "지원자";
 
 var FIELDS = [
@@ -76,21 +82,40 @@ function doPost(e) {
 function logError_(msg, raw) {
   console.error(msg, raw);
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    if (!ss) return;
+    var ss = getBook_();
     var sh = ss.getSheetByName("오류") || ss.insertSheet("오류");
     sh.appendRow([Utilities.formatDate(new Date(), "Asia/Seoul", "yyyy-MM-dd HH:mm:ss"), msg, raw || ""]);
   } catch (ignore) {}
 }
 
 // 브라우저로 URL을 열었을 때 배포가 살아 있는지 확인용
+// 브라우저로 URL을 열면 연결 상태를 보여 줍니다.
 function doGet() {
-  return json_({ ok: true, service: "KBSS apply form" });
+  try {
+    var ss = getBook_();
+    return json_({ ok: true, service: "KBSS apply form", sheet: ss.getName(), tab: SHEET_NAME, sheet_url: ss.getUrl() });
+  } catch (err) {
+    return json_({ ok: false, service: "KBSS apply form", error: String(err) });
+  }
+}
+
+// 저장할 스프레드시트를 찾습니다. (SHEET_ID → 연결된 시트 → 자동 생성 시트)
+function getBook_() {
+  if (SHEET_ID) return SpreadsheetApp.openById(SHEET_ID);
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (ss) return ss;
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty("AUTO_SHEET_ID");
+  if (id) {
+    try { return SpreadsheetApp.openById(id); } catch (gone) {}
+  }
+  ss = SpreadsheetApp.create("KBSS 지원자 명단");
+  props.setProperty("AUTO_SHEET_ID", ss.getId());
+  return ss;
 }
 
 function saveRow_(data) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  if (!ss) return;   // 시트에 연결되지 않은 독립 스크립트면 저장 생략
+  var ss = getBook_();
   var sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
   if (sh.getLastRow() === 0) {
     sh.appendRow(FIELDS.map(function (f) { return f[1]; }));
@@ -136,12 +161,15 @@ function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
-// 설치 3단계용: 권한 승인 + 테스트 메일 발송
+// 설치 3단계용: 권한 승인 + 시트 저장 + 테스트 메일 발송을 한 번에 점검
 function testMail() {
-  sendMail_({
+  var sample = {
     submitted_at: Utilities.formatDate(new Date(), "Asia/Seoul", "yyyy-MM-dd HH:mm:ss"),
     name: "테스트", phone: "010-0000-0000", job: "GA 소속 설계사", region: "수원", age: "40대",
     gender: "여성", driving: "가능(자차 보유)", career: "3~5년", inquiry: "정책자금 상담 방법, 수수료·정산 구조",
     message: "테스트 메일입니다.", privacy_agree: "Y"
-  });
+  };
+  saveRow_(sample);
+  sendMail_(sample);
+  console.log("저장된 시트: " + getBook_().getUrl());
 }
