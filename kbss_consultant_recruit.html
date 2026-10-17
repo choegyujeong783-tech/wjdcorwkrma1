@@ -60,12 +60,11 @@ h2 em{font-style:normal; color:var(--orange)}
 .hero__img{align-self:end; border-radius:24px 24px 0 0; overflow:hidden; box-shadow:0 -10px 40px rgba(0,0,0,.25); max-height:560px}
 .hero__img img{width:100%; height:100%; object-fit:cover; object-position:center 30%}
 
-/* 숫자 스트립 */
-.stats{background:#fff; border-bottom:1px solid var(--line); padding:0}
-.stats ul{list-style:none; margin:0; padding:28px 0; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; text-align:center}
-.stats b{display:block; font-size:28px; font-weight:900; color:var(--navy)}
-.stats b small{font-size:16px; font-weight:700}
-.stats span{font-size:14px; color:var(--sub)}
+/* 파트너 선언 */
+.promise{background:#fff; border-bottom:1px solid var(--line); padding:44px 0; text-align:center}
+.promise p{margin:0; font-size:clamp(18px,2.4vw,24px); line-height:1.7; color:var(--ink); font-weight:500}
+.promise em{font-style:normal; font-weight:900; color:var(--orange); background:linear-gradient(transparent 62%, var(--orange-soft) 62%); padding:0 4px}
+.promise strong{font-weight:900; color:#fff; background:var(--navy); padding:2px 12px; border-radius:8px; white-space:nowrap}
 
 /* 편지 */
 .letter{max-width:760px; margin:0 auto; background:#fff; border-radius:var(--radius); padding:48px; box-shadow:var(--shadow); border-top:5px solid var(--orange)}
@@ -216,7 +215,6 @@ footer p{margin:0 0 6px}
   .hero__text{padding-bottom:24px}
   .hero__img{max-height:380px; border-radius:20px 20px 0 0}
   .g3, .g4, .partners{grid-template-columns:repeat(2,1fr)}
-  .stats ul{grid-template-columns:repeat(2,1fr)}
   .timeline{grid-template-columns:1fr; gap:20px}
   .timeline::before{display:none}
   .tl{display:grid; grid-template-columns:56px 1fr; gap:16px; text-align:left; padding:0}
@@ -269,15 +267,10 @@ footer p{margin:0 0 6px}
   </div>
 </section>
 
-<!-- ══ 숫자 ══ -->
-<div class="stats">
+<!-- ══ 파트너 선언 ══ -->
+<div class="promise">
   <div class="wrap">
-    <ul>
-      <li><b>7<small>대</small></b><span>기업 컨설팅 서비스 라인</span></li>
-      <li><b>50<small>년+</small></b><span>신용보증기금 출신 전문가 합산 경력</span></li>
-      <li><b>18<small>개 시·군</small></b><span>경기도 순회 기업 세미나</span></li>
-      <li><b>0<small>원</small></b><span>상담사 교육비</span></li>
-    </ul>
+    <p>저희는 여러분의 영업을 컨설팅하며,<br>영업의 <em>고객발굴 · 상담 · 고객관리</em>를 함께하는 <strong>비즈니스 파트너</strong>입니다.</p>
   </div>
 </div>
 
