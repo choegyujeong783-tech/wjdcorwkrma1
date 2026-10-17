@@ -485,9 +485,15 @@ footer p{margin:0 0 6px}
         </div>
 
         <div class="row">
-          <div class="field">
-            <label for="f_email">이메일<span class="opt">(선택)</span></label>
-            <input id="f_email" name="email" type="email" autocomplete="email" placeholder="example@email.com">
+          <div class="field" data-req>
+            <label for="f_job">현재 직업<span class="req">*</span></label>
+            <select id="f_job" name="job">
+              <option value="">선택해 주세요</option>
+              <option>보험설계사(생명보험)</option><option>보험설계사(손해보험)</option><option>GA 소속 설계사</option>
+              <option>금융권 종사자(은행·증권·카드 등)</option><option>자영업·개인사업자</option><option>회사원</option>
+              <option>프리랜서</option><option>구직 중</option><option>기타</option>
+            </select>
+            <div class="err">현재 직업을 선택해 주세요.</div>
           </div>
           <div class="field" data-req>
             <label for="f_region">주 활동 지역<span class="req">*</span></label>
@@ -507,6 +513,34 @@ footer p{margin:0 0 6px}
           </div>
         </div>
 
+        <div class="row">
+          <div class="field" data-req>
+            <label for="f_age">나이<span class="req">*</span></label>
+            <select id="f_age" name="age">
+              <option value="">선택해 주세요</option>
+              <option>20대</option><option>30대</option><option>40대</option><option>50대</option><option>60대 이상</option>
+            </select>
+            <div class="err">나이를 선택해 주세요.</div>
+          </div>
+          <div class="field" data-req data-req-radio>
+            <span class="lbl">성별<span class="req">*</span></span>
+            <div class="choices">
+              <label><input type="radio" name="gender" value="남성"><span>남성</span></label>
+              <label><input type="radio" name="gender" value="여성"><span>여성</span></label>
+            </div>
+            <div class="err">성별을 선택해 주세요.</div>
+          </div>
+        </div>
+
+        <div class="field" data-req data-req-radio>
+          <span class="lbl">자가운전<span class="req">*</span></span>
+          <div class="choices">
+            <label><input type="radio" name="driving" value="가능(자차 보유)"><span>가능 (자차 보유)</span></label>
+            <label><input type="radio" name="driving" value="불가"><span>불가</span></label>
+          </div>
+          <div class="err">자가운전 가능 여부를 선택해 주세요.</div>
+        </div>
+
         <div class="field" data-req data-req-radio>
           <span class="lbl">영업 경력<span class="req">*</span></span>
           <div class="choices">
@@ -517,6 +551,23 @@ footer p{margin:0 0 6px}
             <label><input type="radio" name="career" value="10년 이상"><span>10년 이상</span></label>
           </div>
           <div class="err">영업 경력을 선택해 주세요.</div>
+        </div>
+
+        <div class="field" data-req data-req-radio>
+          <span class="lbl">기업영업 문의사항<span class="req">*</span><span class="opt">(복수 선택 가능)</span></span>
+          <div class="choices">
+            <label><input type="checkbox" name="inquiry" value="정책자금 상담 방법"><span>정책자금 상담 방법</span></label>
+            <label><input type="checkbox" name="inquiry" value="신용·기술보증 연계"><span>신용·기술보증 연계</span></label>
+            <label><input type="checkbox" name="inquiry" value="재무제표 분석 방법"><span>재무제표 분석 방법</span></label>
+            <label><input type="checkbox" name="inquiry" value="기업인증(벤처·이노비즈 등)"><span>기업인증(벤처·이노비즈 등)</span></label>
+            <label><input type="checkbox" name="inquiry" value="노무지원금(고용지원금)"><span>노무지원금(고용지원금)</span></label>
+            <label><input type="checkbox" name="inquiry" value="절세·경정청구"><span>절세·경정청구</span></label>
+            <label><input type="checkbox" name="inquiry" value="법인보험·CEO플랜 연계"><span>법인보험·CEO플랜 연계</span></label>
+            <label><input type="checkbox" name="inquiry" value="기업 고객 발굴 방법"><span>기업 고객 발굴 방법</span></label>
+            <label><input type="checkbox" name="inquiry" value="수수료·정산 구조"><span>수수료·정산 구조</span></label>
+            <label><input type="checkbox" name="inquiry" value="교육 일정·활동 방법"><span>교육 일정·활동 방법</span></label>
+          </div>
+          <div class="err">문의사항을 1개 이상 선택해 주세요.</div>
         </div>
 
         <div class="field">
@@ -531,7 +582,7 @@ footer p{margin:0 0 6px}
             <summary>내용 보기</summary>
             <table>
               <tr><th>수집 목적</th><td>상담사 지원 접수, 지원자 연락 및 설명회 안내</td></tr>
-              <tr><th>수집 항목</th><td>이름, 휴대전화, 이메일(선택), 활동 지역, 영업 경력, 문의 내용</td></tr>
+              <tr><th>수집 항목</th><td>이름, 휴대전화, 현재 직업, 활동 지역, 나이, 성별, 자가운전 여부, 영업 경력, 기업영업 문의사항, 문의 내용</td></tr>
               <tr><th>보유 기간</th><td>지원 접수일로부터 1년 (지원자 요청 시 즉시 파기)</td></tr>
             </table>
             <p style="margin:10px 0 0">동의를 거부하실 수 있으며, 이 경우 지원이 접수되지 않습니다.</p>
@@ -643,7 +694,7 @@ document.querySelectorAll('[data-phone]').forEach(function(el){
 
     // 라디오 필수 항목
     form.querySelectorAll('[data-req-radio]').forEach(function(box){
-      var radios = box.querySelectorAll('input[type=radio]');
+      var radios = box.querySelectorAll('input[type=radio],input[type=checkbox]');
       var picked = Array.prototype.some.call(radios, function(r){ return r.checked; });
       box.classList.toggle('bad', !picked);
       if(!picked && !first) first = radios[0];
@@ -679,7 +730,8 @@ document.querySelectorAll('[data-phone]').forEach(function(el){
 
     var payload = { submitted_at: new Date().toISOString() };
     var fd = new FormData(form);
-    fd.forEach(function(v,k){ if(k !== 'company_url') payload[k] = v; });
+    fd.forEach(function(v,k){ if(k !== 'company_url' && k !== 'inquiry') payload[k] = v; });
+    payload.inquiry = fd.getAll('inquiry').join(', ');
     Object.assign(payload, TRAFFIC);
 
     var finish = function(){

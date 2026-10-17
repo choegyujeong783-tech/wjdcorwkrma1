@@ -25,9 +25,13 @@ var FIELDS = [
   ["submitted_at", "접수일시"],
   ["name",         "이름"],
   ["phone",        "휴대전화"],
-  ["email",        "이메일"],
+  ["job",          "현재 직업"],
   ["region",       "활동 지역"],
+  ["age",          "나이"],
+  ["gender",       "성별"],
+  ["driving",      "자가운전"],
   ["career",       "영업 경력"],
+  ["inquiry",      "기업영업 문의사항"],
   ["message",      "하고 싶은 말씀"],
   ["privacy_agree","개인정보 동의"],
   ["utm_source",   "utm_source"],
@@ -83,7 +87,7 @@ function saveRow_(data) {
 
 function sendMail_(data) {
   var to = NOTIFY_TO || Session.getEffectiveUser().getEmail();
-  var subject = "[KBSS 상담사 지원] " + data.name + " / " + (data.region || "-") + " / " + (data.career || "-");
+  var subject = "[KBSS 상담사 지원] " + data.name + " / " + (data.job || "-") + " / " + (data.region || "-") + " / " + (data.career || "-");
 
   var rows = FIELDS.filter(function (f) { return data[f[0]]; }).map(function (f) {
     return '<tr><th style="text-align:left;padding:8px 12px;background:#F0F4FB;border:1px solid #E3E7EF;white-space:nowrap">' +
@@ -117,7 +121,8 @@ function json_(obj) {
 function testMail() {
   sendMail_({
     submitted_at: Utilities.formatDate(new Date(), "Asia/Seoul", "yyyy-MM-dd HH:mm:ss"),
-    name: "테스트", phone: "010-0000-0000", region: "수원", career: "3~5년",
+    name: "테스트", phone: "010-0000-0000", job: "GA 소속 설계사", region: "수원", age: "40대",
+    gender: "여성", driving: "가능(자차 보유)", career: "3~5년", inquiry: "정책자금 상담 방법, 수수료·정산 구조",
     message: "테스트 메일입니다.", privacy_agree: "Y"
   });
 }
