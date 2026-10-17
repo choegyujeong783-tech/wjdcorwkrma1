@@ -46,22 +46,41 @@ function doPost(e) {
   try {
     data = JSON.parse((e && e.postData && e.postData.contents) || "{}");
   } catch (err) {
+    logError_("bad json", e && e.postData && e.postData.contents);
     return json_({ ok: false, error: "bad json" });
   }
   if (!data.name || !data.phone) return json_({ ok: false, error: "missing fields" });
 
   data.submitted_at = Utilities.formatDate(new Date(), "Asia/Seoul", "yyyy-MM-dd HH:mm:ss");
 
+  // 시트 저장과 메일 발송을 따로 처리해 한쪽이 실패해도 다른 쪽은 진행되게 합니다.
   var lock = LockService.getScriptLock();
-  lock.waitLock(10000);
   try {
+    lock.waitLock(10000);
     saveRow_(data);
+  } catch (err) {
+    logError_("sheet: " + err, JSON.stringify(data));
   } finally {
     lock.releaseLock();
   }
-  sendMail_(data);
+  try {
+    sendMail_(data);
+  } catch (err) {
+    logError_("mail: " + err, JSON.stringify(data));
+  }
 
   return json_({ ok: true });
+}
+
+// 오류가 나면 '오류' 탭에 남깁니다. (Apps Script [실행] 메뉴에서도 확인 가능)
+function logError_(msg, raw) {
+  console.error(msg, raw);
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    if (!ss) return;
+    var sh = ss.getSheetByName("오류") || ss.insertSheet("오류");
+    sh.appendRow([Utilities.formatDate(new Date(), "Asia/Seoul", "yyyy-MM-dd HH:mm:ss"), msg, raw || ""]);
+  } catch (ignore) {}
 }
 
 // 브라우저로 URL을 열었을 때 배포가 살아 있는지 확인용

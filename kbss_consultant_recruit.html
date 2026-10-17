@@ -748,13 +748,15 @@ document.querySelectorAll('[data-phone]').forEach(function(el){
 
     if(!CONFIG.ENDPOINT){ console.log('[테스트 모드] 수집된 지원서:', payload); finish(); return; }
 
+    // Apps Script 웹앱은 응답 과정에서 다른 도메인으로 넘겨주기 때문에 브라우저가
+    // 응답을 막는 경우가 많습니다(CORS). 서버는 이미 데이터를 받았는데 화면에는
+    // '실패'로 보이는 문제를 피하려고 no-cors 로 보내고 응답은 확인하지 않습니다.
     fetch(CONFIG.ENDPOINT, {
       method:'POST',
-      headers:{'Content-Type':'text/plain;charset=utf-8'},   // CORS 프리플라이트 회피
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
       body: JSON.stringify(payload)
-    }).then(function(res){
-      res.ok ? finish() : fail('HTTP ' + res.status);
-    }).catch(fail);
+    }).then(finish).catch(fail);
   });
 })();
 </script>
