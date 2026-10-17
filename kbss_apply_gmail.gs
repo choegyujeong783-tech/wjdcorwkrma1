@@ -88,7 +88,6 @@ function logError_(msg, raw) {
   } catch (ignore) {}
 }
 
-// 브라우저로 URL을 열었을 때 배포가 살아 있는지 확인용
 // 브라우저로 URL을 열면 연결 상태를 보여 줍니다.
 function doGet() {
   try {

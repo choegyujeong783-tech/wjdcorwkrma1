@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Apps Script 코드 복사</title>
+<style>
+:root{--navy:#1B3A7A;--orange:#E8742A;--ink:#1A2233;--line:#E3E7EF;--bg:#F5F7FB}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:22px;color:var(--navy);margin:0 0 6px}p{margin:0 0 16px;color:#5A6478}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:12px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+button{background:var(--orange);color:#fff;border:0;border-radius:999px;padding:16px 36px;font-size:18px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 16px rgba(232,116,42,.35)}
+button.done{background:#1C8C5E;box-shadow:none}
+#msg{font-weight:700;color:#1C8C5E}
+textarea{width:100%;height:65vh;min-height:360px;border:1px solid var(--line);border-radius:12px;padding:16px;font:13px/1.55 Consolas,Menlo,monospace;background:#fff;color:#1A2233;resize:vertical;white-space:pre}
+ol{margin:16px 0 0;padding-left:20px;line-height:1.8}
+</style></head><body><div class="wrap">
+<h1>kbss_apply_gmail.gs 코드 복사</h1>
+<p>버튼 한 번으로 전체 코드가 복사됩니다. Apps Script 편집기의 기존 코드를 모두 지우고(Ctrl+A → Delete) 붙여 넣으세요(Ctrl+V).</p>
+<div class="bar"><button id="copy" type="button">📋 전체 코드 복사하기</button><span id="msg" role="status"></span></div>
+<textarea id="code" readonly spellcheck="false">/**
+ * KBSS 경영상담사 지원 폼 → Gmail 알림 + 구글 시트 저장
+ *
+ * 설치 방법
+ *  1. 구글 시트를 새로 만들고 [확장 프로그램] → [Apps Script] 를 엽니다.
+ *  2. 기본 코드를 모두 지우고 이 파일 내용을 붙여 넣은 뒤 저장합니다.
+ *  3. 함수 목록에서 testMail 을 선택해 [실행] → 권한 승인 → 받은편지함에 테스트 메일 확인.
+ *  4. [배포] → [새 배포] → 유형: 웹 앱
+ *       - 다음 사용자 인증 정보로 실행: 나
+ *       - 액세스 권한이 있는 사용자: 모든 사용자
+ *  5. 발급된 웹 앱 URL(https://script.google.com/macros/s/…/exec)을
+ *     랜딩페이지 CONFIG.ENDPOINT 에 넣습니다.
+ *
+ * 코드를 고친 뒤에는 [배포] → [배포 관리] → 연필 아이콘 → 버전: 새 버전 으로
+ * 다시 배포해야 반영됩니다. (URL은 그대로 유지됩니다.)
+ */
+
+// 알림 받을 주소. 비워 두면 스크립트를 배포한 구글 계정으로 보냅니다.
+// 여러 명이면 쉼표로 구분: &quot;a@gmail.com,b@gmail.com&quot;
+var NOTIFY_TO = &quot;&quot;;
+
+// 지원자를 저장할 구글 시트 ID. 시트 주소의
+// https://docs.google.com/spreadsheets/d/【이 부분】/edit 을 넣으세요.
+// 비워 두면 ① 이 스크립트가 붙어 있는 시트 → ② 없으면 &#x27;KBSS 지원자 명단&#x27; 시트를
+// 내 드라이브에 자동으로 만들어 그곳에 저장합니다.
+var SHEET_ID = &quot;&quot;;
+
+var SHEET_NAME = &quot;지원자&quot;;
+
+var FIELDS = [
+  [&quot;submitted_at&quot;, &quot;접수일시&quot;],
+  [&quot;name&quot;,         &quot;이름&quot;],
+  [&quot;phone&quot;,        &quot;휴대전화&quot;],
+  [&quot;job&quot;,          &quot;현재 직업&quot;],
+  [&quot;region&quot;,       &quot;활동 지역&quot;],
+  [&quot;age&quot;,          &quot;나이&quot;],
+  [&quot;gender&quot;,       &quot;성별&quot;],
+  [&quot;driving&quot;,      &quot;자가운전&quot;],
+  [&quot;career&quot;,       &quot;영업 경력&quot;],
+  [&quot;inquiry&quot;,      &quot;기업영업 문의사항&quot;],
+  [&quot;message&quot;,      &quot;하고 싶은 말씀&quot;],
+  [&quot;privacy_agree&quot;,&quot;개인정보 동의&quot;],
+  [&quot;utm_source&quot;,   &quot;utm_source&quot;],
+  [&quot;utm_medium&quot;,   &quot;utm_medium&quot;],
+  [&quot;utm_campaign&quot;, &quot;utm_campaign&quot;],
+  [&quot;landing_url&quot;,  &quot;유입 페이지&quot;],
+  [&quot;referrer&quot;,     &quot;referrer&quot;]
+];
+
+function doPost(e) {
+  var data = {};
+  try {
+    data = JSON.parse((e &amp;&amp; e.postData &amp;&amp; e.postData.contents) || &quot;{}&quot;);
+  } catch (err) {
+    logError_(&quot;bad json&quot;, e &amp;&amp; e.postData &amp;&amp; e.postData.contents);
+    return json_({ ok: false, error: &quot;bad json&quot; });
+  }
+  if (!data.name || !data.phone) return json_({ ok: false, error: &quot;missing fields&quot; });
+
+  data.submitted_at = Utilities.formatDate(new Date(), &quot;Asia/Seoul&quot;, &quot;yyyy-MM-dd HH:mm:ss&quot;);
+
+  // 시트 저장과 메일 발송을 따로 처리해 한쪽이 실패해도 다른 쪽은 진행되게 합니다.
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+    saveRow_(data);
+  } catch (err) {
+    logError_(&quot;sheet: &quot; + err, JSON.stringify(data));
+  } finally {
+    lock.releaseLock();
+  }
+  try {
+    sendMail_(data);
+  } catch (err) {
+    logError_(&quot;mail: &quot; + err, JSON.stringify(data));
+  }
+
+  return json_({ ok: true });
+}
+
+// 오류가 나면 &#x27;오류&#x27; 탭에 남깁니다. (Apps Script [실행] 메뉴에서도 확인 가능)
+function logError_(msg, raw) {
+  console.error(msg, raw);
+  try {
+    var ss = getBook_();
+    var sh = ss.getSheetByName(&quot;오류&quot;) || ss.insertSheet(&quot;오류&quot;);
+    sh.appendRow([Utilities.formatDate(new Date(), &quot;Asia/Seoul&quot;, &quot;yyyy-MM-dd HH:mm:ss&quot;), msg, raw || &quot;&quot;]);
+  } catch (ignore) {}
+}
+
+// 브라우저로 URL을 열면 연결 상태를 보여 줍니다.
+function doGet() {
+  try {
+    var ss = getBook_();
+    return json_({ ok: true, service: &quot;KBSS apply form&quot;, sheet: ss.getName(), tab: SHEET_NAME, sheet_url: ss.getUrl() });
+  } catch (err) {
+    return json_({ ok: false, service: &quot;KBSS apply form&quot;, error: String(err) });
+  }
+}
+
+// 저장할 스프레드시트를 찾습니다. (SHEET_ID → 연결된 시트 → 자동 생성 시트)
+function getBook_() {
+  if (SHEET_ID) return SpreadsheetApp.openById(SHEET_ID);
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (ss) return ss;
+  var props = PropertiesService.getScriptProperties();
+  var id = props.getProperty(&quot;AUTO_SHEET_ID&quot;);
+  if (id) {
+    try { return SpreadsheetApp.openById(id); } catch (gone) {}
+  }
+  ss = SpreadsheetApp.create(&quot;KBSS 지원자 명단&quot;);
+  props.setProperty(&quot;AUTO_SHEET_ID&quot;, ss.getId());
+  return ss;
+}
+
+function saveRow_(data) {
+  var ss = getBook_();
+  var sh = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+  if (sh.getLastRow() === 0) {
+    sh.appendRow(FIELDS.map(function (f) { return f[1]; }));
+    sh.setFrozenRows(1);
+    sh.getRange(1, 1, 1, FIELDS.length).setFontWeight(&quot;bold&quot;).setBackground(&quot;#E7EDF8&quot;);
+  }
+  // 휴대전화가 숫자로 바뀌어 앞자리 0이 사라지지 않도록 텍스트로 저장
+  sh.appendRow(FIELDS.map(function (f) {
+    var v = data[f[0]] == null ? &quot;&quot; : String(data[f[0]]);
+    return f[0] === &quot;phone&quot; ? &quot;&#x27;&quot; + v : v;
+  }));
+}
+
+function sendMail_(data) {
+  var to = NOTIFY_TO || Session.getEffectiveUser().getEmail();
+  var subject = &quot;[KBSS 상담사 지원] &quot; + data.name + &quot; / &quot; + (data.job || &quot;-&quot;) + &quot; / &quot; + (data.region || &quot;-&quot;) + &quot; / &quot; + (data.career || &quot;-&quot;);
+
+  var rows = FIELDS.filter(function (f) { return data[f[0]]; }).map(function (f) {
+    return &#x27;&lt;tr&gt;&lt;th style=&quot;text-align:left;padding:8px 12px;background:#F0F4FB;border:1px solid #E3E7EF;white-space:nowrap&quot;&gt;&#x27; +
+      esc_(f[1]) + &#x27;&lt;/th&gt;&lt;td style=&quot;padding:8px 12px;border:1px solid #E3E7EF&quot;&gt;&#x27; +
+      esc_(data[f[0]]).replace(/\n/g, &quot;&lt;br&gt;&quot;) + &quot;&lt;/td&gt;&lt;/tr&gt;&quot;;
+  }).join(&quot;&quot;);
+
+  var html =
+    &#x27;&lt;div style=&quot;font-family:Malgun Gothic,Apple SD Gothic Neo,sans-serif;font-size:14px;color:#1A2233&quot;&gt;&#x27; +
+    &#x27;&lt;h2 style=&quot;color:#1B3A7A;margin:0 0 12px&quot;&gt;새 경영상담사 지원이 접수되었습니다&lt;/h2&gt;&#x27; +
+    &#x27;&lt;table style=&quot;border-collapse:collapse&quot;&gt;&#x27; + rows + &quot;&lt;/table&gt;&quot; +
+    &#x27;&lt;p style=&quot;color:#5A6478;margin-top:16px&quot;&gt;영업일 기준 2일 이내 연락 안내가 나간 상태입니다.&lt;/p&gt;&lt;/div&gt;&#x27;;
+
+  var opts = { name: &quot;KBSS 지원 알림&quot;, htmlBody: html };
+  if (data.email &amp;&amp; /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) opts.replyTo = data.email;
+
+  MailApp.sendEmail(to, subject, &quot;새 경영상담사 지원: &quot; + data.name + &quot; &quot; + data.phone, opts);
+}
+
+function esc_(s) {
+  return String(s).replace(/[&amp;&lt;&gt;&quot;&#x27;]/g, function (c) {
+    return { &quot;&amp;&quot;: &quot;&amp;amp;&quot;, &quot;&lt;&quot;: &quot;&amp;lt;&quot;, &quot;&gt;&quot;: &quot;&amp;gt;&quot;, &#x27;&quot;&#x27;: &quot;&amp;quot;&quot;, &quot;&#x27;&quot;: &quot;&amp;#39;&quot; }[c];
+  });
+}
+
+function json_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+
+// 설치 3단계용: 권한 승인 + 시트 저장 + 테스트 메일 발송을 한 번에 점검
+function testMail() {
+  var sample = {
+    submitted_at: Utilities.formatDate(new Date(), &quot;Asia/Seoul&quot;, &quot;yyyy-MM-dd HH:mm:ss&quot;),
+    name: &quot;테스트&quot;, phone: &quot;010-0000-0000&quot;, job: &quot;GA 소속 설계사&quot;, region: &quot;수원&quot;, age: &quot;40대&quot;,
+    gender: &quot;여성&quot;, driving: &quot;가능(자차 보유)&quot;, career: &quot;3~5년&quot;, inquiry: &quot;정책자금 상담 방법, 수수료·정산 구조&quot;,
+    message: &quot;테스트 메일입니다.&quot;, privacy_agree: &quot;Y&quot;
+  };
+  saveRow_(sample);
+  sendMail_(sample);
+  console.log(&quot;저장된 시트: &quot; + getBook_().getUrl());
+}
+</textarea>
+<ol>
+<li>Apps Script 편집기에서 <b>Ctrl+A → Delete</b> 후 <b>Ctrl+V</b>, 저장(Ctrl+S)</li>
+<li>함수 목록에서 <b>testMail</b> 선택 → <b>[실행]</b> → 권한 <b>모두 선택 → 계속</b></li>
+<li><b>[배포] → [배포 관리] → 연필 아이콘 → 새 버전 → [배포]</b> (주소 유지)</li>
+</ol>
+</div>
+<script>
+var btn=document.getElementById('copy'),ta=document.getElementById('code'),msg=document.getElementById('msg');
+function ok(){btn.textContent='✓ 복사되었습니다';btn.classList.add('done');msg.textContent='이제 Apps Script 편집기에 붙여 넣으세요 (Ctrl+V)';
+  setTimeout(function(){btn.textContent='📋 전체 코드 복사하기';btn.classList.remove('done');},3000);}
+function legacy(){ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);
+  try{if(document.execCommand('copy')){ok();return;}}catch(e){}
+  msg.textContent='자동 복사가 막혀 있습니다. 코드가 전체 선택되었으니 Ctrl+C 를 눌러 주세요.';}
+btn.addEventListener('click',function(){
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(ta.value).then(ok,legacy);}else{legacy();}
+});
+</script></body></html>
