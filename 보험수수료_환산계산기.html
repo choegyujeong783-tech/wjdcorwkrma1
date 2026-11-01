@@ -1,0 +1,214 @@
+<title>보험 수수료 환산기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: finance ledger — sticky control bar up top, sortable rate table below.
+   Palette: warm paper ground, deep ink navy accent, muted grid lines. */
+:root{
+  --paper:#f6f3ec; --card:#fffdf8; --ink:#1c2230; --sub:#5d6474;
+  --line:#e2dccf; --accent:#1f3a63; --accent-soft:#e7edf6;
+  --hi:#b4451f; --good:#2f6b4f; --pill:#eef0e8;
+  --serif:"Noto Serif KR",Georgia,serif;
+  --sans:"Noto Sans KR",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#13161c; --card:#1b1f27; --ink:#e9ebf0; --sub:#9aa2b2;
+  --line:#2c313c; --accent:#8fb2e6; --accent-soft:#232d3f;
+  --hi:#e8865c; --good:#6fcaa0; --pill:#242832; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#13161c; --card:#1b1f27; --ink:#e9ebf0; --sub:#9aa2b2;
+  --line:#2c313c; --accent:#8fb2e6; --accent-soft:#232d3f;
+  --hi:#e8865c; --good:#6fcaa0; --pill:#242832; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0}
+header.top{padding-block:28px 14px}
+.eyebrow{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
+  font-weight:700;margin:0 0 6px}
+h1{font-family:var(--serif);font-weight:700;font-size:1.9rem;margin:0;line-height:1.2;
+  text-wrap:balance;letter-spacing:-.01em}
+.lede{color:var(--sub);font-size:.92rem;margin:8px 0 0;max-width:60ch}
+
+/* sticky control bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);
+  border-bottom:1px solid var(--line);padding-block:12px;margin-bottom:4px}
+.bar-in{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row .lab{font-size:.74rem;font-weight:700;color:var(--sub);letter-spacing:.04em;
+  min-width:72px}
+.pcts{display:flex;flex-wrap:wrap;gap:6px}
+.pct{font-family:var(--mono);font-weight:600;font-size:.9rem;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);padding:7px 13px;border-radius:999px;cursor:pointer;
+  transition:.12s;min-width:58px;text-align:center}
+.pct:hover{border-color:var(--accent)}
+.pct[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .pct[aria-pressed="true"],
+:root:not([data-theme="light"]) .pct[aria-pressed="true"]{color:#10131a}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .pct[aria-pressed="true"]{color:#fff}}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--card)}
+.seg button{border:0;background:transparent;color:var(--sub);font-family:var(--sans);
+  font-weight:600;font-size:.82rem;padding:7px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
+.prem{display:flex;align-items:center;gap:6px}
+.prem input{font-family:var(--mono);font-size:.9rem;width:120px;padding:6px 9px;border-radius:7px;
+  border:1px solid var(--line);background:var(--card);color:var(--ink);text-align:right}
+.prem .unit{font-size:.8rem;color:var(--sub)}
+
+/* table */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);
+  margin-top:10px}
+table{width:100%;border-collapse:collapse;min-width:520px}
+thead th{font-size:.73rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);
+  font-weight:700;text-align:right;padding:11px 14px;border-bottom:1.5px solid var(--line);
+  white-space:nowrap;cursor:pointer;user-select:none}
+thead th:first-child,tbody td:first-child{text-align:left}
+thead th .ar{opacity:.4;font-size:.7em;margin-left:3px}
+tbody td{padding:11px 14px;text-align:right;border-bottom:1px solid var(--line);
+  font-variant-numeric:tabular-nums}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--accent-soft)}
+.co{font-weight:700;font-size:.96rem}
+.mon{font-size:.72rem;color:var(--sub);font-family:var(--mono);margin-left:7px}
+.tag{display:inline-block;font-size:.66rem;font-weight:700;padding:2px 7px;border-radius:5px;
+  background:var(--pill);color:var(--sub);margin-right:7px;vertical-align:1px}
+.base{font-family:var(--mono);color:var(--sub)}
+.calc{font-family:var(--mono);font-weight:600;font-size:1.02rem;color:var(--accent)}
+.amt{font-family:var(--mono);font-size:.82rem;color:var(--hi);display:block;margin-top:2px}
+.note{font-size:.66rem;color:var(--hi);font-weight:600}
+
+.foot{color:var(--sub);font-size:.76rem;padding:18px 2px 36px;line-height:1.65}
+.foot b{color:var(--ink)}
+.foot code{font-family:var(--mono);background:var(--pill);padding:1px 5px;border-radius:4px;
+  font-size:.92em}
+.theme{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));
+  right:calc(12px + env(safe-area-inset-right,0px));z-index:9;
+  border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;
+  width:34px;height:34px;cursor:pointer;font-size:1rem}
+@media(max-width:560px){h1{font-size:1.55rem}.row .lab{min-width:100%}}
+</style>
+
+<button class="theme" id="themeBtn" aria-label="테마 전환">◐</button>
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">GA 수수료 분석 · 손보 13 · 생보 21</p>
+    <h1>보험사 수수료율 환산 계산기</h1>
+    <p class="lede">업로드한 수수료표에서 추출한 <b>보험료 대비 수수료율(100% 기준)</b>을
+      60~85%로 눌러 즉시 환산합니다. 월납보험료를 넣으면 예상 지급액(원)도 함께 표시됩니다.</p>
+  </header>
+
+  <div class="bar"><div class="bar-in">
+    <div class="row">
+      <span class="lab">환산 비율</span>
+      <div class="pcts" id="pcts"></div>
+    </div>
+    <div class="row">
+      <span class="lab">보종</span>
+      <div class="seg" id="segType">
+        <button data-v="전체" aria-pressed="true">전체</button>
+        <button data-v="손보">손해보험</button>
+        <button data-v="생보">생명보험</button>
+      </div>
+      <span class="lab" style="min-width:auto">기준값</span>
+      <div class="seg" id="segBase">
+        <button data-v="base" aria-pressed="true">선지급(1차월)</button>
+        <button data-v="fy">초년도 합계</button>
+      </div>
+    </div>
+    <div class="row">
+      <span class="lab">월납보험료</span>
+      <div class="prem">
+        <input id="prem" inputmode="numeric" placeholder="예: 100,000">
+        <span class="unit">원 → 예상 지급액 계산</span>
+      </div>
+    </div>
+  </div></div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th data-k="n">보험사<span class="ar"></span></th>
+        <th data-k="base">기준 수수료율<span class="ar"></span></th>
+        <th data-k="calc">환산값<span class="ar">▾</span></th>
+      </tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+
+  <p class="foot">
+    <b>수수료율</b>은 월납보험료 대비 배수입니다. 예: <code>6.504</code> = 보험료의 650.4%.
+    <b>환산값</b> = 기준값 × 선택비율. <b>예상 지급액</b> = 월납보험료 × 환산값(배수).<br>
+    기준값은 각 수수료표 시뮬레이션 시트에서 자동 추출한 대표 수치입니다 —
+    <b>선지급(1차월)</b>은 초기 즉시지급률, <b>초년도 합계</b>는 1~12차월 합계입니다.
+    미래에셋생명은 <span class="note">분급형</span>이라 1차월값이 작으니 초년도 합계 기준 권장.
+    상품·회차별 세부 지급률은 원본 엑셀을 확인하세요. 수치는 분석 참고용입니다.
+  </p>
+</div>
+
+<script>
+const DATA=[{"t":"손보","n":"메리츠화재","m":"202206","base":7.0008,"fy":7.0008},{"t":"손보","n":"KB손해","m":"202302","base":7.008,"fy":7.008},{"t":"손보","n":"현대해상","m":"202205","base":6.504,"fy":7.44},{"t":"손보","n":"DB화재","m":"202201","base":6.504,"fy":7.5},{"t":"손보","n":"한화손보","m":"202302","base":6.504,"fy":6.504},{"t":"손보","n":"흥국화재","m":"202206","base":6.384,"fy":7.5648},{"t":"손보","n":"삼성화재","m":"202206","base":6.504,"fy":7.512},{"t":"손보","n":"AIG손해","m":"202401","base":5.256,"fy":5.256},{"t":"손보","n":"롯데손해","m":"202208","base":6.804,"fy":6.804},{"t":"손보","n":"MG손해","m":"202101","base":6.0,"fy":7.8},{"t":"손보","n":"농협손해","m":"202301","base":5.424,"fy":6.936},{"t":"손보","n":"하나손해","m":"202208","base":6.216,"fy":7.944},{"t":"손보","n":"에이스손해","m":"202306","base":5.7,"fy":7.8},{"t":"생보","n":"메트라이프","m":"202509","base":10.2979,"fy":10.2979},{"t":"생보","n":"DB생명","m":"202402","base":10.5,"fy":10.5},{"t":"생보","n":"한화생명","m":"202408","base":4.71,"fy":13.188},{"t":"생보","n":"동양생명","m":"202401","base":8.488,"fy":8.488},{"t":"생보","n":"삼성생명","m":"202501","base":5.69,"fy":7.25},{"t":"생보","n":"흥국생명","m":"202605","base":7.0,"fy":7.0},{"t":"생보","n":"KDB생명","m":"202412","base":5.25,"fy":5.25},{"t":"생보","n":"라이나생명","m":"202406","base":6.3,"fy":6.3},{"t":"생보","n":"농협생명","m":"202401","base":6.15,"fy":6.15},{"t":"생보","n":"KB라이프생명","m":"202601","base":1.35,"fy":1.35},{"t":"생보","n":"미래에셋생명","m":"202504","base":0.4187,"fy":9.954,"note":1},{"t":"생보","n":"교보생명","m":"202509","base":8.25,"fy":8.25},{"t":"생보","n":"ABL생명","m":"202606","base":10.3314,"fy":10.3314},{"t":"생보","n":"카디프생명","m":"202609","base":7.8,"fy":7.8},{"t":"생보","n":"처브라이프생명","m":"202307","base":13.0944,"fy":13.0944},{"t":"생보","n":"iM라이프생명","m":"202501","base":9.5,"fy":9.5},{"t":"생보","n":"신한라이프","m":"202609","base":4.06,"fy":4.06},{"t":"생보","n":"푸본현대생명","m":"202501","base":8.1,"fy":8.1},{"t":"생보","n":"하나생명","m":"202505","base":15.62,"fy":15.62},{"t":"생보","n":"IBK연금","m":"202405","base":4.8,"fy":4.8},{"t":"생보","n":"AIA생명","m":"202603","base":5.0112,"fy":5.0112}];
+const PCTS=[100,85,80,75,70,65,60];
+let state={pct:100,type:"전체",base:"base",sortK:"calc",sortDir:-1,prem:0};
+
+const $=s=>document.querySelector(s);
+const fmtMon=m=>m?`${m.slice(0,4)}.${m.slice(4)}`:"";
+const num=v=>v.toLocaleString("ko-KR",{maximumFractionDigits:2});
+const won=v=>Math.round(v).toLocaleString("ko-KR");
+
+// percent buttons
+const pc=$("#pcts");
+PCTS.forEach(p=>{const b=document.createElement("button");b.className="pct";b.textContent=p+"%";
+  b.setAttribute("aria-pressed",p===100);b.onclick=()=>{state.pct=p;
+    [...pc.children].forEach(x=>x.setAttribute("aria-pressed",x===b));render();};pc.appendChild(b);});
+
+function seg(id,key){const g=$(id);g.onclick=e=>{const b=e.target.closest("button");if(!b)return;
+  state[key]=b.dataset.v;[...g.children].forEach(x=>x.setAttribute("aria-pressed",x===b));render();};}
+seg("#segType","type");seg("#segBase","base");
+
+$("#prem").addEventListener("input",e=>{
+  const n=parseInt(e.target.value.replace(/[^\d]/g,""),10);
+  state.prem=isNaN(n)?0:n;
+  e.target.value=isNaN(n)?"":n.toLocaleString("ko-KR");render();});
+
+document.querySelectorAll("thead th").forEach(th=>th.onclick=()=>{
+  const k=th.dataset.k;if(state.sortK===k)state.sortDir*=-1;
+  else{state.sortK=k;state.sortDir=k==="n"?1:-1;}render();});
+
+function render(){
+  const f=state.pct/100;
+  let rows=DATA.filter(d=>state.type==="전체"||d.t===state.type).map(d=>{
+    const b=d[state.base];return {...d,_base:b,_calc:b*f};});
+  rows.sort((a,b)=>{let r;
+    if(state.sortK==="n")r=a.n.localeCompare(b.n,"ko");
+    else if(state.sortK==="base")r=a._base-b._base;
+    else r=a._calc-b._calc;
+    return r*state.sortDir;});
+  // header arrows
+  document.querySelectorAll("thead th").forEach(th=>{
+    const el=th.querySelector(".ar");
+    el.textContent=th.dataset.k===state.sortK?(state.sortDir<0?"▾":"▴"):"";});
+  const tb=$("#tb");tb.innerHTML="";
+  rows.forEach(d=>{
+    const tr=document.createElement("tr");
+    const amt=state.prem>0?`<span class="amt">${won(state.prem*d._calc)}원</span>`:"";
+    tr.innerHTML=`<td class="co"><span class="tag">${d.t}</span>${d.n}`+
+      `<span class="mon">${fmtMon(d.m)}</span>${d.note?' <span class="note">분급형</span>':""}</td>`+
+      `<td class="base">${num(d._base)}</td>`+
+      `<td><span class="calc">${num(d._calc)}</span>${amt}</td>`;
+    tb.appendChild(tr);});
+}
+
+// theme toggle
+const tb=$("#themeBtn");
+tb.onclick=()=>{const cur=document.documentElement.getAttribute("data-theme");
+  const dark=cur?cur==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  document.documentElement.setAttribute("data-theme",dark?"light":"dark");};
+render();
+</script>
