@@ -1,214 +1,434 @@
-<title>보험 수수료 환산기</title>
+<title>보험 수수료 분석기</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
-/* Layout: finance ledger — sticky control bar up top, sortable rate table below.
-   Palette: warm paper ground, deep ink navy accent, muted grid lines. */
+/* Layout: analyst's ledger. Sticky control strip (rate %, premium, view), then either
+   a single-product dossier (summary → round-by-round chart → cumulative → table)
+   or a ranked comparison of all products. */
 :root{
-  --paper:#f6f3ec; --card:#fffdf8; --ink:#1c2230; --sub:#5d6474;
-  --line:#e2dccf; --accent:#1f3a63; --accent-soft:#e7edf6;
-  --hi:#b4451f; --good:#2f6b4f; --pill:#eef0e8;
+  --paper:#f6f3ec; --card:#fffdf8; --ink:#1c2230; --sub:#5d6474; --mute:#8a8f9b;
+  --line:#e2dccf; --grid:#ece7dc; --accent:#1f3a63; --accent-soft:#e7edf6; --on-accent:#ffffff;
+  --hi:#b4451f; --pill:#eef0e8;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#6250d6; --s8:#e34948;
+  --y1:#184f95; --y2:#2a78d6; --y3:#5598e7; --y4:#86b6ef;
   --serif:"Noto Serif KR",Georgia,serif;
   --sans:"Noto Sans KR",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#13161c; --card:#1b1f27; --ink:#e9ebf0; --sub:#9aa2b2;
-  --line:#2c313c; --accent:#8fb2e6; --accent-soft:#232d3f;
-  --hi:#e8865c; --good:#6fcaa0; --pill:#242832; color-scheme:dark;
+  --paper:#13161c; --card:#1b1f27; --ink:#e9ebf0; --sub:#a3aaba; --mute:#7c8394;
+  --line:#2c313c; --grid:#252a33; --accent:#8fb2e6; --accent-soft:#232d3f; --on-accent:#10131a;
+  --hi:#e8865c; --pill:#242832;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+  --y1:#86b6ef; --y2:#5598e7; --y3:#2a78d6; --y4:#1c5cab; color-scheme:dark;
 }}
 :root[data-theme="dark"]{
-  --paper:#13161c; --card:#1b1f27; --ink:#e9ebf0; --sub:#9aa2b2;
-  --line:#2c313c; --accent:#8fb2e6; --accent-soft:#232d3f;
-  --hi:#e8865c; --good:#6fcaa0; --pill:#242832; color-scheme:dark;
+  --paper:#13161c; --card:#1b1f27; --ink:#e9ebf0; --sub:#a3aaba; --mute:#7c8394;
+  --line:#2c313c; --grid:#252a33; --accent:#8fb2e6; --accent-soft:#232d3f; --on-accent:#10131a;
+  --hi:#e8865c; --pill:#242832;
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+  --y1:#86b6ef; --y2:#5598e7; --y3:#2a78d6; --y4:#1c5cab; color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;
-  -webkit-font-smoothing:antialiased}
-.wrap{max-width:960px;margin:0 auto;
-  padding-left:max(16px,env(safe-area-inset-left,0px));
-  padding-right:max(16px,env(safe-area-inset-right,0px));
-  padding-block:0}
-header.top{padding-block:28px 14px}
-.eyebrow{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);
-  font-weight:700;margin:0 0 6px}
-h1{font-family:var(--serif);font-weight:700;font-size:1.9rem;margin:0;line-height:1.2;
-  text-wrap:balance;letter-spacing:-.01em}
-.lede{color:var(--sub);font-size:.92rem;margin:8px 0 0;max-width:60ch}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header.top{padding-block:26px 12px;display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0}
+h1{font-family:var(--serif);font-weight:700;font-size:1.85rem;margin:0;line-height:1.2;text-wrap:balance;letter-spacing:-.01em}
+.lede{color:var(--sub);font-size:.9rem;margin:0;max-width:66ch}
+h2{font-family:var(--serif);font-size:1.15rem;margin:0;text-wrap:balance}
+h3{font-size:.8rem;margin:0;color:var(--sub);font-weight:700;letter-spacing:.04em}
 
-/* sticky control bar */
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);
-  border-bottom:1px solid var(--line);padding-block:12px;margin-bottom:4px}
-.bar-in{display:flex;flex-direction:column;gap:12px}
-.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.row .lab{font-size:.74rem;font-weight:700;color:var(--sub);letter-spacing:.04em;
-  min-width:72px}
-.pcts{display:flex;flex-wrap:wrap;gap:6px}
-.pct{font-family:var(--mono);font-weight:600;font-size:.9rem;border:1px solid var(--line);
-  background:var(--card);color:var(--ink);padding:7px 13px;border-radius:999px;cursor:pointer;
-  transition:.12s;min-width:58px;text-align:center}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--paper);border-bottom:1px solid var(--line);padding-block:10px}
+.bar-in{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.grp{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lab{font-size:.72rem;font-weight:700;color:var(--sub);letter-spacing:.04em}
+.pcts{display:flex;flex-wrap:wrap;gap:5px}
+.pct{font-family:var(--mono);font-weight:600;font-size:.86rem;border:1px solid var(--line);background:var(--card);padding:6px 11px;border-radius:999px;cursor:pointer;min-width:54px;text-align:center}
 .pct:hover{border-color:var(--accent)}
-.pct[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
-:root[data-theme="dark"] .pct[aria-pressed="true"],
-:root:not([data-theme="light"]) .pct[aria-pressed="true"]{color:#10131a}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .pct[aria-pressed="true"]{color:#fff}}
+.pct[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--card)}
-.seg button{border:0;background:transparent;color:var(--sub);font-family:var(--sans);
-  font-weight:600;font-size:.82rem;padding:7px 12px;cursor:pointer}
+.seg button{border:0;background:transparent;color:var(--sub);font-weight:600;font-size:.82rem;padding:6px 11px;cursor:pointer;white-space:nowrap}
 .seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent)}
-.prem{display:flex;align-items:center;gap:6px}
-.prem input{font-family:var(--mono);font-size:.9rem;width:120px;padding:6px 9px;border-radius:7px;
-  border:1px solid var(--line);background:var(--card);color:var(--ink);text-align:right}
-.prem .unit{font-size:.8rem;color:var(--sub)}
+.inp{font-family:var(--mono);font-size:.88rem;width:118px;padding:6px 9px;border-radius:7px;border:1px solid var(--line);background:var(--card);text-align:right}
+.unit{font-size:.78rem;color:var(--sub)}
+.tabs{margin-left:auto}
 
-/* table */
-.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card);
-  margin-top:10px}
-table{width:100%;border-collapse:collapse;min-width:520px}
-thead th{font-size:.73rem;text-transform:uppercase;letter-spacing:.05em;color:var(--sub);
-  font-weight:700;text-align:right;padding:11px 14px;border-bottom:1.5px solid var(--line);
-  white-space:nowrap;cursor:pointer;user-select:none}
+main{display:flex;flex-direction:column;gap:18px;padding-block:16px 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}
+.pick{display:grid;grid-template-columns:auto 1fr 1.4fr;gap:10px;align-items:end}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+select{padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);font-size:.92rem;width:100%;min-width:0}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--sub);margin-top:10px}
+.meta b{color:var(--ink);font-weight:600}
+.flag{color:var(--hi);font-weight:600}
+
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.tile .k{font-size:.72rem;color:var(--sub);font-weight:700}
+.tile .v{font-family:var(--mono);font-size:1.35rem;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
+.tile .v small{font-size:.7rem;color:var(--sub);font-weight:500;margin-left:2px}
+.tile .w{font-family:var(--mono);font-size:.8rem;color:var(--hi);font-variant-numeric:tabular-nums}
+.tile .b{font-family:var(--mono);font-size:.7rem;color:var(--mute)}
+.tile.main{border-color:var(--accent)}
+
+.chead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.74rem;color:var(--sub)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.ax{font-family:var(--mono);font-size:10px;fill:var(--mute)}
+.tip{position:absolute;pointer-events:none;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:.76rem;box-shadow:0 4px 18px rgba(0,0,0,.12);min-width:150px;z-index:4;color:var(--ink)}
+.tip .t{font-weight:700;margin-bottom:4px}
+.tip .r{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tip .r span:first-child{font-family:var(--sans);color:var(--sub);display:inline-flex;align-items:center;gap:5px}
+.tip .r i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.tip .tot{border-top:1px solid var(--line);margin-top:4px;padding-top:4px;font-weight:600}
+.two{display:grid;grid-template-columns:1.6fr 1fr;gap:18px}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;max-height:520px;overflow-y:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+thead th{position:sticky;top:0;background:var(--card);font-size:.7rem;color:var(--sub);font-weight:700;text-align:right;padding:9px 10px;border-bottom:1.5px solid var(--line);white-space:nowrap;z-index:1}
 thead th:first-child,tbody td:first-child{text-align:left}
-thead th .ar{opacity:.4;font-size:.7em;margin-left:3px}
-tbody td{padding:11px 14px;text-align:right;border-bottom:1px solid var(--line);
-  font-variant-numeric:tabular-nums}
-tbody tr:last-child td{border-bottom:0}
-tbody tr:hover td{background:var(--accent-soft)}
-.co{font-weight:700;font-size:.96rem}
-.mon{font-size:.72rem;color:var(--sub);font-family:var(--mono);margin-left:7px}
-.tag{display:inline-block;font-size:.66rem;font-weight:700;padding:2px 7px;border-radius:5px;
-  background:var(--pill);color:var(--sub);margin-right:7px;vertical-align:1px}
-.base{font-family:var(--mono);color:var(--sub)}
-.calc{font-family:var(--mono);font-weight:600;font-size:1.02rem;color:var(--accent)}
-.amt{font-family:var(--mono);font-size:.82rem;color:var(--hi);display:block;margin-top:2px}
-.note{font-size:.66rem;color:var(--hi);font-weight:600}
+tbody td{padding:7px 10px;text-align:right;border-bottom:1px solid var(--grid);font-family:var(--mono);font-size:.8rem;white-space:nowrap}
+tbody tr.yr td{background:var(--accent-soft);font-weight:600;color:var(--accent)}
+tbody td.z{color:var(--mute)}
+td.tot{font-weight:600}
+td.amt{color:var(--hi)}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:6px 11px;font-size:.8rem;font-weight:600;cursor:pointer;color:var(--accent)}
+.btn:hover{border-color:var(--accent)}
 
-.foot{color:var(--sub);font-size:.76rem;padding:18px 2px 36px;line-height:1.65}
+.rank{display:flex;flex-direction:column}
+.rrow{display:grid;grid-template-columns:minmax(150px,240px) 1fr 92px;gap:10px;align-items:center;padding:6px 4px;border-bottom:1px solid var(--grid);cursor:pointer;border-radius:6px}
+.rrow:hover{background:var(--accent-soft)}
+.rname{font-size:.84rem;min-width:0}
+.rname b{display:block;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rname>span{display:block;font-size:.72rem;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.track{display:flex;height:16px;gap:2px;min-width:0}
+.track div{height:100%}
+.track div:last-child{border-radius:0 4px 4px 0}
+.rval{font-family:var(--mono);font-weight:600;text-align:right;font-size:.86rem}
+.rval small{display:block;font-size:.7rem;color:var(--hi);font-weight:500}
+.tag{display:inline-block;font-size:.64rem;font-weight:700;padding:1px 6px;border-radius:4px;background:var(--pill);color:var(--sub);margin-right:5px;vertical-align:1px}
+.foot{color:var(--sub);font-size:.75rem;padding-block:6px 36px;line-height:1.7;max-width:80ch}
 .foot b{color:var(--ink)}
-.foot code{font-family:var(--mono);background:var(--pill);padding:1px 5px;border-radius:4px;
-  font-size:.92em}
-.theme{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));
-  right:calc(12px + env(safe-area-inset-right,0px));z-index:9;
-  border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:8px;
-  width:34px;height:34px;cursor:pointer;font-size:1rem}
-@media(max-width:560px){h1{font-size:1.55rem}.row .lab{min-width:100%}}
+.theme{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom,0px));right:calc(14px + env(safe-area-inset-right,0px));z-index:9;border:1px solid var(--line);background:var(--card);color:var(--sub);border-radius:999px;width:38px;height:38px;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 14px;border-radius:8px;font-size:.82rem;z-index:20}
+@media(max-width:820px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.two{grid-template-columns:1fr}.pick{grid-template-columns:1fr 1fr}.pick .field:first-child{grid-column:1/-1}.tabs{margin-left:0}}
+@media(max-width:520px){.bar{position:static}h1{font-size:1.5rem}.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}.pick{grid-template-columns:1fr}.rrow{grid-template-columns:1fr 84px}.rrow .track{grid-column:1/-1;grid-row:2}}
+@media(prefers-reduced-motion:no-preference){.track div{transition:flex-basis .25s}}
 </style>
 
-<button class="theme" id="themeBtn" aria-label="테마 전환">◐</button>
+<button class="theme" id="themeBtn" aria-label="밝은/어두운 테마 전환">◐</button>
 <div class="wrap">
   <header class="top">
-    <p class="eyebrow">GA 수수료 분석 · 손보 13 · 생보 21</p>
-    <h1>보험사 수수료율 환산 계산기</h1>
-    <p class="lede">업로드한 수수료표에서 추출한 <b>보험료 대비 수수료율(100% 기준)</b>을
-      60~85%로 눌러 즉시 환산합니다. 월납보험료를 넣으면 예상 지급액(원)도 함께 표시됩니다.</p>
+    <p class="eyebrow">GA 수수료 분석 · 손보 13사 · 생보 21사 · 44개 상품</p>
+    <h1>보험사 상품별·회차별 수수료 분석기</h1>
+    <p class="lede">각 사 수수료표 시뮬레이션 시트에서 상품별·회차별·항목별 지급률을 추출했습니다.
+      100% 기준값을 60~85%로 환산하고, 월납보험료를 넣으면 회차별 지급액까지 계산합니다.</p>
   </header>
-
-  <div class="bar"><div class="bar-in">
-    <div class="row">
-      <span class="lab">환산 비율</span>
-      <div class="pcts" id="pcts"></div>
-    </div>
-    <div class="row">
-      <span class="lab">보종</span>
-      <div class="seg" id="segType">
-        <button data-v="전체" aria-pressed="true">전체</button>
-        <button data-v="손보">손해보험</button>
-        <button data-v="생보">생명보험</button>
-      </div>
-      <span class="lab" style="min-width:auto">기준값</span>
-      <div class="seg" id="segBase">
-        <button data-v="base" aria-pressed="true">선지급(1차월)</button>
-        <button data-v="fy">초년도 합계</button>
-      </div>
-    </div>
-    <div class="row">
-      <span class="lab">월납보험료</span>
-      <div class="prem">
-        <input id="prem" inputmode="numeric" placeholder="예: 100,000">
-        <span class="unit">원 → 예상 지급액 계산</span>
-      </div>
-    </div>
-  </div></div>
-
-  <div class="tablewrap">
-    <table>
-      <thead><tr>
-        <th data-k="n">보험사<span class="ar"></span></th>
-        <th data-k="base">기준 수수료율<span class="ar"></span></th>
-        <th data-k="calc">환산값<span class="ar">▾</span></th>
-      </tr></thead>
-      <tbody id="tb"></tbody>
-    </table>
-  </div>
-
-  <p class="foot">
-    <b>수수료율</b>은 월납보험료 대비 배수입니다. 예: <code>6.504</code> = 보험료의 650.4%.
-    <b>환산값</b> = 기준값 × 선택비율. <b>예상 지급액</b> = 월납보험료 × 환산값(배수).<br>
-    기준값은 각 수수료표 시뮬레이션 시트에서 자동 추출한 대표 수치입니다 —
-    <b>선지급(1차월)</b>은 초기 즉시지급률, <b>초년도 합계</b>는 1~12차월 합계입니다.
-    미래에셋생명은 <span class="note">분급형</span>이라 1차월값이 작으니 초년도 합계 기준 권장.
-    상품·회차별 세부 지급률은 원본 엑셀을 확인하세요. 수치는 분석 참고용입니다.
-  </p>
 </div>
 
+<div class="bar"><div class="wrap"><div class="bar-in">
+  <div class="grp"><span class="lab">환산 비율</span><div class="pcts" id="pcts"></div></div>
+  <div class="grp"><label class="lab" for="prem">월납보험료</label><input id="prem" class="inp" inputmode="numeric" value="100,000"><span class="unit">원</span></div>
+  <div class="grp tabs"><div class="seg" id="segView" role="tablist">
+    <button data-v="product" aria-pressed="true">상품 분석</button>
+    <button data-v="compare">상품 비교</button>
+  </div></div>
+</div></div></div>
+
+<div class="wrap">
+<main id="vProduct">
+  <section class="card">
+    <div class="pick">
+      <div class="field"><span class="lab">보종</span>
+        <div class="seg" id="segKind"><button data-v="손보" aria-pressed="true">손해보험</button><button data-v="생보">생명보험</button></div></div>
+      <div class="field"><label class="lab" for="selCo">보험사</label><select id="selCo"></select></div>
+      <div class="field"><label class="lab" for="selPr">상품 (시뮬레이션 기준)</label><select id="selPr"></select></div>
+    </div>
+    <div class="meta" id="meta"></div>
+  </section>
+
+  <section class="tiles" id="tiles" aria-label="연차별 요약"></section>
+
+  <section class="card">
+    <div class="chead"><h2>회차별 수수료 지급률</h2><div class="legend" id="legItems"></div></div>
+    <div class="chart" id="chBars"></div>
+  </section>
+
+  <div class="two">
+    <section class="card">
+      <div class="chead"><h2>누적 지급률</h2><span class="lab" id="cumNote"></span></div>
+      <div class="chart" id="chCum"></div>
+    </section>
+    <section class="card">
+      <div class="chead"><h2>항목별 구성</h2><span class="lab">전체 기간</span></div>
+      <div id="mix"></div>
+    </section>
+  </div>
+
+  <section class="card">
+    <div class="chead"><h2>회차별 상세표</h2><button class="btn" id="copyBtn">표 복사 (엑셀 붙여넣기)</button></div>
+    <div class="tablewrap"><table id="tbl"></table></div>
+  </section>
+</main>
+
+<main id="vCompare" hidden>
+  <section class="card">
+    <div class="chead">
+      <h2 id="cmpTitle">상품 비교</h2>
+      <div class="grp">
+        <div class="seg" id="segCK"><button data-v="전체" aria-pressed="true">전체</button><button data-v="손보">손보</button><button data-v="생보">생보</button></div>
+        <div class="seg" id="segMetric">
+          <button data-v="m1">1회차</button><button data-v="y1" aria-pressed="true">1차년</button><button data-v="y3">3차년 누적</button><button data-v="all">전체</button>
+        </div>
+      </div>
+    </div>
+    <div class="legend" id="legYears" style="margin-bottom:8px"></div>
+    <div class="rank" id="rank"></div>
+  </section>
+</main>
+
+<p class="foot">
+  <b>지급률</b>은 월납보험료 대비 배수입니다(예: 7.0 = 보험료의 700%). <b>환산값</b> = 지급률 × 선택 비율,
+  <b>지급액</b> = 월납보험료 × 환산값. 손보는 수정률, 생보는 환산율이 반영된 각 사 시뮬레이션 예시 상품 기준이며,
+  상품·납기·실적구간에 따라 실제 지급률은 달라질 수 있습니다. 미유지 환수와 실적 조건은 반영하지 않았습니다.
+  분석 참고용 자료입니다.
+</p>
+</div>
+<div class="toast" id="toast" hidden></div>
+
 <script>
-const DATA=[{"t":"손보","n":"메리츠화재","m":"202206","base":7.0008,"fy":7.0008},{"t":"손보","n":"KB손해","m":"202302","base":7.008,"fy":7.008},{"t":"손보","n":"현대해상","m":"202205","base":6.504,"fy":7.44},{"t":"손보","n":"DB화재","m":"202201","base":6.504,"fy":7.5},{"t":"손보","n":"한화손보","m":"202302","base":6.504,"fy":6.504},{"t":"손보","n":"흥국화재","m":"202206","base":6.384,"fy":7.5648},{"t":"손보","n":"삼성화재","m":"202206","base":6.504,"fy":7.512},{"t":"손보","n":"AIG손해","m":"202401","base":5.256,"fy":5.256},{"t":"손보","n":"롯데손해","m":"202208","base":6.804,"fy":6.804},{"t":"손보","n":"MG손해","m":"202101","base":6.0,"fy":7.8},{"t":"손보","n":"농협손해","m":"202301","base":5.424,"fy":6.936},{"t":"손보","n":"하나손해","m":"202208","base":6.216,"fy":7.944},{"t":"손보","n":"에이스손해","m":"202306","base":5.7,"fy":7.8},{"t":"생보","n":"메트라이프","m":"202509","base":10.2979,"fy":10.2979},{"t":"생보","n":"DB생명","m":"202402","base":10.5,"fy":10.5},{"t":"생보","n":"한화생명","m":"202408","base":4.71,"fy":13.188},{"t":"생보","n":"동양생명","m":"202401","base":8.488,"fy":8.488},{"t":"생보","n":"삼성생명","m":"202501","base":5.69,"fy":7.25},{"t":"생보","n":"흥국생명","m":"202605","base":7.0,"fy":7.0},{"t":"생보","n":"KDB생명","m":"202412","base":5.25,"fy":5.25},{"t":"생보","n":"라이나생명","m":"202406","base":6.3,"fy":6.3},{"t":"생보","n":"농협생명","m":"202401","base":6.15,"fy":6.15},{"t":"생보","n":"KB라이프생명","m":"202601","base":1.35,"fy":1.35},{"t":"생보","n":"미래에셋생명","m":"202504","base":0.4187,"fy":9.954,"note":1},{"t":"생보","n":"교보생명","m":"202509","base":8.25,"fy":8.25},{"t":"생보","n":"ABL생명","m":"202606","base":10.3314,"fy":10.3314},{"t":"생보","n":"카디프생명","m":"202609","base":7.8,"fy":7.8},{"t":"생보","n":"처브라이프생명","m":"202307","base":13.0944,"fy":13.0944},{"t":"생보","n":"iM라이프생명","m":"202501","base":9.5,"fy":9.5},{"t":"생보","n":"신한라이프","m":"202609","base":4.06,"fy":4.06},{"t":"생보","n":"푸본현대생명","m":"202501","base":8.1,"fy":8.1},{"t":"생보","n":"하나생명","m":"202505","base":15.62,"fy":15.62},{"t":"생보","n":"IBK연금","m":"202405","base":4.8,"fy":4.8},{"t":"생보","n":"AIA생명","m":"202603","base":5.0112,"fy":5.0112}];
+const DATA=[{"k":"손보","c":"AIG손해","p":"장기보장 AT1","m":"202401","t":"규정변경_AT1","prem":100000,"items":["성과수수료","계약관리","계약관리 16~18회"],"rows":[[1,5.256,[5.256,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.0,[0,0,0]],[8,0.0,[0,0,0]],[9,0.0,[0,0,0]],[10,0.0,[0,0,0]],[11,0.0,[0,0,0]],[12,0.0,[0,0,0]],[13,3.402,[0,3.402,0]],[14,0.594,[0,0.594,0]],[15,0.594,[0,0.594,0]],[16,0.09,[0,0,0.09]],[17,0.09,[0,0,0.09]],[18,0.09,[0,0,0.09]]],"sums":{"초년도계":5.256,"2차년도계":4.86}},{"k":"손보","c":"DB화재","p":"장기보장 D5","m":"202201","t":"규정변경_D5","prem":100000,"items":["성과수수료","계약관리 7~11회","유지관리"],"rows":[[1,6.504,[6.504,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.1992,[0,0.1992,0]],[8,0.1992,[0,0.1992,0]],[9,0.1992,[0,0.1992,0]],[10,0.1992,[0,0.1992,0]],[11,0.1992,[0,0.1992,0]],[12,0.0,[0,0,0]],[13,1.008,[0,0,1.008]],[14,1.008,[0,0,1.008]],[15,0.768,[0,0,0.768]]],"sums":{"초년도계":7.5,"2차년도계":2.784}},{"k":"손보","c":"KB손해","p":"장기보장 K9-18","m":"202302","t":"규정변경_K9-18","prem":100000,"items":["성과수수료","유지관리"],"rows":[[1,7.008,[7.008,0]],[2,0.0,[0,0]],[3,0.0,[0,0]],[4,0.0,[0,0]],[5,0.0,[0,0]],[6,0.0,[0,0]],[7,0.0,[0,0]],[8,0.0,[0,0]],[9,0.0,[0,0]],[10,0.0,[0,0]],[11,0.0,[0,0]],[12,0.0,[0,0]],[13,1.1088,[0,1.1088]],[14,0.768,[0,0.768]],[15,0.768,[0,0.768]],[18,1.008,[0,1.008]]],"sums":{"초년도계":7.008,"2차년도계":3.6528}},{"k":"손보","c":"MG손해","p":"장기보장 MG-1","m":"202101","t":"규정변경_MG-1","prem":100000,"items":["성과수수료","계약관리 7~12회","유지관리"],"rows":[[1,6.0,[6.0,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.3,[0,0.3,0]],[8,0.3,[0,0.3,0]],[9,0.3,[0,0.3,0]],[10,0.3,[0,0.3,0]],[11,0.3,[0,0.3,0]],[12,0.3,[0,0.3,0]],[13,0.768,[0,0,0.768]],[14,0.768,[0,0,0.768]],[15,0.768,[0,0,0.768]]],"sums":{"초년도계":7.8,"2차년도계":2.304}},{"k":"손보","c":"농협손해","p":"장기보장 T1","m":"202301","t":"규정변경_T1","prem":100000,"items":["성과수수료","계약관리 7~12회","유지관리"],"rows":[[1,5.424,[5.424,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.252,[0,0.252,0]],[8,0.252,[0,0.252,0]],[9,0.252,[0,0.252,0]],[10,0.252,[0,0.252,0]],[11,0.252,[0,0.252,0]],[12,0.252,[0,0.252,0]],[13,1.104,[0,0,1.104]],[14,1.104,[0,0,1.104]],[15,1.104,[0,0,1.104]]],"sums":{"초년도계":6.936,"2차년도계":3.312}},{"k":"손보","c":"롯데손해","p":"장기보장 L3-10","m":"202208","t":"규정변경_L3-10","prem":100000,"items":["성과수수료","유지관리"],"rows":[[1,6.804,[6.804,0]],[2,0.0,[0,0]],[3,0.0,[0,0]],[4,0.0,[0,0]],[5,0.0,[0,0]],[6,0.0,[0,0]],[7,0.0,[0,0]],[8,0.0,[0,0]],[9,0.0,[0,0]],[10,0.0,[0,0]],[11,0.0,[0,0]],[12,0.0,[0,0]],[13,1.104,[0,1.104]],[14,1.104,[0,1.104]],[15,1.392,[0,1.392]]],"sums":{"초년도계":6.804,"2차년도계":3.6}},{"k":"손보","c":"메리츠화재","p":"장기보장 M10","m":"202206","t":"규정변경_M10","prem":100000,"items":["성과수수료","유지관리인센티브"],"rows":[[1,7.0008,[7.0008,0]],[2,0.0,[0,0]],[3,0.0,[0,0]],[4,0.0,[0,0]],[5,0.0,[0,0]],[6,0.0,[0,0]],[7,0.0,[0,0]],[8,0.0,[0,0]],[9,0.0,[0,0]],[10,0.0,[0,0]],[11,0.0,[0,0]],[12,0.0,[0,0]],[13,1.5072,[0,1.5072]],[14,1.0584,[0,1.0584]],[15,0.7848,[0,0.7848]]],"sums":{"초년도계":7.0008,"2차년도계":3.3504}},{"k":"손보","c":"삼성화재","p":"장기보장 S9","m":"202206","t":"규정변경_S9","prem":100000,"items":["성과수수료","계약관리 7~11회","계약관리","유지관리"],"rows":[[1,6.504,[6.504,0,0,0]],[2,0.0,[0,0,0,0]],[3,0.0,[0,0,0,0]],[4,0.0,[0,0,0,0]],[5,0.0,[0,0,0,0]],[6,0.0,[0,0,0,0]],[7,0.192,[0,0.192,0,0]],[8,0.192,[0,0.192,0,0]],[9,0.192,[0,0.192,0,0]],[10,0.192,[0,0.192,0,0]],[11,0.192,[0,0.192,0,0]],[12,0.048,[0,0,0.048,0]],[13,0.96,[0,0,0,0.96]],[14,0.96,[0,0,0,0.96]],[15,0.96,[0,0,0,0.96]]],"sums":{"초년도계":7.512,"2차년도계":2.88}},{"k":"손보","c":"에이스손해","p":"New우리집무사고할인보험","m":"202306","t":"규정신규_선지급","prem":100000,"items":["성과수수료","계약관리수수료 7회~12회","유지수수료 13회~16회","유지수수료 17회~24회"],"rows":[[1,5.7,[5.7,0,0,0]],[2,0.0,[0,0,0,0]],[3,0.0,[0,0,0,0]],[4,0.0,[0,0,0,0]],[5,0.0,[0,0,0,0]],[6,0.0,[0,0,0,0]],[7,0.3,[0,0.3,0,0]],[8,0.3,[0,0.3,0,0]],[9,0.3,[0,0.3,0,0]],[10,0.3,[0,0.3,0,0]],[11,0.3,[0,0.3,0,0]],[12,0.3,[0,0.3,0,0]],[13,0.5,[0,0,0.5,0]],[14,0.5,[0,0,0.5,0]],[15,0.5,[0,0,0.5,0]],[16,0.5,[0,0,0.5,0]],[17,0.3,[0,0,0,0.3]],[18,0.3,[0,0,0,0.3]],[19,0.3,[0,0,0,0.3]],[20,0.3,[0,0,0,0.3]],[21,0.3,[0,0,0,0.3]],[22,0.3,[0,0,0,0.3]],[23,0.3,[0,0,0,0.3]],[24,0.3,[0,0,0,0.3]]],"sums":{"초년도계":7.5,"2차년도계":4.4}},{"k":"손보","c":"에이스손해","p":"홈가드보험 70%환급형","m":"202306","t":"규정신규_선지급","prem":100000,"items":["성과수수료","계약관리수수료 7회~12회","유지수수료 13회~15회"],"rows":[[1,5.5,[5.5,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.35,[0,0.35,0]],[8,0.35,[0,0.35,0]],[9,0.35,[0,0.35,0]],[10,0.35,[0,0.35,0]],[11,0.35,[0,0.35,0]],[12,0.35,[0,0.35,0]],[13,0.75,[0,0,0.75]],[14,0.75,[0,0,0.75]],[15,0.75,[0,0,0.75]]],"sums":{"초년도계":7.6,"2차년도계":2.25}},{"k":"손보","c":"하나손해","p":"장기보장 선지급15","m":"202208","t":"판매개시_선지급15","prem":100000,"items":["성과수수료","계약관리수수료","유지관리 인센티브"],"rows":[[1,6.216,[6.216,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.288,[0,0.288,0]],[8,0.288,[0,0.288,0]],[9,0.288,[0,0.288,0]],[10,0.288,[0,0.288,0]],[11,0.288,[0,0.288,0]],[12,0.288,[0,0.288,0]],[13,0.768,[0,0,0.768]],[14,0.768,[0,0,0.768]],[15,0.768,[0,0,0.768]]],"sums":{"초년도계":7.944,"2차년도계":2.304}},{"k":"손보","c":"한화손보","p":"장기보장 H(d)","m":"202302","t":"규정변경_H(d","prem":100000,"items":["신계약기본","계약관리"],"rows":[[1,6.504,[6.504,0]],[2,0.0,[0,0]],[3,0.0,[0,0]],[4,0.0,[0,0]],[5,0.0,[0,0]],[6,0.0,[0,0]],[7,0.0,[0,0]],[8,0.0,[0,0]],[9,0.0,[0,0]],[10,0.0,[0,0]],[11,0.0,[0,0]],[12,0.0,[0,0]],[13,2.496,[0,2.496]],[14,0.744,[0,0.744]],[15,0.744,[0,0.744]]],"sums":{"초년도계":6.504,"2차년도계":3.984}},{"k":"손보","c":"현대해상","p":"장기보장 H5","m":"202205","t":"규정변경_H5","prem":100000,"items":["성과수수료","계약관리 7~11회","유지관리"],"rows":[[1,6.504,[6.504,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.1872,[0,0.1872,0]],[8,0.1872,[0,0.1872,0]],[9,0.1872,[0,0.1872,0]],[10,0.1872,[0,0.1872,0]],[11,0.1872,[0,0.1872,0]],[12,0.0,[0,0,0]],[13,0.9528,[0,0,0.9528]],[14,0.9528,[0,0,0.9528]],[15,0.9528,[0,0,0.9528]]],"sums":{"초년도계":7.44,"2차년도계":2.8584}},{"k":"손보","c":"흥국화재","p":"장기보장 종판HK1-3","m":"202206","t":"규정변경_종판HK1-3","prem":100000,"items":["성과수수료","계약관리 7~12","계약관리","계약관리 14~15"],"rows":[[1,6.384,[6.384,0,0,0]],[2,0.0,[0,0,0,0]],[3,0.0,[0,0,0,0]],[4,0.0,[0,0,0,0]],[5,0.0,[0,0,0,0]],[6,0.0,[0,0,0,0]],[7,0.1968,[0,0.1968,0,0]],[8,0.1968,[0,0.1968,0,0]],[9,0.1968,[0,0.1968,0,0]],[10,0.1968,[0,0.1968,0,0]],[11,0.1968,[0,0.1968,0,0]],[12,0.1968,[0,0.1968,0,0]],[13,0.0,[0,0,0,0]],[14,1.8312,[0,0,1.0272,0.804]],[15,0.804,[0,0,0,0.804]]],"sums":{"초년도계":7.5648,"2차년도계":2.6352}},{"k":"생보","c":"ABL생명","p":"종신및보장성","m":"202606","t":"규정변경_선지급형","prem":1000000,"items":["계약수수료","유지수수료 2~12","성과수수료","유지수수료 13~24","유지가산 6%","유지수수료 25~36"],"rows":[[1,10.3314,[0.335,3.685,6.3114,0,0,0]],[2,0.0,[0,0,0,0,0,0]],[3,0.0,[0,0,0,0,0,0]],[4,0.0,[0,0,0,0,0,0]],[5,0.0,[0,0,0,0,0,0]],[6,0.0,[0,0,0,0,0,0]],[7,0.0,[0,0,0,0,0,0]],[8,0.0,[0,0,0,0,0,0]],[9,0.0,[0,0,0,0,0,0]],[10,0.0,[0,0,0,0,0,0]],[11,0.0,[0,0,0,0,0,0]],[12,0.0,[0,0,0,0,0,0]],[13,0.5462,[0,0,0,0.305,0.2412,0]],[14,0.305,[0,0,0,0.305,0,0]],[15,0.305,[0,0,0,0.305,0,0]],[16,0.305,[0,0,0,0.305,0,0]],[17,0.305,[0,0,0,0.305,0,0]],[18,0.305,[0,0,0,0.305,0,0]],[19,0.305,[0,0,0,0.305,0,0]],[20,0.305,[0,0,0,0.305,0,0]],[21,0.305,[0,0,0,0.305,0,0]],[22,0.305,[0,0,0,0.305,0,0]],[23,0.305,[0,0,0,0.305,0,0]],[24,0.305,[0,0,0,0.305,0,0]],[25,0.29,[0,0,0,0,0,0.29]],[26,0.29,[0,0,0,0,0,0.29]],[27,0.29,[0,0,0,0,0,0.29]],[28,0.29,[0,0,0,0,0,0.29]],[29,0.29,[0,0,0,0,0,0.29]],[30,0.29,[0,0,0,0,0,0.29]],[31,0.29,[0,0,0,0,0,0.29]],[32,0.29,[0,0,0,0,0,0.29]],[33,0.29,[0,0,0,0,0,0.29]],[34,0.29,[0,0,0,0,0,0.29]],[35,0.29,[0,0,0,0,0,0.29]],[36,0.29,[0,0,0,0,0,0.29]]],"sums":{"1차년계":10.3314,"2차년계":3.9012,"3차년계":3.48,"4차년계":0.0,"총계":17.7126}},{"k":"생보","c":"AIA생명","p":"달러종신 10년납","m":"202603","t":"규정_재판매개시","prem":1000000,"items":["파트너십 수수료","고능률 수수료","유지관리수수료"],"rows":[[1,5.0112,[5.0112,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.0,[0,0,0]],[8,0.0,[0,0,0]],[9,0.0,[0,0,0]],[10,0.0,[0,0,0]],[11,0.0,[0,0,0]],[12,0.0,[0,0,0]],[13,3.9672,[0,3.9672,0]],[14,0.0,[0,0,0]],[15,0.0,[0,0,0]],[16,0.0,[0,0,0]],[17,0.0,[0,0,0]],[18,0.0,[0,0,0]],[19,0.0,[0,0,0]],[20,0.0,[0,0,0]],[21,0.0,[0,0,0]],[22,0.0,[0,0,0]],[23,0.0,[0,0,0]],[24,0.0,[0,0,0]],[25,1.9836,[0,0,1.9836]]],"sums":{"1차년계":5.0112,"2차년계":3.9672,"3차년계":1.9836,"총계":10.962}},{"k":"생보","c":"DB생명","p":"보장성","m":"202402","t":"규정변경_표준형","prem":1000000,"items":["신계약관리 1~12회","판매촉진","신계약관리 13~24회","성과보너스","신계약관리 25~36회"],"rows":[[1,10.5,[4.2,6.3,0,0,0]],[2,0.0,[0,0,0,0,0]],[3,0.0,[0,0,0,0,0]],[4,0.0,[0,0,0,0,0]],[5,0.0,[0,0,0,0,0]],[6,0.0,[0,0,0,0,0]],[7,0.0,[0,0,0,0,0]],[8,0.0,[0,0,0,0,0]],[9,0.0,[0,0,0,0,0]],[10,0.0,[0,0,0,0,0]],[11,0.0,[0,0,0,0,0]],[12,0.0,[0,0,0,0,0]],[13,2.3724,[0,0,0.06,2.3124,0]],[14,0.06,[0,0,0.06,0,0]],[15,0.06,[0,0,0.06,0,0]],[16,0.06,[0,0,0.06,0,0]],[17,0.06,[0,0,0.06,0,0]],[18,0.06,[0,0,0.06,0,0]],[19,0.06,[0,0,0.06,0,0]],[20,0.06,[0,0,0.06,0,0]],[21,0.06,[0,0,0.06,0,0]],[22,0.06,[0,0,0.06,0,0]],[23,0.06,[0,0,0.06,0,0]],[24,0.06,[0,0,0.06,0,0]],[25,0.07,[0,0,0,0,0.07]],[26,0.07,[0,0,0,0,0.07]],[27,0.07,[0,0,0,0,0.07]],[28,0.07,[0,0,0,0,0.07]],[29,0.07,[0,0,0,0,0.07]],[30,0.07,[0,0,0,0,0.07]],[31,0.07,[0,0,0,0,0.07]],[32,0.07,[0,0,0,0,0.07]],[33,0.07,[0,0,0,0,0.07]],[34,0.07,[0,0,0,0,0.07]],[35,0.07,[0,0,0,0,0.07]],[36,0.07,[0,0,0,0,0.07]]],"sums":{"1차년계":10.5,"2차년계":3.0324,"3차년계":0.84,"총계":14.3724}},{"k":"생보","c":"IBK연금","p":"IBK 연금액 평생보증받는 변액연금보험  12년납이상","m":"202405","t":"규정신규","prem":1000000,"items":["판매","성과","유지"],"rows":[[1,4.8,[4.7,0.1,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.0,[0,0,0]],[8,0.0,[0,0,0]],[9,0.0,[0,0,0]],[10,0.0,[0,0,0]],[11,0.0,[0,0,0]],[12,0.0,[0,0,0]],[13,0.075,[0.025,0,0.05]],[14,0.075,[0.025,0,0.05]],[15,0.075,[0.025,0,0.05]],[16,0.075,[0.025,0,0.05]],[17,0.075,[0.025,0,0.05]],[18,0.075,[0.025,0,0.05]],[19,0.075,[0.025,0,0.05]],[20,0.075,[0.025,0,0.05]],[21,0.075,[0.025,0,0.05]],[22,0.075,[0.025,0,0.05]],[23,0.075,[0.025,0,0.05]],[24,0.075,[0.025,0,0.05]],[25,0.075,[0.025,0,0.05]],[26,0.075,[0.025,0,0.05]],[27,0.075,[0.025,0,0.05]],[28,0.075,[0.025,0,0.05]],[29,0.075,[0.025,0,0.05]],[30,0.075,[0.025,0,0.05]],[31,0.075,[0.025,0,0.05]],[32,0.075,[0.025,0,0.05]],[33,0.075,[0.025,0,0.05]],[34,0.075,[0.025,0,0.05]],[35,0.075,[0.025,0,0.05]],[36,0.075,[0.025,0,0.05]],[37,0.075,[0.025,0,0.05]],[38,0.075,[0.025,0,0.05]],[39,0.075,[0.025,0,0.05]],[40,0.075,[0.025,0,0.05]],[41,0.075,[0.025,0,0.05]],[42,0.025,[0.005,0,0.02]]],"sums":{"1차년계":4.8,"2차년계":0.9,"3차년계":0.9,"4차년계":0.4,"총계":7.0}},{"k":"생보","c":"KB라이프생명","p":"(변액)연금","m":"202601","t":"규정변경_선지급형","prem":1000000,"items":["기본수수료 1~36회차"],"rows":[[1,1.35,[1.35]],[2,0.0,[0]],[3,0.0,[0]],[4,0.0,[0]],[5,0.0,[0]],[6,0.0,[0]],[7,0.0,[0]],[8,0.0,[0]],[9,0.0,[0]],[10,0.0,[0]],[11,0.0,[0]],[12,0.0,[0]],[13,0.33,[0.33]],[14,0.0,[0]],[15,0.0,[0]],[16,0.0,[0]],[17,0.0,[0]],[18,0.0,[0]],[19,0.0,[0]],[20,0.0,[0]],[21,0.0,[0]],[22,0.0,[0]],[23,0.0,[0]],[24,0.0,[0]],[25,0.0275,[0.0275]],[26,0.0275,[0.0275]],[27,0.0275,[0.0275]],[28,0.0275,[0.0275]],[29,0.0275,[0.0275]],[30,0.0275,[0.0275]],[31,0.0275,[0.0275]],[32,0.0275,[0.0275]],[33,0.0275,[0.0275]],[34,0.0275,[0.0275]],[35,0.0275,[0.0275]],[36,0.0275,[0.0275]]],"sums":{"1차년계":1.35,"2차년계":0.33,"3차년계":0.33,"4차년계":0.0,"총계":2.01}},{"k":"생보","c":"KDB생명","p":"선지급형","m":"202412","t":"규정변경_선지급형","prem":1000000,"items":["성과수수료","유지성과보너스 13~18회"],"rows":[[1,5.25,[5.25,0]],[2,0.0,[0,0]],[3,0.0,[0,0]],[4,0.0,[0,0]],[5,0.0,[0,0]],[6,0.0,[0,0]],[7,0.0,[0,0]],[8,0.0,[0,0]],[9,0.0,[0,0]],[10,0.0,[0,0]],[11,0.0,[0,0]],[12,0.0,[0,0]],[13,5.4,[0,5.4]]],"sums":{"1차년계":5.25,"2차년계":5.4,"3차년계":0.0,"총계":10.65}},{"k":"생보","c":"iM라이프생명","p":"전략상품(Ⅲ)","m":"202501","t":"규정변경_3차년강화형_선지급","prem":1000000,"items":["성과수수료","계약관리 13~24회","계약관리 25~36회","계약관리 37~48회"],"rows":[[1,9.5,[9.5,0,0,0]],[2,0.0,[0,0,0,0]],[3,0.0,[0,0,0,0]],[4,0.0,[0,0,0,0]],[5,0.0,[0,0,0,0]],[6,0.0,[0,0,0,0]],[7,0.0,[0,0,0,0]],[8,0.0,[0,0,0,0]],[9,0.0,[0,0,0,0]],[10,0.0,[0,0,0,0]],[11,0.0,[0,0,0,0]],[12,0.0,[0,0,0,0]],[13,0.27,[0,0.27,0,0]],[14,0.27,[0,0.27,0,0]],[15,0.27,[0,0.27,0,0]],[16,0.27,[0,0.27,0,0]],[17,0.27,[0,0.27,0,0]],[18,0.27,[0,0.27,0,0]],[19,0.27,[0,0.27,0,0]],[20,0.27,[0,0.27,0,0]],[21,0.27,[0,0.27,0,0]],[22,0.27,[0,0.27,0,0]],[23,0.27,[0,0.27,0,0]],[24,0.27,[0,0.27,0,0]],[25,0.356,[0,0,0.356,0]],[26,0.356,[0,0,0.356,0]],[27,0.356,[0,0,0.356,0]],[28,0.356,[0,0,0.356,0]],[29,0.356,[0,0,0.356,0]],[30,0.356,[0,0,0.356,0]],[31,0.356,[0,0,0.356,0]],[32,0.356,[0,0,0.356,0]],[33,0.356,[0,0,0.356,0]],[34,0.356,[0,0,0.356,0]],[35,0.356,[0,0,0.356,0]],[36,0.356,[0,0,0.356,0]],[37,0.168,[0,0,0,0.168]],[38,0.168,[0,0,0,0.168]],[39,0.168,[0,0,0,0.168]],[40,0.168,[0,0,0,0.168]],[41,0.168,[0,0,0,0.168]],[42,0.168,[0,0,0,0.168]],[43,0.168,[0,0,0,0.168]],[44,0.168,[0,0,0,0.168]],[45,0.168,[0,0,0,0.168]],[46,0.168,[0,0,0,0.168]],[47,0.168,[0,0,0,0.168]],[48,0.168,[0,0,0,0.168]]],"sums":{"1차년계":9.5,"2차년계":3.24,"3차년계":4.272,"4차년계":2.016,"총계":19.028}},{"k":"생보","c":"교보생명","p":"밸류업종신","m":"202509","t":"규정변경_선지급형","prem":1000000,"items":["1차년 1~12회","성과수수료","고성과","2차년","2차년 14~24회","3차년 25~30회","3차년 31~36회"],"rows":[[1,8.25,[0.9,6.75,0.6,0,0,0,0]],[2,0.0,[0,0,0,0,0,0,0]],[3,0.0,[0,0,0,0,0,0,0]],[4,0.0,[0,0,0,0,0,0,0]],[5,0.0,[0,0,0,0,0,0,0]],[6,0.0,[0,0,0,0,0,0,0]],[7,0.0,[0,0,0,0,0,0,0]],[8,0.0,[0,0,0,0,0,0,0]],[9,0.0,[0,0,0,0,0,0,0]],[10,0.0,[0,0,0,0,0,0,0]],[11,0.0,[0,0,0,0,0,0,0]],[12,0.0,[0,0,0,0,0,0,0]],[13,0.3675,[0,0,0,0.3675,0,0,0]],[14,0.3675,[0,0,0,0,0.3675,0,0]],[15,0.3675,[0,0,0,0,0.3675,0,0]],[16,0.3675,[0,0,0,0,0.3675,0,0]],[17,0.3675,[0,0,0,0,0.3675,0,0]],[18,0.3675,[0,0,0,0,0.3675,0,0]],[19,0.3675,[0,0,0,0,0.3675,0,0]],[20,0.3675,[0,0,0,0,0.3675,0,0]],[21,0.3675,[0,0,0,0,0.3675,0,0]],[22,0.3675,[0,0,0,0,0.3675,0,0]],[23,0.3675,[0,0,0,0,0.3675,0,0]],[24,0.3675,[0,0,0,0,0.3675,0,0]],[25,0.2475,[0,0,0,0,0,0.2475,0]],[26,0.2475,[0,0,0,0,0,0.2475,0]],[27,0.2475,[0,0,0,0,0,0.2475,0]],[28,0.2475,[0,0,0,0,0,0,0.2475]],[29,0.2475,[0,0,0,0,0,0,0.2475]],[30,0.2475,[0,0,0,0,0,0,0.2475]],[31,0.2475,[0,0,0,0,0,0,0.2475]],[32,0.2475,[0,0,0,0,0,0,0.2475]],[33,0.2475,[0,0,0,0,0,0,0.2475]],[34,0.2475,[0,0,0,0,0,0,0.2475]],[35,0.2475,[0,0,0,0,0,0,0.2475]],[36,0.2475,[0,0,0,0,0,0,0.2475]]],"sums":{"1차년계":8.25,"2차년계":4.41,"3차년계":2.97,"총계":15.63}},{"k":"생보","c":"농협생명","p":"기타보장성상품","m":"202401","t":"규정변경_선지급형","prem":1000000,"items":["모집","계약관리수수료 9~12회차","성과수수료","기타보장성 판매수수료","계약관리수수료 13~24회차","계약관리수수료 25~36회차"],"rows":[[1,6.15,[1.2,0.6,3.6,0.75,0,0]],[2,0.0,[0,0,0,0,0,0]],[3,0.0,[0,0,0,0,0,0]],[4,0.0,[0,0,0,0,0,0]],[5,0.0,[0,0,0,0,0,0]],[6,0.0,[0,0,0,0,0,0]],[7,0.0,[0,0,0,0,0,0]],[8,0.0,[0,0,0,0,0,0]],[9,0.0,[0,0,0,0,0,0]],[10,0.0,[0,0,0,0,0,0]],[11,0.0,[0,0,0,0,0,0]],[12,0.0,[0,0,0,0,0,0]],[13,1.5,[0,0,0.6,0,0.9,0]],[14,0.0,[0,0,0,0,0,0]],[15,0.0,[0,0,0,0,0,0]],[16,0.0,[0,0,0,0,0,0]],[17,0.0,[0,0,0,0,0,0]],[18,0.0,[0,0,0,0,0,0]],[19,0.15,[0,0,0,0,0.15,0]],[20,0.15,[0,0,0,0,0.15,0]],[21,0.15,[0,0,0,0,0.15,0]],[22,0.15,[0,0,0,0,0.15,0]],[23,0.15,[0,0,0,0,0.15,0]],[24,0.15,[0,0,0,0,0.15,0]],[25,0.15,[0,0,0,0,0,0.15]],[26,0.15,[0,0,0,0,0,0.15]],[27,0.15,[0,0,0,0,0,0.15]],[28,0.15,[0,0,0,0,0,0.15]],[29,0.15,[0,0,0,0,0,0.15]],[30,0.15,[0,0,0,0,0,0.15]],[31,0.15,[0,0,0,0,0,0.15]],[32,0.15,[0,0,0,0,0,0.15]],[33,0.15,[0,0,0,0,0,0.15]],[34,0.15,[0,0,0,0,0,0.15]],[35,0.15,[0,0,0,0,0,0.15]],[36,0.15,[0,0,0,0,0,0.15]]],"sums":{"1차년계":5.4,"2차년계":2.4,"3차년계":1.8,"총계":9.6}},{"k":"생보","c":"동양생명","p":"종신2","m":"202401","t":"규정변경_선지급형","prem":1000000,"items":["성과수수료","계약관리 2~12회","파트너쉽","계약관리 13~24회","계약관리 25~36회"],"rows":[[1,8.488,[3.2,4.488,0.8,0,0]],[2,0.0,[0,0,0,0,0]],[3,0.0,[0,0,0,0,0]],[4,0.0,[0,0,0,0,0]],[5,0.0,[0,0,0,0,0]],[6,0.0,[0,0,0,0,0]],[7,0.0,[0,0,0,0,0]],[8,0.0,[0,0,0,0,0]],[9,0.0,[0,0,0,0,0]],[10,0.0,[0,0,0,0,0]],[11,0.0,[0,0,0,0,0]],[12,0.0,[0,0,0,0,0]],[13,0.6525,[0,0,0,0.6525,0]],[14,0.0,[0,0,0,0,0]],[15,0.0,[0,0,0,0,0]],[16,0.0,[0,0,0,0,0]],[17,0.0,[0,0,0,0,0]],[18,0.0,[0,0,0,0,0]],[19,0.10875,[0,0,0,0.10875,0]],[20,0.10875,[0,0,0,0.10875,0]],[21,0.10875,[0,0,0,0.10875,0]],[22,0.10875,[0,0,0,0.10875,0]],[23,0.10875,[0,0,0,0.10875,0]],[24,0.10875,[0,0,0,0.10875,0]],[25,0.10875,[0,0,0,0,0.10875]],[26,0.10875,[0,0,0,0,0.10875]],[27,0.10875,[0,0,0,0,0.10875]],[28,0.10875,[0,0,0,0,0.10875]],[29,0.10875,[0,0,0,0,0.10875]],[30,0.10875,[0,0,0,0,0.10875]],[31,0.10875,[0,0,0,0,0.10875]],[32,0.10875,[0,0,0,0,0.10875]],[33,0.10875,[0,0,0,0,0.10875]],[34,0.10875,[0,0,0,0,0.10875]],[35,0.10875,[0,0,0,0,0.10875]],[36,0.10875,[0,0,0,0,0.10875]]],"sums":{"1차년계":8.488,"2차년계":1.305,"3차년계":1.305,"총계":11.098}},{"k":"생보","c":"라이나생명","p":"그룹2","m":"202406","t":"규정변경_선지급2형","prem":1000000,"items":["성과수수료","유지성과 13~18회","계약관리 13~24","계약관리 25~36"],"rows":[[1,6.3,[6.3,0,0,0]],[2,0.0,[0,0,0,0]],[3,0.0,[0,0,0,0]],[4,0.0,[0,0,0,0]],[5,0.0,[0,0,0,0]],[6,0.0,[0,0,0,0]],[7,0.0,[0,0,0,0]],[8,0.0,[0,0,0,0]],[9,0.0,[0,0,0,0]],[10,0.0,[0,0,0,0]],[11,0.0,[0,0,0,0]],[12,0.0,[0,0,0,0]],[13,0.651,[0,0.504,0.147,0]],[14,0.651,[0,0.504,0.147,0]],[15,0.651,[0,0.504,0.147,0]],[16,0.651,[0,0.504,0.147,0]],[17,0.651,[0,0.504,0.147,0]],[18,0.651,[0,0.504,0.147,0]],[19,0.147,[0,0,0.147,0]],[20,0.147,[0,0,0.147,0]],[21,0.147,[0,0,0.147,0]],[22,0.147,[0,0,0.147,0]],[23,0.147,[0,0,0.147,0]],[24,0.147,[0,0,0.147,0]],[25,0.147,[0,0,0,0.147]],[26,0.147,[0,0,0,0.147]],[27,0.147,[0,0,0,0.147]],[28,0.147,[0,0,0,0.147]],[29,0.147,[0,0,0,0.147]],[30,0.147,[0,0,0,0.147]],[31,0.147,[0,0,0,0.147]],[32,0.147,[0,0,0,0.147]],[33,0.147,[0,0,0,0.147]],[34,0.147,[0,0,0,0.147]],[35,0.147,[0,0,0,0.147]],[36,0.147,[0,0,0,0.147]]],"sums":{"1차년계":6.3,"2차년계":4.788,"3차년계":1.764,"4차년계":0.0,"5차년계":0.0,"4~5차년계":0.0,"총계":12.852}},{"k":"생보","c":"메트라이프","p":"무배당 변액유니버셜 오늘의종신Plus / VIP Plus","m":"202509","t":"규정변경_Type1","prem":1000000,"items":["BCⅠ","BCⅡ","BCⅢ"],"rows":[[1,10.2979,[10.2979,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.0,[0,0,0]],[8,0.0,[0,0,0]],[9,0.0,[0,0,0]],[10,0.0,[0,0,0]],[11,0.0,[0,0,0]],[12,0.0,[0,0,0]],[13,6.2176,[0,6.2176,0]],[14,0.0,[0,0,0]],[15,0.0,[0,0,0]],[16,0.0,[0,0,0]],[17,0.0,[0,0,0]],[18,0.0,[0,0,0]],[19,0.0,[0,0,0]],[20,0.0,[0,0,0]],[21,0.0,[0,0,0]],[22,0.0,[0,0,0]],[23,0.0,[0,0,0]],[24,0.0,[0,0,0]],[25,0.15477,[0,0,0.15477]],[26,0.15477,[0,0,0.15477]],[27,0.15477,[0,0,0.15477]],[28,0.15477,[0,0,0.15477]],[29,0.15477,[0,0,0.15477]],[30,0.15477,[0,0,0.15477]],[31,0.15477,[0,0,0.15477]],[32,0.15477,[0,0,0.15477]],[33,0.15477,[0,0,0.15477]],[34,0.15477,[0,0,0.15477]],[35,0.15477,[0,0,0.15477]],[36,0.162229,[0,0,0.162229]]],"sums":{"1차년계":10.2979,"2차년계":6.2176,"3차년계":1.8647,"총계":18.3802}},{"k":"생보","c":"메트라이프","p":"변액연금동행 Plus_2종","m":"202509","t":"규정변경_Type1","prem":1000000,"items":["BCⅠ","BCⅡ","BCⅢ"],"rows":[[1,5.2142,[5.2142,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.0,[0,0,0]],[8,0.0,[0,0,0]],[9,0.0,[0,0,0]],[10,0.0,[0,0,0]],[11,0.0,[0,0,0]],[12,0.0,[0,0,0]],[13,1.1716,[0,1.1716,0]],[14,0.0,[0,0,0]],[15,0.0,[0,0,0]],[16,0.0,[0,0,0]],[17,0.0,[0,0,0]],[18,0.0,[0,0,0]],[19,0.0,[0,0,0]],[20,0.0,[0,0,0]],[21,0.0,[0,0,0]],[22,0.0,[0,0,0]],[23,0.0,[0,0,0]],[24,0.0,[0,0,0]],[25,0.077265,[0,0,0.077265]],[26,0.077265,[0,0,0.077265]],[27,0.077265,[0,0,0.077265]],[28,0.077265,[0,0,0.077265]],[29,0.077265,[0,0,0.077265]],[30,0.077265,[0,0,0.077265]],[31,0.077265,[0,0,0.077265]],[32,0.077265,[0,0,0.077265]],[33,0.077265,[0,0,0.077265]],[34,0.077265,[0,0,0.077265]],[35,0.077265,[0,0,0.077265]],[36,0.080988,[0,0,0.080988]]],"sums":{"1차년계":5.2142,"2차년계":1.1716,"3차년계":0.9309,"총계":7.3167}},{"k":"생보","c":"미래에셋생명","p":"보장성","m":"202504","t":"규정변경_선지급형","prem":1000000,"items":["계약관리 1~2","계약관리 3~12","계약관리 13~15","계약관리 16~24","계약관리 25~36"],"rows":[[1,0.4187,[0.4187,0,0,0,0]],[2,0.4187,[0.4187,0,0,0,0]],[3,0.91166,[0,0.91166,0,0,0]],[4,0.91166,[0,0.91166,0,0,0]],[5,0.91166,[0,0.91166,0,0,0]],[6,0.91166,[0,0.91166,0,0,0]],[7,0.91166,[0,0.91166,0,0,0]],[8,0.91166,[0,0.91166,0,0,0]],[9,0.91166,[0,0.91166,0,0,0]],[10,0.91166,[0,0.91166,0,0,0]],[11,0.91166,[0,0.91166,0,0,0]],[12,0.91166,[0,0.91166,0,0,0]],[13,0.27492,[0,0,0.27492,0,0]],[14,0.27492,[0,0,0.27492,0,0]],[15,0.27492,[0,0,0.27492,0,0]],[16,0.27492,[0,0,0,0.27492,0]],[17,0.27492,[0,0,0,0.27492,0]],[18,0.27492,[0,0,0,0.27492,0]],[19,0.27492,[0,0,0,0.27492,0]],[20,0.27492,[0,0,0,0.27492,0]],[21,0.27492,[0,0,0,0.27492,0]],[22,0.27492,[0,0,0,0.27492,0]],[23,0.27492,[0,0,0,0.27492,0]],[24,0.27492,[0,0,0,0.27492,0]],[25,0.24648,[0,0,0,0,0.24648]],[26,0.24648,[0,0,0,0,0.24648]],[27,0.24648,[0,0,0,0,0.24648]],[28,0.24648,[0,0,0,0,0.24648]],[29,0.24648,[0,0,0,0,0.24648]],[30,0.24648,[0,0,0,0,0.24648]],[31,0.24648,[0,0,0,0,0.24648]],[32,0.24648,[0,0,0,0,0.24648]],[33,0.24648,[0,0,0,0,0.24648]],[34,0.24648,[0,0,0,0,0.24648]],[35,0.24648,[0,0,0,0,0.24648]],[36,0.24648,[0,0,0,0,0.24648]]],"sums":{"1차년계":9.954,"2차년계":3.29904,"3차년계":2.95776,"총계":16.2108}},{"k":"생보","c":"미래에셋생명","p":"연금/저축","m":"202504","t":"규정변경_선지급형","prem":1000000,"items":["계약관리 1~2","계약관리 3~12","계약관리 13~24","계약유지"],"rows":[[1,0.32065,[0.32065,0,0,0]],[2,0.32065,[0.32065,0,0,0]],[3,0.32065,[0,0.32065,0,0]],[4,0.32065,[0,0.32065,0,0]],[5,0.32065,[0,0.32065,0,0]],[6,0.32065,[0,0.32065,0,0]],[7,0.32065,[0,0.32065,0,0]],[8,0.32065,[0,0.32065,0,0]],[9,0.32065,[0,0.32065,0,0]],[10,0.32065,[0,0.32065,0,0]],[11,0.32065,[0,0.32065,0,0]],[12,0.32065,[0,0.32065,0,0]],[13,0.12775,[0,0,0.11275,0.015]],[14,0.12775,[0,0,0.11275,0.015]],[15,0.12775,[0,0,0.11275,0.015]],[16,0.12775,[0,0,0.11275,0.015]],[17,0.12775,[0,0,0.11275,0.015]],[18,0.12775,[0,0,0.11275,0.015]],[19,0.12775,[0,0,0.11275,0.015]],[20,0.12775,[0,0,0.11275,0.015]],[21,0.12775,[0,0,0.11275,0.015]],[22,0.12775,[0,0,0.11275,0.015]],[23,0.12775,[0,0,0.11275,0.015]],[24,0.12775,[0,0,0.11275,0.015]],[25,0.015,[0,0,0,0.015]],[26,0.015,[0,0,0,0.015]],[27,0.015,[0,0,0,0.015]],[28,0.015,[0,0,0,0.015]],[29,0.015,[0,0,0,0.015]],[30,0.015,[0,0,0,0.015]],[31,0.015,[0,0,0,0.015]],[32,0.015,[0,0,0,0.015]],[33,0.015,[0,0,0,0.015]],[34,0.015,[0,0,0,0.015]],[35,0.015,[0,0,0,0.015]],[36,0.015,[0,0,0,0.015]]],"sums":{"1차년계":3.8478,"2차년계":1.533,"3차년계":0.18,"총계":5.5608}},{"k":"생보","c":"삼성생명","p":"보장성/연금저축","m":"202501","t":"규정변경_선지급형","prem":1000000,"items":["계약관리 1~12회차","파트너커미션","계약관리 13~24회차","고능률보너스","계약관리 25~36회차"],"rows":[[1,5.69,[3.24,2.45,0,0,0]],[2,0.0,[0,0,0,0,0]],[3,0.0,[0,0,0,0,0]],[4,0.0,[0,0,0,0,0]],[5,0.0,[0,0,0,0,0]],[6,0.0,[0,0,0,0,0]],[7,0.0,[0,0,0,0,0]],[8,0.0,[0,0,0,0,0]],[9,0.0,[0,0,0,0,0]],[10,0.0,[0,0,0,0,0]],[11,0.0,[0,0,0,0,0]],[12,0.0,[0,0,0,0,0]],[13,2.0,[0,0,0.3,1.7,0]],[14,0.0,[0,0,0,0,0]],[15,0.0,[0,0,0,0,0]],[16,0.0,[0,0,0,0,0]],[17,0.0,[0,0,0,0,0]],[18,0.0,[0,0,0,0,0]],[19,0.05,[0,0,0.05,0,0]],[20,0.05,[0,0,0.05,0,0]],[21,0.05,[0,0,0.05,0,0]],[22,0.05,[0,0,0.05,0,0]],[23,0.05,[0,0,0.05,0,0]],[24,0.05,[0,0,0.05,0,0]],[25,0.11,[0,0,0,0,0.11]],[26,0.11,[0,0,0,0,0.11]],[27,0.11,[0,0,0,0,0.11]],[28,0.11,[0,0,0,0,0.11]],[29,0.11,[0,0,0,0,0.11]],[30,0.11,[0,0,0,0,0.11]],[31,0.11,[0,0,0,0,0.11]],[32,0.11,[0,0,0,0,0.11]],[33,0.11,[0,0,0,0,0.11]],[34,0.11,[0,0,0,0,0.11]],[35,0.11,[0,0,0,0,0.11]],[36,0.11,[0,0,0,0,0.11]]],"sums":{"1차년계":5.69,"2차년계":2.3,"3차년계":1.32,"총계":9.31}},{"k":"생보","c":"삼성생명","p":"건강상해","m":"202501","t":"규정변경_선지급형","prem":100000,"items":["파트너커미션","계약관리 7~12","계약관리 13~24"],"rows":[[1,4.3,[4.3,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.26,[0,0.26,0]],[8,0.26,[0,0.26,0]],[9,0.26,[0,0.26,0]],[10,0.26,[0,0.26,0]],[11,0.26,[0,0.26,0]],[12,0.26,[0,0.26,0]],[13,0.25,[0,0,0.25]],[14,0.25,[0,0,0.25]],[15,0.25,[0,0,0.25]],[16,0.25,[0,0,0.25]],[17,0.25,[0,0,0.25]],[18,0.25,[0,0,0.25]],[19,0.25,[0,0,0.25]],[20,0.25,[0,0,0.25]],[21,0.25,[0,0,0.25]],[22,0.25,[0,0,0.25]],[23,0.25,[0,0,0.25]],[24,0.25,[0,0,0.25]]],"sums":{"1차년계":5.86,"2차년계":3.0,"3차년계":0.0,"총계":8.86}},{"k":"생보","c":"신한라이프","p":"일반A군","m":"202609","t":"규정변경_기본형","prem":1000000,"items":["계약관리수수료","계약관리수수료 2~3회","계약관리수수료 4~12회","계약관리수수료 13~20회","효율수수료 13~24회","효율수수료 25~36회"],"rows":[[1,4.06,[0.168,0.616,3.276,0,0,0]],[2,0.0,[0,0,0,0,0,0]],[3,0.0,[0,0,0,0,0,0]],[4,0.0,[0,0,0,0,0,0]],[5,0.0,[0,0,0,0,0,0]],[6,0.0,[0,0,0,0,0,0]],[7,0.0,[0,0,0,0,0,0]],[8,0.0,[0,0,0,0,0,0]],[9,0.0,[0,0,0,0,0,0]],[10,0.0,[0,0,0,0,0,0]],[11,0.0,[0,0,0,0,0,0]],[12,0.0,[0,0,0,0,0,0]],[13,2.496,[0,0,0,2.4,0.096,0]],[14,0.096,[0,0,0,0,0.096,0]],[15,0.096,[0,0,0,0,0.096,0]],[16,0.096,[0,0,0,0,0.096,0]],[17,0.096,[0,0,0,0,0.096,0]],[18,0.096,[0,0,0,0,0.096,0]],[19,0.096,[0,0,0,0,0.096,0]],[20,0.096,[0,0,0,0,0.096,0]],[21,0.096,[0,0,0,0,0.096,0]],[22,0.096,[0,0,0,0,0.096,0]],[23,0.096,[0,0,0,0,0.096,0]],[24,0.096,[0,0,0,0,0.096,0]],[25,0.24,[0,0,0,0,0,0.24]],[26,0.24,[0,0,0,0,0,0.24]],[27,0.24,[0,0,0,0,0,0.24]],[28,0.24,[0,0,0,0,0,0.24]],[29,0.24,[0,0,0,0,0,0.24]],[30,0.24,[0,0,0,0,0,0.24]],[31,0.24,[0,0,0,0,0,0.24]],[32,0.24,[0,0,0,0,0,0.24]],[33,0.24,[0,0,0,0,0,0.24]],[34,0.24,[0,0,0,0,0,0.24]],[35,0.24,[0,0,0,0,0,0.24]],[36,0.24,[0,0,0,0,0,0.24]]],"sums":{"1차년계":4.06,"2차년계":3.552,"3차년계":2.88,"총계":10.492}},{"k":"생보","c":"신한라이프","p":"건강상품","m":"202609","t":"규정변경_기본형","prem":1000000,"items":["계약관리수수료","계약관리수수료 2~3회","계약관리수수료 4~12회","계약관리수수료 13~20회","계약관리수수료 25~36회"],"rows":[[1,0.75,[0.0324,0.0696,0.648,0,0]],[2,0.0,[0,0,0,0,0]],[3,0.0,[0,0,0,0,0]],[4,0.0,[0,0,0,0,0]],[5,0.0,[0,0,0,0,0]],[6,0.0,[0,0,0,0,0]],[7,0.0,[0,0,0,0,0]],[8,0.0,[0,0,0,0,0]],[9,0.0,[0,0,0,0,0]],[10,0.0,[0,0,0,0,0]],[11,0.0,[0,0,0,0,0]],[12,0.0,[0,0,0,0,0]],[13,0.2832,[0,0,0,0.2832,0]],[14,0.0,[0,0,0,0,0]],[15,0.0,[0,0,0,0,0]],[16,0.0,[0,0,0,0,0]],[17,0.0,[0,0,0,0,0]],[18,0.0,[0,0,0,0,0]],[19,0.0,[0,0,0,0,0]],[20,0.0,[0,0,0,0,0]],[21,0.0,[0,0,0,0,0]],[22,0.0,[0,0,0,0,0]],[23,0.0,[0,0,0,0,0]],[24,0.0,[0,0,0,0,0]],[25,0.0252,[0,0,0,0,0.0252]],[26,0.0252,[0,0,0,0,0.0252]],[27,0.0252,[0,0,0,0,0.0252]],[28,0.0252,[0,0,0,0,0.0252]],[29,0.0252,[0,0,0,0,0.0252]],[30,0.0252,[0,0,0,0,0.0252]],[31,0.0252,[0,0,0,0,0.0252]],[32,0.0252,[0,0,0,0,0.0252]],[33,0.0252,[0,0,0,0,0.0252]],[34,0.0252,[0,0,0,0,0.0252]],[35,0.0252,[0,0,0,0,0.0252]],[36,0.0252,[0,0,0,0,0.0252]]],"sums":{"1차년계":0.75,"2차년계":0.2832,"3차년계":0.3024,"총계":1.3356}},{"k":"생보","c":"처브라이프생명","p":"종신","m":"202307","t":"규정변경_선지급","prem":1000000,"items":["GC(1Y)","PB","PTR Bonus","GC(2Y)","GC(3Y)","장기유지보너스"],"rows":[[1,13.0944,[7.1424,3.72,2.232,0,0,0]],[2,0.0,[0,0,0,0,0,0]],[3,0.0,[0,0,0,0,0,0]],[4,0.0,[0,0,0,0,0,0]],[5,0.0,[0,0,0,0,0,0]],[6,0.0,[0,0,0,0,0,0]],[7,0.0,[0,0,0,0,0,0]],[8,0.0,[0,0,0,0,0,0]],[9,0.0,[0,0,0,0,0,0]],[10,0.0,[0,0,0,0,0,0]],[11,0.0,[0,0,0,0,0,0]],[12,0.0,[0,0,0,0,0,0]],[13,0.1984,[0,0,0,0.1984,0,0]],[14,0.1984,[0,0,0,0.1984,0,0]],[15,0.1984,[0,0,0,0.1984,0,0]],[16,0.1984,[0,0,0,0.1984,0,0]],[17,0.1984,[0,0,0,0.1984,0,0]],[18,0.1984,[0,0,0,0.1984,0,0]],[19,0.1984,[0,0,0,0.1984,0,0]],[20,0.1984,[0,0,0,0.1984,0,0]],[21,0.1984,[0,0,0,0.1984,0,0]],[22,0.1984,[0,0,0,0.1984,0,0]],[23,0.1984,[0,0,0,0.1984,0,0]],[24,0.1984,[0,0,0,0.1984,0,0]],[25,0.2484,[0,0,0,0,0.1984,0.05]],[26,0.2484,[0,0,0,0,0.1984,0.05]],[27,0.2484,[0,0,0,0,0.1984,0.05]],[28,0.2484,[0,0,0,0,0.1984,0.05]],[29,0.2484,[0,0,0,0,0.1984,0.05]],[30,0.2484,[0,0,0,0,0.1984,0.05]],[31,0.2484,[0,0,0,0,0.1984,0.05]],[32,0.2484,[0,0,0,0,0.1984,0.05]],[33,0.2484,[0,0,0,0,0.1984,0.05]],[34,0.2484,[0,0,0,0,0.1984,0.05]],[35,0.2484,[0,0,0,0,0.1984,0.05]],[36,0.2484,[0,0,0,0,0.1984,0.05]]],"sums":{"1차년계":13.0944,"2차년계":2.3808,"3차년계":2.9808,"총계":18.456}},{"k":"생보","c":"처브라이프생명","p":"별도상품","m":"202307","t":"규정변경_선지급","prem":1000000,"items":["GC(1Y)","PB","GC(2Y)","GC(3Y)","장기유지"],"rows":[[1,10.8624,[7.1424,3.72,0,0,0]],[2,0.0,[0,0,0,0,0]],[3,0.0,[0,0,0,0,0]],[4,0.0,[0,0,0,0,0]],[5,0.0,[0,0,0,0,0]],[6,0.0,[0,0,0,0,0]],[7,0.0,[0,0,0,0,0]],[8,0.0,[0,0,0,0,0]],[9,0.0,[0,0,0,0,0]],[10,0.0,[0,0,0,0,0]],[11,0.0,[0,0,0,0,0]],[12,0.0,[0,0,0,0,0]],[13,0.1984,[0,0,0.1984,0,0]],[14,0.1984,[0,0,0.1984,0,0]],[15,0.1984,[0,0,0.1984,0,0]],[16,0.1984,[0,0,0.1984,0,0]],[17,0.1984,[0,0,0.1984,0,0]],[18,0.1984,[0,0,0.1984,0,0]],[19,0.1984,[0,0,0.1984,0,0]],[20,0.1984,[0,0,0.1984,0,0]],[21,0.1984,[0,0,0.1984,0,0]],[22,0.1984,[0,0,0.1984,0,0]],[23,0.1984,[0,0,0.1984,0,0]],[24,0.1984,[0,0,0.1984,0,0]],[25,0.1984,[0,0,0,0.1984,0]],[26,0.1984,[0,0,0,0.1984,0]],[27,0.1984,[0,0,0,0.1984,0]],[28,0.1984,[0,0,0,0.1984,0]],[29,0.1984,[0,0,0,0.1984,0]],[30,0.1984,[0,0,0,0.1984,0]],[31,0.1984,[0,0,0,0.1984,0]],[32,0.1984,[0,0,0,0.1984,0]],[33,0.1984,[0,0,0,0.1984,0]],[34,0.1984,[0,0,0,0.1984,0]],[35,0.1984,[0,0,0,0.1984,0]],[36,0.1984,[0,0,0,0.1984,0]],[37,0.62,[0,0,0,0,0.62]],[38,0.62,[0,0,0,0,0.62]],[39,0.62,[0,0,0,0,0.62]],[40,0.62,[0,0,0,0,0.62]],[41,0.62,[0,0,0,0,0.62]],[42,0.62,[0,0,0,0,0.62]],[43,0.62,[0,0,0,0,0.62]],[44,0.62,[0,0,0,0,0.62]],[45,0.62,[0,0,0,0,0.62]],[46,0.62,[0,0,0,0,0.62]],[47,0.62,[0,0,0,0,0.62]],[48,0.62,[0,0,0,0,0.62]]],"sums":{"1차년계":10.8624,"2차년계":2.3808,"3차년계":2.3808,"4차년계":7.44,"총계":23.064}},{"k":"생보","c":"카디프생명","p":"보장성","m":"202609","t":"규정변경_선지급형","prem":1000000,"items":["1차년","2차년","3차년","4차년"],"rows":[[1,7.8,[7.8,0,0,0]],[2,0.0,[0,0,0,0]],[3,0.0,[0,0,0,0]],[4,0.0,[0,0,0,0]],[5,0.0,[0,0,0,0]],[6,0.0,[0,0,0,0]],[7,0.0,[0,0,0,0]],[8,0.0,[0,0,0,0]],[9,0.0,[0,0,0,0]],[10,0.0,[0,0,0,0]],[11,0.0,[0,0,0,0]],[12,0.0,[0,0,0,0]],[13,3.48,[0,3.48,0,0]],[14,0.0,[0,0,0,0]],[15,0.0,[0,0,0,0]],[16,0.0,[0,0,0,0]],[17,0.0,[0,0,0,0]],[18,0.0,[0,0,0,0]],[19,0.0,[0,0,0,0]],[20,0.0,[0,0,0,0]],[21,0.0,[0,0,0,0]],[22,0.0,[0,0,0,0]],[23,0.0,[0,0,0,0]],[24,0.0,[0,0,0,0]],[25,0.72,[0,0,0.72,0]],[26,0.0,[0,0,0,0]],[27,0.0,[0,0,0,0]],[28,0.0,[0,0,0,0]],[29,0.0,[0,0,0,0]],[30,0.0,[0,0,0,0]],[31,0.0,[0,0,0,0]],[32,0.0,[0,0,0,0]],[33,0.0,[0,0,0,0]],[34,0.0,[0,0,0,0]],[35,0.0,[0,0,0,0]],[36,0.0,[0,0,0,0]],[37,0.84,[0,0,0,0.84]]],"sums":{"1차년계":7.8,"총계":12.84}},{"k":"생보","c":"카디프생명","p":"ETF변액연금","m":"202609","t":"규정변경_선지급형","prem":1000000,"items":["1차년","2차년","3차년"],"rows":[[1,4.248,[4.248,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.0,[0,0,0]],[8,0.0,[0,0,0]],[9,0.0,[0,0,0]],[10,0.0,[0,0,0]],[11,0.0,[0,0,0]],[12,0.0,[0,0,0]],[13,0.098,[0,0.098,0]],[14,0.098,[0,0.098,0]],[15,0.098,[0,0.098,0]],[16,0.098,[0,0.098,0]],[17,0.098,[0,0.098,0]],[18,0.098,[0,0.098,0]],[19,0.098,[0,0.098,0]],[20,0.098,[0,0.098,0]],[21,0.098,[0,0.098,0]],[22,0.098,[0,0.098,0]],[23,0.098,[0,0.098,0]],[24,0.098,[0,0.098,0]],[25,0.098,[0,0,0.098]],[26,0.098,[0,0,0.098]],[27,0.098,[0,0,0.098]],[28,0.098,[0,0,0.098]],[29,0.098,[0,0,0.098]],[30,0.098,[0,0,0.098]],[31,0.098,[0,0,0.098]],[32,0.098,[0,0,0.098]],[33,0.098,[0,0,0.098]],[34,0.098,[0,0,0.098]],[35,0.098,[0,0,0.098]],[36,0.098,[0,0,0.098]]],"sums":{"1차년계":4.248,"총계":6.6}},{"k":"생보","c":"푸본현대생명","p":"MAX 종신보험 원픽","m":"202501","t":"선지급","prem":1000000,"items":["신계약수수료","성과수수료","계약관리수수료"],"rows":[[1,8.1,[8.1,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.0,[0,0,0]],[8,0.0,[0,0,0]],[9,0.0,[0,0,0]],[10,0.0,[0,0,0]],[11,0.0,[0,0,0]],[12,0.0,[0,0,0]],[13,7.0,[0,7.0,0]],[14,0.0,[0,0,0]],[15,0.0,[0,0,0]],[16,0.0,[0,0,0]],[17,0.0,[0,0,0]],[18,0.0,[0,0,0]],[19,0.0,[0,0,0]],[20,0.0,[0,0,0]],[21,0.0,[0,0,0]],[22,0.0,[0,0,0]],[23,0.0,[0,0,0]],[24,0.0,[0,0,0]],[25,0.204,[0,0,0.204]],[26,0.204,[0,0,0.204]],[27,0.204,[0,0,0.204]],[28,0.204,[0,0,0.204]],[29,0.204,[0,0,0.204]],[30,0.204,[0,0,0.204]],[31,0.204,[0,0,0.204]],[32,0.204,[0,0,0.204]],[33,0.204,[0,0,0.204]],[34,0.204,[0,0,0.204]],[35,0.204,[0,0,0.204]],[36,0.204,[0,0,0.204]]],"sums":{"1차년계":8.1,"2차년계":7.0,"3차년계":2.448,"총계":17.548}},{"k":"생보","c":"푸본현대생명","p":"특정상품2형","m":"202501","t":"선지급","prem":100000,"items":["신계약수수료","성과수수료"],"rows":[[1,3.4,[3.4,0]],[2,0.0,[0,0]],[3,0.0,[0,0]],[4,0.0,[0,0]],[5,0.0,[0,0]],[6,0.0,[0,0]],[7,0.0,[0,0]],[8,0.0,[0,0]],[9,0.0,[0,0]],[10,0.0,[0,0]],[11,0.0,[0,0]],[12,0.0,[0,0]],[13,1.184,[0,1.184]]],"sums":{"1차년계":3.4,"2차년계":1.184,"3차년계":0.0,"총계":4.584}},{"k":"생보","c":"푸본현대생명","p":"특정상품1형","m":"202501","t":"선지급","prem":100000,"items":["신계약수수료","성과수수료"],"rows":[[1,6.885,[6.885,0]],[2,0.0,[0,0]],[3,0.0,[0,0]],[4,0.0,[0,0]],[5,0.0,[0,0]],[6,0.0,[0,0]],[7,0.0,[0,0]],[8,0.0,[0,0]],[9,0.0,[0,0]],[10,0.0,[0,0]],[11,0.0,[0,0]],[12,0.0,[0,0]],[13,3.7,[0,3.7]]],"sums":{"1차년계":6.885,"2차년계":3.7,"3차년계":0.0,"총계":10.585}},{"k":"생보","c":"하나생명","p":"일반상품","m":"202505","t":"규정신규_선지급","prem":1000000,"items":["성과수수료","모집수수료","모집수수료2","계약관리수수료"],"rows":[[1,15.62,[1.1,14.52,0,0]],[2,0.0,[0,0,0,0]],[3,0.0,[0,0,0,0]],[4,0.0,[0,0,0,0]],[5,0.0,[0,0,0,0]],[6,0.0,[0,0,0,0]],[7,0.0,[0,0,0,0]],[8,0.0,[0,0,0,0]],[9,0.0,[0,0,0,0]],[10,0.0,[0,0,0,0]],[11,0.0,[0,0,0,0]],[12,0.0,[0,0,0,0]],[13,5.28,[0,0,5.28,0]],[14,0.0,[0,0,0,0]],[15,0.0,[0,0,0,0]],[16,0.0,[0,0,0,0]],[17,0.0,[0,0,0,0]],[18,0.0,[0,0,0,0]],[19,0.0,[0,0,0,0]],[20,0.0,[0,0,0,0]],[21,0.0,[0,0,0,0]],[22,0.0,[0,0,0,0]],[23,0.0,[0,0,0,0]],[24,0.0,[0,0,0,0]],[25,0.44,[0,0,0,0.44]],[26,0.44,[0,0,0,0.44]],[27,0.44,[0,0,0,0.44]],[28,0.44,[0,0,0,0.44]],[29,0.44,[0,0,0,0.44]],[30,0.44,[0,0,0,0.44]],[31,0.44,[0,0,0,0.44]],[32,0.44,[0,0,0,0.44]],[33,0.44,[0,0,0,0.44]],[34,0.44,[0,0,0,0.44]],[35,0.44,[0,0,0,0.44]],[36,0.44,[0,0,0,0.44]]],"sums":{"1차년계":15.62,"2차년계":5.28,"3차년계":5.28,"총계":26.18}},{"k":"생보","c":"한화생명","p":"CEO정기Ⅲ","m":"202408","t":"규정변경_선지급형","prem":1000000,"items":["모집","고객관리 13~24회","고객관리 25~35회","고객관리"],"rows":[[1,8.478,[8.478,0,0,0]],[2,0.0,[0,0,0,0]],[3,0.0,[0,0,0,0]],[4,0.0,[0,0,0,0]],[5,0.0,[0,0,0,0]],[6,0.0,[0,0,0,0]],[7,0.0,[0,0,0,0]],[8,0.0,[0,0,0,0]],[9,0.0,[0,0,0,0]],[10,0.0,[0,0,0,0]],[11,0.0,[0,0,0,0]],[12,0.0,[0,0,0,0]],[13,0.378,[0,0.378,0,0]],[14,0.378,[0,0.378,0,0]],[15,0.378,[0,0.378,0,0]],[16,0.378,[0,0.378,0,0]],[17,0.378,[0,0.378,0,0]],[18,0.378,[0,0.378,0,0]],[19,0.378,[0,0.378,0,0]],[20,0.378,[0,0.378,0,0]],[21,0.378,[0,0.378,0,0]],[22,0.378,[0,0.378,0,0]],[23,0.378,[0,0.378,0,0]],[24,0.378,[0,0.378,0,0]],[25,0.18,[0,0,0.18,0]],[26,0.18,[0,0,0.18,0]],[27,0.18,[0,0,0.18,0]],[28,0.18,[0,0,0.18,0]],[29,0.18,[0,0,0.18,0]],[30,0.18,[0,0,0.18,0]],[31,0.18,[0,0,0.18,0]],[32,0.18,[0,0,0.18,0]],[33,0.18,[0,0,0.18,0]],[34,0.18,[0,0,0.18,0]],[35,0.18,[0,0,0.18,0]],[36,0.18,[0,0,0,0.18]]],"sums":{"1차년계":8.478,"2차년계":4.536,"3차년계":2.16,"4차년계":0.0,"총계":15.174}},{"k":"생보","c":"한화생명","p":"시그니처암","m":"202408","t":"규정변경_선지급형","prem":1000000,"items":["모집","고객관리 13~24회","성과보너스"],"rows":[[1,5.49,[5.49,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.0,[0,0,0]],[8,0.0,[0,0,0]],[9,0.0,[0,0,0]],[10,0.0,[0,0,0]],[11,0.0,[0,0,0]],[12,0.0,[0,0,0]],[13,3.96,[2.7,0.36,0.9]],[14,0.36,[0,0.36,0]],[15,0.36,[0,0.36,0]],[16,0.36,[0,0.36,0]],[17,0.36,[0,0.36,0]],[18,0.36,[0,0.36,0]],[19,0.36,[0,0.36,0]],[20,0.36,[0,0.36,0]],[21,0.36,[0,0.36,0]],[22,0.36,[0,0.36,0]],[23,0.36,[0,0.36,0]],[24,0.36,[0,0.36,0]]],"sums":{"1차년계":5.49,"2차년계":7.92,"3차년계":0.0,"총계":13.41}},{"k":"생보","c":"흥국생명","p":"종신","m":"202605","t":"규정변경_A-1형","prem":1000000,"items":["성과수수료","유지성과","유지성과 25~36회"],"rows":[[1,7.0,[7.0,0,0]],[2,0.0,[0,0,0]],[3,0.0,[0,0,0]],[4,0.0,[0,0,0]],[5,0.0,[0,0,0]],[6,0.0,[0,0,0]],[7,0.0,[0,0,0]],[8,0.0,[0,0,0]],[9,0.0,[0,0,0]],[10,0.0,[0,0,0]],[11,0.0,[0,0,0]],[12,0.0,[0,0,0]],[13,0.84,[0,0.84,0]],[14,0.0,[0,0,0]],[15,0.0,[0,0,0]],[16,0.0,[0,0,0]],[17,0.0,[0,0,0]],[18,0.0,[0,0,0]],[19,0.0,[0,0,0]],[20,0.0,[0,0,0]],[21,0.0,[0,0,0]],[22,0.0,[0,0,0]],[23,0.0,[0,0,0]],[24,0.0,[0,0,0]],[25,1.68,[0,0,1.68]]],"sums":{"1차년계":7.0,"2차년계":0.84,"3차년계":1.68,"총계":9.52}}];
 const PCTS=[100,85,80,75,70,65,60];
-let state={pct:100,type:"전체",base:"base",sortK:"calc",sortDir:-1,prem:0};
-
+const SER=["--s1","--s2","--s3","--s4","--s5","--s6","--s7","--s8"];
+const YRS=[{k:"1차년",a:1,b:12,c:"--y1"},{k:"2차년",a:13,b:24,c:"--y2"},{k:"3차년",a:25,b:36,c:"--y3"},{k:"4차년~",a:37,b:999,c:"--y4"}];
 const $=s=>document.querySelector(s);
-const fmtMon=m=>m?`${m.slice(0,4)}.${m.slice(4)}`:"";
-const num=v=>v.toLocaleString("ko-KR",{maximumFractionDigits:2});
+const nf=(v,d=3)=>v.toLocaleString("ko-KR",{minimumFractionDigits:0,maximumFractionDigits:d});
 const won=v=>Math.round(v).toLocaleString("ko-KR");
+const css=v=>`var(${v})`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-// percent buttons
+DATA.forEach((d,i)=>{d.id=i;
+  d.yr=YRS.map(y=>d.rows.filter(r=>r[0]>=y.a&&r[0]<=y.b).reduce((s,r)=>s+r[1],0));
+  d.total=d.yr.reduce((a,b)=>a+b,0);
+  d.m1=(d.rows.find(r=>r[0]===1)||[0,0])[1];
+  d.unit=d.k==="손보"?"회":"차월";
+});
+
+let st={pct:100,prem:100000,view:"product",kind:"손보",id:Math.max(0,DATA.findIndex(d=>d.c==="메리츠화재")),ck:"전체",metric:"y1"};
+try{const s=JSON.parse(localStorage.getItem("fee-an")||"{}");Object.assign(st,s);}catch(e){}
+if(!DATA[st.id])st.id=0;
+const save=()=>{try{localStorage.setItem("fee-an",JSON.stringify({pct:st.pct,prem:st.prem,id:st.id,kind:st.kind,ck:st.ck,metric:st.metric}))}catch(e){}};
+const F=()=>st.pct/100;
+
+/* ---------- controls ---------- */
 const pc=$("#pcts");
-PCTS.forEach(p=>{const b=document.createElement("button");b.className="pct";b.textContent=p+"%";
-  b.setAttribute("aria-pressed",p===100);b.onclick=()=>{state.pct=p;
-    [...pc.children].forEach(x=>x.setAttribute("aria-pressed",x===b));render();};pc.appendChild(b);});
+PCTS.forEach(p=>{const b=document.createElement("button");b.className="pct";b.textContent=p+"%";b.dataset.p=p;
+  b.onclick=()=>{st.pct=p;syncPct();renderAll();};pc.appendChild(b);});
+function syncPct(){[...pc.children].forEach(b=>b.setAttribute("aria-pressed",+b.dataset.p===st.pct));}
+function seg(id,key,cb){const g=$(id);g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;st[key]=b.dataset.v;syncSeg(id,key);cb&&cb();});}
+function syncSeg(id,key){[...$(id).children].forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===st[key]));}
+const prem=$("#prem");
+prem.value=st.prem?st.prem.toLocaleString("ko-KR"):"";
+prem.addEventListener("input",()=>{const n=parseInt(prem.value.replace(/[^\d]/g,""),10);st.prem=isNaN(n)?0:n;
+  prem.value=isNaN(n)?"":n.toLocaleString("ko-KR");renderAll();});
 
-function seg(id,key){const g=$(id);g.onclick=e=>{const b=e.target.closest("button");if(!b)return;
-  state[key]=b.dataset.v;[...g.children].forEach(x=>x.setAttribute("aria-pressed",x===b));render();};}
-seg("#segType","type");seg("#segBase","base");
+seg("#segView","view",()=>{location.hash=st.view;showView();});
+seg("#segKind","kind",()=>{const first=DATA.find(d=>d.k===st.kind);st.id=first.id;fillCo();renderProduct();save();});
+seg("#segCK","ck",renderCompare);
+seg("#segMetric","metric",renderCompare);
 
-$("#prem").addEventListener("input",e=>{
-  const n=parseInt(e.target.value.replace(/[^\d]/g,""),10);
-  state.prem=isNaN(n)?0:n;
-  e.target.value=isNaN(n)?"":n.toLocaleString("ko-KR");render();});
+const selCo=$("#selCo"),selPr=$("#selPr");
+function fillCo(){
+  const cos=[...new Set(DATA.filter(d=>d.k===st.kind).map(d=>d.c))].sort((a,b)=>a.localeCompare(b,"ko"));
+  selCo.innerHTML=cos.map(c=>`<option>${esc(c)}</option>`).join("");
+  selCo.value=DATA[st.id].c;fillPr();
+}
+function fillPr(){
+  const ps=DATA.filter(d=>d.c===selCo.value);
+  selPr.innerHTML=ps.map(d=>`<option value="${d.id}">${esc(d.p)}</option>`).join("");
+  selPr.value=String(st.id);
+}
+selCo.onchange=()=>{st.id=DATA.find(d=>d.c===selCo.value).id;fillPr();renderProduct();save();};
+selPr.onchange=()=>{st.id=+selPr.value;renderProduct();save();};
 
-document.querySelectorAll("thead th").forEach(th=>th.onclick=()=>{
-  const k=th.dataset.k;if(state.sortK===k)state.sortDir*=-1;
-  else{state.sortK=k;state.sortDir=k==="n"?1:-1;}render();});
+function showView(){
+  const v=location.hash==="#compare"?"compare":"product";st.view=v;syncSeg("#segView","view");
+  $("#vProduct").hidden=v!=="product";$("#vCompare").hidden=v!=="compare";
+  renderAll();
+}
+window.addEventListener("hashchange",showView);
 
-function render(){
-  const f=state.pct/100;
-  let rows=DATA.filter(d=>state.type==="전체"||d.t===state.type).map(d=>{
-    const b=d[state.base];return {...d,_base:b,_calc:b*f};});
-  rows.sort((a,b)=>{let r;
-    if(state.sortK==="n")r=a.n.localeCompare(b.n,"ko");
-    else if(state.sortK==="base")r=a._base-b._base;
-    else r=a._calc-b._calc;
-    return r*state.sortDir;});
-  // header arrows
-  document.querySelectorAll("thead th").forEach(th=>{
-    const el=th.querySelector(".ar");
-    el.textContent=th.dataset.k===state.sortK?(state.sortDir<0?"▾":"▴"):"";});
-  const tb=$("#tb");tb.innerHTML="";
-  rows.forEach(d=>{
-    const tr=document.createElement("tr");
-    const amt=state.prem>0?`<span class="amt">${won(state.prem*d._calc)}원</span>`:"";
-    tr.innerHTML=`<td class="co"><span class="tag">${d.t}</span>${d.n}`+
-      `<span class="mon">${fmtMon(d.m)}</span>${d.note?' <span class="note">분급형</span>':""}</td>`+
-      `<td class="base">${num(d._base)}</td>`+
-      `<td><span class="calc">${num(d._calc)}</span>${amt}</td>`;
-    tb.appendChild(tr);});
+/* ---------- product view ---------- */
+function renderProduct(){
+  const d=DATA[st.id],f=F();
+  const fmtM=m=>`${m.slice(0,4)}년 ${+m.slice(4)}월`;
+  const shY1=d.sums["1차년계"]??d.sums["초년도계"];
+  const mism=shY1!=null&&Math.abs(shY1-d.yr[0])>0.002;
+  $("#meta").innerHTML=`<span>적용 <b>${fmtM(d.m)}</b></span><span>규정 <b>${esc(d.t)}</b></span>`+
+    `<span>회차 <b>${d.rows.length}개</b></span><span>시뮬 보험료 <b>${won(d.prem)}원</b></span>`+
+    (mism?`<span class="flag">원본 시트의 1차년계(${nf(shY1)})는 판매수수료 열이 빠진 수식입니다. 회차별 합계(${nf(d.yr[0])}) 기준으로 표시합니다.</span>`:"");
+  // tiles
+  const has=(a,b)=>d.rows.some(r=>r[0]>=a&&r[0]<=b);
+  const T=[{k:`1${d.unit} (선지급)`,v:d.m1,main:false},{k:"1차년 (1~12)",v:d.yr[0],main:true},
+    {k:"2차년 (13~24)",v:d.yr[1],na:!has(13,24)},{k:"3차년 (25~36)",v:d.yr[2],na:!has(25,36)},{k:"전체 합계",v:d.total}];
+  if(d.yr[3]>0)T[4].k=`전체 합계 (~${d.rows[d.rows.length-1][0]}회)`;
+  $("#tiles").innerHTML=T.map(t=>t.na?`<div class="tile"><span class="k">${t.k}</span><span class="v" style="color:var(--mute)">–</span><span class="b">해당 회차 없음</span></div>`:`<div class="tile${t.main?" main":""}"><span class="k">${t.k}</span>`+
+    `<span class="v">${nf(t.v*f)}<small>배</small></span>`+
+    (st.prem?`<span class="w">${won(st.prem*t.v*f)}원</span>`:"")+
+    (st.pct!==100?`<span class="b">100% 기준 ${nf(t.v)}</span>`:"")+`</div>`).join("");
+  // legend
+  $("#legItems").innerHTML=d.items.map((n,i)=>`<span><i style="background:${css(SER[i%8])}"></i>${esc(n)}</span>`).join("");
+  drawBars(d,f);drawCum(d,f);drawMix(d,f);drawTable(d,f);
 }
 
-// theme toggle
-const tb=$("#themeBtn");
-tb.onclick=()=>{const cur=document.documentElement.getAttribute("data-theme");
-  const dark=cur?cur==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
-  document.documentElement.setAttribute("data-theme",dark?"light":"dark");};
-render();
+function niceMax(v){if(v<=0)return 1;const p=Math.pow(10,Math.floor(Math.log10(v)));const n=v/p;
+  return (n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10)*p;}
+function tipHTML(d,r,f){
+  let h=`<div class="t">${r[0]}${d.unit}</div>`;
+  r[2].forEach((v,i)=>{if(v)h+=`<div class="r"><span><i style="background:${css(SER[i%8])}"></i>${esc(d.items[i])}</span><span>${nf(v*f,4)}</span></div>`;});
+  h+=`<div class="r tot"><span>합계</span><span>${nf(r[1]*f,4)}</span></div>`;
+  if(st.prem)h+=`<div class="r"><span>지급액</span><span>${won(st.prem*r[1]*f)}원</span></div>`;
+  return h;
+}
+function placeTip(tip,box,x,y){
+  tip.hidden=false;const w=tip.offsetWidth,h=tip.offsetHeight,W=box.clientWidth;
+  let l=x+14;if(l+w>W)l=x-w-14;if(l<0)l=0;tip.style.left=l+"px";tip.style.top=Math.max(0,y-h-8)+"px";
+}
+function drawBars(d,f){
+  const box=$("#chBars"),W=Math.max(300,box.clientWidth),H=Math.round(Math.min(300,Math.max(210,W*.32)));
+  const m={l:44,r:8,t:10,b:26},iw=W-m.l-m.r,ih=H-m.t-m.b;
+  const rows=d.rows,n=rows.length,maxV=niceMax(Math.max(...rows.map(r=>r[1]))*f);
+  const bw=iw/n,gap=Math.min(4,bw*.25),w=Math.max(1,bw-gap);
+  const y=v=>m.t+ih-(v/maxV)*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(d.c)} ${esc(d.p)} 회차별 지급률 막대 차트">`;
+  for(let i=0;i<=4;i++){const v=maxV*i/4,yy=y(v);
+    s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${yy}" y2="${yy}" stroke="var(--grid)" stroke-width="1"/>`+
+       `<text class="ax" x="${m.l-6}" y="${yy+3}" text-anchor="end">${nf(v,2)}</text>`;}
+  // year bands separators
+  [12,24,36,48].forEach(k=>{const idx=rows.findIndex(r=>r[0]>k);if(idx>0){const xx=m.l+idx*bw-gap/2;
+    s+=`<line x1="${xx}" x2="${xx}" y1="${m.t}" y2="${m.t+ih}" stroke="var(--line)" stroke-dasharray="3 3"/>`;}});
+  rows.forEach((r,i)=>{const x=m.l+i*bw+gap/2;let acc=0;
+    r[2].forEach((v,j)=>{if(!v)return;const v2=v*f,y0=y(acc),y1=y(acc+v2);acc+=v2;
+      const hh=Math.max(0,y0-y1-(acc<r[1]*f-1e-9?1:0));
+      s+=`<rect x="${x}" y="${y1}" width="${w}" height="${Math.max(.5,hh)}" fill="${css(SER[j%8])}" rx="${Math.min(2,w/4)}"/>`;});
+    const lbl=r[0]===1||r[0]%12===0||r[0]%12===1&&r[0]>1||n<=18;
+    if(lbl)s+=`<text class="ax" x="${x+w/2}" y="${H-8}" text-anchor="middle">${r[0]}</text>`;
+    s+=`<rect data-i="${i}" x="${m.l+i*bw}" y="${m.t}" width="${bw}" height="${ih}" fill="transparent"/>`;});
+  s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${m.t+ih}" y2="${m.t+ih}" stroke="var(--sub)" stroke-width="1"/>`;
+  s+=`</svg><div class="tip" hidden></div>`;
+  box.innerHTML=s;
+  const tip=box.querySelector(".tip"),svg=box.querySelector("svg");
+  svg.addEventListener("pointermove",e=>{const t=e.target.closest("[data-i]");if(!t){tip.hidden=true;return;}
+    const r=rows[+t.dataset.i];tip.innerHTML=tipHTML(d,r,f);const bb=box.getBoundingClientRect();
+    placeTip(tip,box,e.clientX-bb.left,e.clientY-bb.top);});
+  svg.addEventListener("pointerleave",()=>tip.hidden=true);
+}
+function drawCum(d,f){
+  const box=$("#chCum"),W=Math.max(280,box.clientWidth),H=220,m={l:40,r:12,t:12,b:26},iw=W-m.l-m.r,ih=H-m.t-m.b;
+  const rows=d.rows;let acc=0;const pts=rows.map(r=>{acc+=r[1]*f;return [r[0],acc];});
+  const maxN=rows[rows.length-1][0],maxV=niceMax(acc);
+  const x=n=>m.l+((n-1)/Math.max(1,maxN-1))*iw,y=v=>m.t+ih-(v/maxV)*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="누적 지급률 선 차트">`;
+  for(let i=0;i<=4;i++){const v=maxV*i/4;s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/>`+
+    `<text class="ax" x="${m.l-6}" y="${y(v)+3}" text-anchor="end">${nf(v,1)}</text>`;}
+  [...new Set([1,12,24,36,48,60].filter(k=>k<maxN-1).concat(maxN))].forEach(k=>s+=`<text class="ax" x="${x(k)}" y="${H-8}" text-anchor="middle">${k}</text>`);
+  // step line (payments land at each round)
+  let p=`M${x(pts[0][0])},${y(0)} L${x(pts[0][0])},${y(pts[0][1])}`;
+  for(let i=1;i<pts.length;i++)p+=` L${x(pts[i][0])},${y(pts[i-1][1])} L${x(pts[i][0])},${y(pts[i][1])}`;
+  const area=p+` L${x(pts[pts.length-1][0])},${y(0)} Z`;
+  s+=`<path d="${area}" fill="var(--s1)" opacity=".12"/><path d="${p}" fill="none" stroke="var(--s1)" stroke-width="2" stroke-linejoin="round"/>`;
+  [12,24,36].forEach(k=>{const q=pts.filter(t=>t[0]<=k).pop();if(q&&k<=maxN){
+    s+=`<circle cx="${x(k)}" cy="${y(q[1])}" r="4" fill="var(--s1)" stroke="var(--card)" stroke-width="2"/>`+
+       `<text class="ax" x="${x(k)}" y="${y(q[1])-9}" text-anchor="${k===36&&x(k)>W-50?"end":"middle"}" style="fill:var(--ink)">${nf(q[1],2)}</text>`;}});
+  const last=pts[pts.length-1];
+  s+=`<circle cx="${x(last[0])}" cy="${y(last[1])}" r="4" fill="var(--s1)" stroke="var(--card)" stroke-width="2"/>`;
+  s+=`<line id="xh" x1="0" x2="0" y1="${m.t}" y2="${m.t+ih}" stroke="var(--sub)" stroke-dasharray="2 3" visibility="hidden"/>`;
+  s+=`<rect x="${m.l}" y="${m.t}" width="${iw}" height="${ih}" fill="transparent" id="hit"/></svg><div class="tip" hidden></div>`;
+  box.innerHTML=s;
+  $("#cumNote").textContent=`최종 ${nf(last[1],2)}배`+(st.prem?` · ${won(st.prem*last[1])}원`:"");
+  const tip=box.querySelector(".tip"),xh=box.querySelector("#xh"),hit=box.querySelector("#hit");
+  hit.addEventListener("pointermove",e=>{const bb=box.getBoundingClientRect(),sx=(e.clientX-bb.left)*(W/bb.width);
+    const n=Math.round(1+(sx-m.l)/iw*(maxN-1));const q=pts.filter(t=>t[0]<=n).pop();if(!q)return;
+    xh.setAttribute("x1",x(n));xh.setAttribute("x2",x(n));xh.setAttribute("visibility","visible");
+    tip.innerHTML=`<div class="t">${n}${d.unit}까지 누적</div><div class="r"><span>누적 지급률</span><span>${nf(q[1],4)}</span></div>`+
+      (st.prem?`<div class="r"><span>누적 지급액</span><span>${won(st.prem*q[1])}원</span></div>`:"");
+    placeTip(tip,box,e.clientX-bb.left,e.clientY-bb.top);});
+  hit.addEventListener("pointerleave",()=>{tip.hidden=true;xh.setAttribute("visibility","hidden");});
+}
+function drawMix(d,f){
+  const tot=d.items.map((_,j)=>d.rows.reduce((s,r)=>s+r[2][j],0)),T=tot.reduce((a,b)=>a+b,0)||1;
+  const order=tot.map((v,j)=>[v,j]).sort((a,b)=>b[0]-a[0]);
+  $("#mix").innerHTML=`<div class="track" style="height:14px;margin-bottom:12px">`+
+    tot.map((v,j)=>v?`<div title="${esc(d.items[j])}" style="flex:${v} 1 0;background:${css(SER[j%8])}"></div>`:"").join("")+`</div>`+
+    `<table><tbody>`+order.map(([v,j])=>`<tr><td style="font-family:var(--sans)"><span class="legend"><span><i style="background:${css(SER[j%8])}"></i>${esc(d.items[j])}</span></span></td>`+
+    `<td>${nf(v*f,3)}</td><td class="z">${nf(v/T*100,1)}%</td></tr>`).join("")+`</tbody></table>`;
+}
+let lastTSV="";
+function drawTable(d,f){
+  const hasP=st.prem>0;
+  let h=`<thead><tr><th>회차</th>${d.items.map(n=>`<th>${esc(n)}</th>`).join("")}<th>합계</th>${st.pct!==100?`<th>환산(${st.pct}%)</th>`:""}${hasP?"<th>지급액(원)</th><th>누적(원)</th>":""}</tr></thead><tbody>`;
+  const tsv=[["회차",...d.items,"합계(100%)",`환산(${st.pct}%)`,...(hasP?["지급액(원)","누적(원)"]:[])].join("\t")];
+  let acc=0,yacc=0,ysum=d.items.map(()=>0),cur=0;
+  const yearRow=(yi)=>{const y=YRS[yi];
+    h+=`<tr class="yr"><td>${y.k} 계</td>${ysum.map(v=>`<td>${nf(v,4)}</td>`).join("")}<td>${nf(yacc,4)}</td>${st.pct!==100?`<td>${nf(yacc*f,4)}</td>`:""}${hasP?`<td>${won(st.prem*yacc*f)}</td><td></td>`:""}</tr>`;
+    tsv.push([`${y.k} 계`,...ysum.map(v=>v.toFixed(4)),yacc.toFixed(4),(yacc*f).toFixed(4),...(hasP?[Math.round(st.prem*yacc*f),""]:[])].join("\t"));
+    yacc=0;ysum=d.items.map(()=>0);};
+  d.rows.forEach((r,i)=>{
+    const yi=YRS.findIndex(y=>r[0]>=y.a&&r[0]<=y.b);
+    if(yi!==cur){yearRow(cur);cur=yi;}
+    acc+=r[1]*f;yacc+=r[1];r[2].forEach((v,j)=>ysum[j]+=v);
+    h+=`<tr><td>${r[0]}${d.unit}</td>${r[2].map(v=>`<td class="${v?"":"z"}">${v?nf(v,4):"–"}</td>`).join("")}`+
+      `<td class="tot ${r[1]?"":"z"}">${r[1]?nf(r[1],4):"–"}</td>${st.pct!==100?`<td class="tot">${r[1]?nf(r[1]*f,4):"–"}</td>`:""}`+
+      (hasP?`<td class="amt">${r[1]?won(st.prem*r[1]*f):"–"}</td><td>${won(st.prem*acc)}</td>`:"")+`</tr>`;
+    tsv.push([`${r[0]}${d.unit}`,...r[2].map(v=>v.toFixed(4)),r[1].toFixed(4),(r[1]*f).toFixed(4),...(hasP?[Math.round(st.prem*r[1]*f),Math.round(st.prem*acc)]:[])].join("\t"));
+    if(i===d.rows.length-1)yearRow(cur);
+  });
+  h+=`<tr class="yr"><td>전체 합계</td>${d.items.map((_,j)=>`<td>${nf(d.rows.reduce((s,r)=>s+r[2][j],0),4)}</td>`).join("")}<td>${nf(d.total,4)}</td>${st.pct!==100?`<td>${nf(d.total*f,4)}</td>`:""}${hasP?`<td>${won(st.prem*d.total*f)}</td><td></td>`:""}</tr></tbody>`;
+  $("#tbl").innerHTML=h;
+  lastTSV=`${d.c} ${d.p} (${d.m}) · 환산 ${st.pct}% · 월납 ${st.prem}원\n`+tsv.join("\n");
+}
+function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,1800);}
+$("#copyBtn").onclick=()=>{
+  const fallback=()=>{const ta=document.createElement("textarea");ta.value=lastTSV;document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");toast("표를 복사했습니다. 엑셀에 붙여넣으세요.");}catch(e){toast("복사가 막혀 있습니다. 표를 드래그해 복사하세요.");}ta.remove();};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(lastTSV).then(()=>toast("표를 복사했습니다. 엑셀에 붙여넣으세요."),fallback);else fallback();
+};
+
+/* ---------- compare view ---------- */
+function renderCompare(){
+  const f=F(),mk=st.metric;
+  const list=DATA.filter(d=>st.ck==="전체"||d.k===st.ck);
+  const parts=d=>mk==="m1"?[d.m1,0,0,0]:mk==="y1"?[d.yr[0],0,0,0]:mk==="y3"?[d.yr[0],d.yr[1],d.yr[2],0]:d.yr.slice();
+  const val=d=>parts(d).reduce((a,b)=>a+b,0);
+  list.sort((a,b)=>val(b)-val(a));
+  const max=Math.max(...list.map(val))||1;
+  const nY=mk==="y3"?3:mk==="all"?4:1;
+  const lbl={m1:"1회차(선지급) 지급률",y1:"1차년(1~12회) 지급률",y3:"3차년까지 누적 지급률",all:"전체 기간 지급률"}[mk];
+  $("#cmpTitle").textContent=`${lbl} 순위 · ${st.pct}% 환산`;
+  $("#legYears").innerHTML=nY>1?YRS.slice(0,nY).map(y=>`<span><i style="background:${css(y.c)}"></i>${y.k}</span>`).join(""):"";
+  $("#rank").innerHTML=list.map(d=>{const ps=parts(d),v=val(d);
+    return `<div class="rrow" data-id="${d.id}" title="클릭하면 상품 분석으로 이동"><div class="rname"><b><span class="tag">${d.k}</span>${esc(d.c)}</b><span>${esc(d.p)}</span></div>`+
+      `<div class="track">${ps.map((p,i)=>p>0?`<div style="flex:0 0 calc(${(p/max*100).toFixed(3)}% - 2px);background:${css(nY>1?YRS[i].c:"--y2")}" title="${YRS[i].k} ${nf(p*f)}"></div>`:"").join("")}</div>`+
+      `<div class="rval">${nf(v*f,3)}${st.prem?`<small>${won(st.prem*v*f)}원</small>`:""}</div></div>`;}).join("");
+}
+$("#rank").addEventListener("click",e=>{const r=e.target.closest(".rrow");if(!r)return;st.id=+r.dataset.id;st.kind=DATA[st.id].k;
+  syncSeg("#segKind","kind");fillCo();save();location.hash="product";});
+
+function renderAll(){save();if(st.view==="compare")renderCompare();else renderProduct();}
+let rz;new ResizeObserver(()=>{clearTimeout(rz);rz=setTimeout(()=>{if(st.view==="product"){const d=DATA[st.id];drawBars(d,F());drawCum(d,F());}},80);}).observe($("#chBars"));
+
+$("#themeBtn").onclick=()=>{const r=document.documentElement,c=r.getAttribute("data-theme");
+  const dark=c?c==="dark":matchMedia("(prefers-color-scheme: dark)").matches;r.setAttribute("data-theme",dark?"light":"dark");};
+
+syncPct();syncSeg("#segKind","kind");syncSeg("#segCK","ck");syncSeg("#segMetric","metric");
+st.kind=DATA[st.id].k;syncSeg("#segKind","kind");fillCo();showView();
 </script>
