@@ -188,6 +188,8 @@ a:hover{color:var(--color-primary-700)}
 .hero__cta{display:flex; flex-wrap:wrap; gap:14px; margin-top:34px; align-items:center}
 .hero__cta .ds-btn--gold{padding:19px 44px; font-size:18px}
 /* 히어로 하단 전체 폭 신뢰 배지 바 — 좌측 칼럼 안에 두면 2+1 로 어정쩡하게 접힙니다 */
+.br-m{display:none}
+@media (max-width:720px){ .br-m{display:inline} }
 .hero__svc{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:34px; max-width:780px}
 .svc{display:flex; flex-direction:column; padding:24px 24px 22px; border-radius:18px; background:rgba(20,24,40,.5); border:1px solid rgba(255,255,255,.2); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
 .svc__num{font-size:12.5px; font-weight:800; letter-spacing:.08em; color:var(--color-accent-gold)}
@@ -441,7 +443,7 @@ a:hover{color:var(--color-primary-700)}
     <div class="hero__grid">
       <div class="hero__copy">
     <span class="hero__eyebrow" style="color: #F3E9DC">경정청구/재무제표 가결산-무료상담</span>
-    <h1 class="hero__title">경정청구와 기업자금을 위한<br><em>재무제표를 한곳에서</em></h1>
+    <h1 class="hero__title">경정청구와 <br class="br-m">기업자금을 위한<br><em>재무제표를 한곳에서</em></h1>
     <p class="hero__lede">
       <b>직원이 아닌, 세무사가 직접</b> 살펴봅니다.<br>
       경정청구 환급 진단과 정책자금 신청을 위한 법인 가결산을 한 번에 신청하세요.
