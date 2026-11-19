@@ -214,6 +214,103 @@ form.f .chk input{width:auto;flex:none;margin-top:6px}
 .foot .cp{color:#7e8da3;font-size:13px}
 .print-sheet{display:none}
 
+/* ===== 포털형 머리말 ===== */
+.head .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding-top:16px;padding-bottom:16px}
+.hbanner{justify-self:start;display:block;width:220px;padding:10px 14px;border-radius:6px;color:#fff;background:linear-gradient(110deg,var(--navy-d),var(--navy) 62%,var(--red) 62%);font-size:12.5px;line-height:1.45}
+.hbanner b{display:block;font-size:14.5px}
+.hright{justify-self:end;text-align:right;font-size:13px;color:var(--muted)}
+.hright nav{display:flex;gap:6px;justify-content:flex-end;margin-top:6px}
+.hright nav a{padding:3px 9px;border-radius:3px;color:var(--char)}
+.hright nav a.dark{background:#111;color:#fff}
+.gnb{background:#fff;border-top:1px solid var(--line);border-bottom:2px solid var(--navy-d);box-shadow:none}
+.gnb ul.main>li>a{color:#111;padding:14px 18px}
+.gnb ul.main>li:hover>a,.gnb ul.main>li>a.on{background:none;color:var(--navy);box-shadow:inset 0 -3px 0 var(--red)}
+.burger{color:#111}
+.gsearch{background:none;border:0;font-size:15px;color:#111;padding:0 6px;font-weight:700}
+.quick{background:var(--bg-soft);border-bottom:1px solid var(--line);font-size:14px}
+.quick .wrap{display:flex;gap:22px;height:40px;align-items:center;overflow-x:auto;white-space:nowrap}
+.quick a{color:var(--char)}.quick a:hover{color:var(--red)}
+.ticker{background:var(--navy-d);border:0;color:#fff}
+.ticker .wrap{height:44px}
+.ticker .tag{background:none;font-size:15px;padding:0 18px 0 0}
+.ticker a{font-weight:500}
+.ticker time{color:#b9c7dd}
+/* ===== 포털형 첫 화면 ===== */
+.th{display:grid;place-items:center;aspect-ratio:16/10;border-radius:6px;overflow:hidden;color:#fff;background:linear-gradient(125deg,var(--navy-d),var(--navy-2));position:relative}
+.th.r{background:linear-gradient(125deg,#8e1b1b,var(--red))}.th.c{background:linear-gradient(125deg,#1d1d1d,#4a4a4a)}
+.th b{font-size:15px;letter-spacing:.06em;z-index:1;text-align:center;padding:0 8px}
+.th svg{position:absolute;right:-18%;bottom:-30%;width:70%;height:auto;aspect-ratio:1;opacity:.16;filter:brightness(0) invert(1)}
+img.th{width:100%;object-fit:cover;display:block}
+.top{display:grid;grid-template-columns:1fr 290px;gap:22px;padding:22px 0 8px}
+.lead{position:relative;display:block;border-radius:8px;overflow:hidden;min-height:430px;color:#fff;background:linear-gradient(115deg,var(--navy-d),var(--navy) 58%,var(--navy-2))}
+.lead:before{content:"";position:absolute;right:-90px;bottom:-150px;width:520px;height:300px;background:var(--red);transform:skewX(-28deg)}
+.lead .mk{position:absolute;right:56px;top:46px;width:210px;height:210px;background:#fff;border-radius:50%;display:grid;place-items:center;box-shadow:0 14px 40px rgba(0,0,0,.3)}
+.lead .mk svg{width:158px;height:158px}
+.lead .tx{position:absolute;left:0;right:0;bottom:0;padding:90px 30px 26px;background:linear-gradient(transparent,rgba(4,16,36,.92))}
+.lead .tx span{font-size:12px;letter-spacing:.3em;color:#b9c7dd}
+.lead .tx h2{font-size:30px;font-weight:900;margin:6px 0}
+.lead .tx p{color:#dbe5f3;font-size:15.5px;max-width:640px}
+.sidebox{border:1px solid var(--line)}
+.sidebox h3{background:var(--navy-d);color:#fff;font-size:14.5px;text-align:center;padding:8px}
+.sidebox .in{padding:14px;text-align:center}
+.sidebox img{width:150px;border:1px solid var(--line);display:block;margin:0 auto 12px}
+.sidebox .mini{display:flex;gap:6px;justify-content:center}
+.sidebox .mini a{border:1px solid #b8c2d0;font-size:12.5px;padding:3px 12px}
+.sidebox .mini a:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.side h4{font-size:17px;margin:18px 0 8px}
+.sec4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:26px 0 40px}
+.sec4 h3,.col h3,.c3 h3{font-size:18px;margin-bottom:10px}
+.sec4 h3 a:hover,.col h3 a:hover{color:var(--red)}
+.it h4{font-size:15.5px;font-weight:700;margin:10px 0 4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.it p{font-size:13.5px;color:var(--muted);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.it:hover h4{text-decoration:underline}
+.band{background:linear-gradient(100deg,var(--navy-d),var(--navy));color:#fff}
+.band .wrap{display:grid;grid-template-columns:1fr 1.15fr;gap:0;padding:0 20px}
+.band .l{padding:30px 30px 34px 0}.band .r{background:rgba(255,255,255,.14);padding:30px;display:grid;grid-template-columns:150px 1fr;gap:20px}
+.band h3{font-size:19px;margin-bottom:14px}
+.rank li{display:flex;gap:10px;align-items:baseline;padding:6px 0;font-size:15.5px;font-weight:500}
+.rank li i{flex:none;font-style:normal;width:20px;height:20px;border-radius:50%;background:#fff;color:var(--navy-d);font-size:12px;font-weight:900;display:grid;place-items:center;transform:translateY(-1px)}
+.rank a:hover{text-decoration:underline}
+.arrows{display:flex;gap:2px;margin-top:20px}
+.arrows button{width:52px;height:34px;border:0;background:#2a3b57;color:#fff;font-size:17px}
+.arrows button:hover{background:var(--red)}
+.band .r .it h4{font-size:16px}
+.c3{display:grid;grid-template-columns:1fr 1fr 290px;gap:28px;padding:40px 0}
+.c3.eq{grid-template-columns:1fr 1fr 1fr}
+.c3>*,.top>*,.sec4>*,.band .wrap>*{min-width:0}
+.cardit{border:1px solid var(--line);border-radius:6px;overflow:hidden;display:block}
+.cardit .th{border-radius:0}
+.cardit h4{padding:14px 16px 18px;font-size:16px}
+.rows li{border-bottom:1px solid var(--line)}
+.rows li:last-child{border:0}
+.rows a{display:grid;grid-template-columns:1fr 84px;gap:12px;align-items:center;padding:11px 0}
+.rows.left a{grid-template-columns:84px 1fr}
+.rows h4{font-size:15px;font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rows small{color:var(--navy-2);font-size:12.5px;display:block}
+.rows .th b{font-size:10.5px}
+.rows a:hover h4{text-decoration:underline}
+.bnr{display:block;border-radius:6px;padding:15px 16px;color:#fff;margin-bottom:8px;font-size:13px;line-height:1.45}
+.bnr b{display:block;font-size:17px}
+.bnr.n{background:linear-gradient(110deg,var(--navy-d),var(--navy-2))}.bnr.r{background:linear-gradient(110deg,#8e1b1b,var(--red))}
+.bnr.c{background:linear-gradient(110deg,#1d1d1d,#555)}.bnr.w{background:#fff;border:1px solid var(--line);color:var(--char)}.bnr.w b{color:var(--navy-d)}
+.strip{background:#edf0f5}
+.strip .wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;padding-top:16px;padding-bottom:16px}
+.strip a{background:#fff;border:1px solid var(--line);text-align:center;padding:9px 6px;font-weight:900;color:var(--navy-d);font-size:15px}
+.strip a small{display:block;font-weight:400;color:var(--muted);font-size:11.5px}
+.strip a:hover{border-color:var(--red)}
+.photo{background:#48618c;border-radius:6px;padding:16px;color:#fff}
+.photo .ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.photo h3{margin:0}
+.dots i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;opacity:.45;margin-left:4px}.dots i.on{opacity:1;background:var(--navy-d)}
+.photo h4{font-size:15.5px;margin-top:10px}
+.op a{display:flex;gap:14px;align-items:center;background:#eef0f5;border-radius:6px;padding:14px;margin-bottom:10px}
+.op a:hover{background:#e2e7f0}
+.op i{flex:none;width:46px;height:46px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-style:normal;font-weight:900;font-size:13px}
+.op b{display:block;font-size:15px}.op small{color:var(--muted)}
+.foot .links .brand{margin-left:auto}.foot .brand strong{color:#fff;font-size:19px}.foot .brand small{color:#aab6c8;font-size:11px}.foot .brand svg{width:40px;height:40px;background:#fff;border-radius:50%;padding:3px}
+.searchbar{display:flex;gap:8px;margin-bottom:16px}
+.searchbar input{flex:1;padding:10px 12px;border:1px solid #c5cedb;border-radius:6px;font:inherit}
+.post img{max-width:100%;border:1px solid var(--line);margin:8px 0 14px}
 @media (max-width:900px){
   .head .slogan{display:none}
   .brand svg{width:50px;height:50px}.brand strong{font-size:23px}.brand small{font-size:12px}.brand em{letter-spacing:.08em;font-size:10px}
@@ -235,6 +332,17 @@ form.f .chk input{width:auto;flex:none;margin-top:6px}
   .stitle .en{display:none}
   .util nav a.hide-m{display:none}
   .cta:after{display:none}
+  .head .wrap{grid-template-columns:1fr}.hbanner,.hright{display:none}
+  .gnb .wrap{justify-content:space-between}
+  .gnb ul.main{background:#fff;border-bottom:2px solid var(--navy-d)}
+  .gnb .sub{background:var(--bg-soft)}.gnb .sub a{color:var(--char)}
+  .top,.c3,.c3.eq,.band .wrap{grid-template-columns:1fr}
+  .lead .tx span{display:none}
+  .sec4{grid-template-columns:1fr 1fr}
+  .lead{min-height:340px}.lead .mk{width:120px;height:120px;right:20px;top:20px}.lead .mk svg{width:90px;height:90px}.lead .tx h2{font-size:22px}.lead .tx{padding:60px 18px 20px}
+  .band .l{padding:26px 0}.band .r{margin:0 -20px;padding:22px 20px;grid-template-columns:1fr}
+  .strip .wrap{grid-template-columns:1fr 1fr}
+  .side{display:grid;grid-template-columns:1fr;gap:0}
 }
 @media print{
   body>*:not(.print-sheet){display:none!important}
@@ -267,91 +375,93 @@ form.f .chk input{width:auto;flex:none;margin-top:6px}
   </symbol>
 </svg>
 
-<div class="util"><div class="wrap">
-  <span id="today"></span>
-  <nav aria-label="바로가기">
-    <a href="#about/intro" class="hide-m">협회소개</a>
-    <a href="#member/join">회원가입 안내</a>
-    <a href="#contact">제보·문의</a>
-  </nav>
-</div></div>
-
 <header class="head"><div class="wrap">
+  <a class="hbanner" href="#member/join"><b>함께할 언론인을 기다립니다</b>회원가입 안내 바로가기 →</a>
   <a class="brand" href="#home" aria-label="사단법인 한국일간기자협회 홈">
     <svg><use href="#logo"/></svg>
     <span><small>사단법인</small><strong>한국일간기자협회</strong><em>Korea Daily Journalists Association</em></span>
   </a>
-  <p class="slogan">사실을 쓰는 오늘, 더 나은 내일을 만드는 언론<b>TRUTH · PEOPLE · SOCIETY · TOMORROW</b></p>
+  <div class="hright"><span id="today"></span>
+    <nav aria-label="바로가기"><a href="#about/intro">협회소개</a><a href="#member/join">회원가입</a><a class="dark" href="#contact">제보·문의</a></nav></div>
 </div></header>
 
 <nav class="gnb" id="gnb" aria-label="주메뉴"><div class="wrap">
   <button class="burger" id="burger" aria-expanded="false" aria-controls="mainmenu">☰ 전체메뉴</button>
   <ul class="main" id="mainmenu">
-    <li><a href="#about" data-nav="about">협회소개</a>
+    <li><a href="#news" data-board="all" data-nav="news">협회 포커스</a>
+      <div class="sub"><a href="#news" data-board="purpose">설립 취지</a><a href="#news" data-board="biz">주요사업</a><a href="#news" data-board="edu">교육·AI</a><a href="#news" data-board="local">지역언론</a><a href="#news" data-board="memberinfo">회원</a></div></li>
+    <li><a href="#news" data-board="column">오피니언</a>
+      <div class="sub"><a href="#news" data-board="column">회원 칼럼</a><a href="#news" data-board="reporter">기자 포커스</a></div></li>
+    <li><a href="#news" data-board="notice">협회 운영소식</a>
+      <div class="sub"><a href="#news" data-board="notice">공지사항</a><a href="#news" data-board="statement">성명서</a><a href="#news" data-board="award">기자상</a><a href="#news" data-board="forum">포럼·교육 소식</a><a href="#news" data-board="people">회원 동정</a></div></li>
+    <li><a href="#about" data-nav="about">협회 소개</a>
       <div class="sub"><a href="#about/intro">설립 취지</a><a href="#about/org">운영체계</a><a href="#about/officers">임원 명단</a><a href="#about/ci">CI 소개</a><a href="#about/charter">정관</a><a href="#about/map">오시는 길</a></div></li>
     <li><a href="#business" data-nav="business">주요사업</a>
       <div class="sub"><a href="#business/list">목적사업</a><a href="#business/detail">사업별 세부계획</a><a href="#business/fee">참가비 운영</a></div></li>
-    <li><a href="#news" data-nav="news">협회소식</a>
-      <div class="sub"><a href="#news" data-board="notice">공지사항</a><a href="#news" data-board="statement">성명서</a><a href="#news" data-board="award">기자상</a><a href="#news" data-board="forum">포럼·교육 소식</a><a href="#news" data-board="people">회원 동정</a></div></li>
     <li><a href="#member" data-nav="member">회원안내</a>
       <div class="sub"><a href="#member/type">회원 구분</a><a href="#member/benefit">회원 혜택</a><a href="#member/fee">회비</a><a href="#member/join">가입 신청</a></div></li>
-    <li><a href="#contact" data-nav="contact">제보·문의</a></li>
   </ul>
+  <button class="gsearch" id="gsearch" aria-label="소식 검색">검색</button>
 </div></nav>
-
+<div class="quick"><div class="wrap">
+  <a href="#news" data-board="purpose">설립 취지</a><a href="#news" data-board="biz">주요사업</a><a href="#news" data-board="edu">교육·AI</a><a href="#news" data-board="local">지역언론</a><a href="#news" data-board="memberinfo">회원</a><a href="#news" data-board="notice">공지사항</a>
+</div></div>
 <div class="ticker"><div class="wrap">
-  <span class="tag">협회소식</span><a href="#news" id="tick"></a><time id="tickdate"></time>
+  <span class="tag">실시간</span><a href="#news" id="tick"></a><time id="tickdate"></time>
 </div></div>
 
 <main id="main">
 
 <!-- ================= 홈 ================= -->
 <div class="page" data-page="home">
-  <section class="hero"><div class="wrap">
+  <div class="wrap">
+    <div class="top">
+      <a class="lead" href="#news" id="lead">
+        <span class="mk"><svg><use href="#logo"/></svg></span>
+        <span class="tx"><span>KOREA DAILY JOURNALISTS ASSOCIATION</span><h2 id="leadT"></h2><p id="leadS"></p></span>
+      </a>
+      <aside class="side">
+        <div class="sidebox"><h3>한국일간기자협회 안내문</h3><div class="in">
+          <a href="img/guide.jpg" target="_blank" rel="noopener"><img src="img/guide.jpg" alt="사단법인 한국일간기자협회 안내문: 설립 취지, 운영체계, 회원 혜택" loading="lazy"></a>
+          <div class="mini"><a href="#member/join">가입신청</a><a href="img/guide.jpg" target="_blank" rel="noopener">크게보기</a></div></div></div>
+        <h4>협회 안내</h4>
+        <ul class="rows" id="sideRows"></ul>
+      </aside>
+    </div>
+    <div class="sec4" id="sec4"></div>
+  </div>
+
+  <div class="band"><div class="wrap">
+    <div class="l"><h3>주요 안내</h3><ol class="rank" id="rank"></ol></div>
+    <div class="r"><div><h3>한국일간기자협회<br>운영소식</h3><div class="arrows"><button id="opPrev" aria-label="이전 소식">←</button><button id="opNext" aria-label="다음 소식">→</button></div></div>
+      <a class="it" href="#news" id="opSlide"></a></div>
+  </div></div>
+
+  <div class="wrap"><div class="c3">
+    <div class="col"><h3><a href="#news" data-board="local">지역언론</a></h3><div id="localCard"></div></div>
+    <div class="col"><h3><a href="#news" data-board="biz">주요사업</a></h3><ul class="rows" id="bizRows"></ul></div>
     <div>
-      <span class="kick">KOREA DAILY JOURNALISTS ASSOCIATION</span>
-      <h1>진실을 기록하는 언론,<br><i>더 나은 사회</i>를 만듭니다</h1>
-      <p>사단법인 한국일간기자협회는 신문·방송·통신·인터넷 등 다양한 언론 영역의 언론인과 전문가가 함께하는 공익적 연합체입니다.</p>
-      <div class="btns"><a class="btn red" href="#member/join">회원가입 안내</a><a class="btn line" href="#about/intro">협회 알아보기</a></div>
+      <a class="bnr n" href="#member/join"><b>회원가입 안내</b>정회원 · 준회원 · 특별회원 · 명예회원 · 단체회원</a>
+      <a class="bnr r" href="#contact"><b>기사 제보 · 취재 협력</b>지역 현안과 공익 제보를 받습니다</a>
+      <a class="bnr c" href="#contact"><b>법률 · 행정 상담</b>취재권 독립을 위한 자문위원 연계</a>
+      <a class="bnr w" href="#about/charter"><b>정관 전문 보기</b>제1장 총칙부터 부칙까지</a>
     </div>
-    <div class="mark"><svg><use href="#logo"/></svg></div>
-  </div></section>
+  </div></div>
 
-  <section class="blk"><div class="wrap">
-    <div class="stitle"><span class="no">01 설립 취지</span><span class="en">ESTABLISHMENT PURPOSE</span></div>
-    <h2 class="big">진실한 언론, <i>공정한 사회</i>를 위한 연대</h2>
-    <p class="lead">언론인의 전문성 향상과 권익 보호, 취재 협력, 지역언론 지원을 통해 건전한 언론문화를 조성하고 시민과 지역사회의 발전에 기여하고자 합니다.</p>
-    <div class="g3" style="margin-top:30px">
-      <div class="card"><div class="pill n">01</div><h3>언론인의 전문성 향상</h3><p>각계 전문가 초청 교육과 AI·빅데이터 활용 교육으로 정확한 보도를 뒷받침합니다.</p></div>
-      <div class="card"><div class="pill r">02</div><h3>권익 보호와 복지 증진</h3><p>취재권의 독립을 위한 법률·행정 지원과 회원 복지 사업을 펼칩니다.</p></div>
-      <div class="card"><div class="pill c">03</div><h3>지역사회와 시민을 위한 건강한 언론문화</h3><p>정책 세미나와 포럼, 지역언론 지원으로 시민의 알권리와 지역경제 발전에 기여합니다.</p></div>
+  <div class="strip"><div class="wrap">
+    <a href="#member/type">정회원<small>일간신문 현직 기자</small></a><a href="#member/type">준회원<small>방송·통신·인터넷 언론 종사자</small></a><a href="#member/type">특별회원<small>언론 관련 학자·전문가</small></a><a href="#member/type">명예회원<small>언론 발전에 뜻있는 인사</small></a><a href="#member/type">단체회원<small>지역 기자단·언론단체·언론사</small></a>
+  </div></div>
+
+  <div class="wrap"><div class="c3 eq">
+    <div class="col"><h3>최신 소식</h3><ul class="rows left" id="latest"></ul></div>
+    <div class="photo"><div class="ph"><h3>포토</h3><span class="dots" id="dots"></span></div>
+      <img class="th" id="phImg" src="img/ci-sign.jpg" alt=""><h4 id="phCap"></h4></div>
+    <div class="col op"><h3>오피니언</h3>
+      <a href="#contact"><i>칼럼</i><span><b>회원 칼럼을 기다립니다</b><small>회원 칼럼 · 원고 보내기</small></span></a>
+      <a href="#contact"><i>기자</i><span><b>현장의 목소리, 기자 포커스</b><small>기자 포커스 · 원고 보내기</small></span></a>
+      <a href="#contact"><i>독자</i><span><b>시민과 독자의 의견을 듣습니다</b><small>독자 의견 · 보내기</small></span></a>
     </div>
-    <div class="note"><b>사단법인 한국일간기자협회는</b> 언론이 바로 서야 사회가 더 나아갈 수 있다는 신념으로 언론의 공적 책임을 실천합니다.</div>
-  </div></section>
-
-  <section class="blk soft"><div class="wrap">
-    <div class="newsgrid">
-      <div>
-        <div class="hd"><h3>공지사항</h3><a href="#news">더보기 +</a></div>
-        <ul class="blist" id="homeNotice"></ul>
-      </div>
-      <div>
-        <div class="hd"><h3>성명서 · 기자상</h3><a href="#news">더보기 +</a></div>
-        <ul class="blist" id="homeSide"></ul>
-      </div>
-    </div>
-  </div></section>
-
-  <section class="blk"><div class="wrap">
-    <div class="stitle"><span class="no">02 주요사업</span><span class="en">MAIN BUSINESS</span></div>
-    <div class="g3" id="homeBiz"></div>
-    <div class="btns"><a class="btn navy" href="#business/detail">사업별 세부계획 보기</a></div>
-  </div></section>
-
-  <section class="blk soft"><div class="wrap">
-    <div class="stitle"><span class="no">03 회원 혜택</span><span class="en">MEMBER BENEFITS</span></div>
-    <div class="g4 keep2" id="homeBenefit"></div>
-  </div></section>
+  </div></div>
 </div>
 
 <!-- ================= 협회소개 ================= -->
@@ -481,6 +591,7 @@ form.f .chk input{width:auto;flex:none;margin-top:6px}
 <div class="page" data-page="news">
   <div class="phead"><div class="wrap"><span>NEWS &amp; NOTICE</span><h1>협회소식</h1></div></div>
   <section class="blk"><div class="wrap">
+    <div class="searchbar"><input id="q" type="search" placeholder="소식 검색: 제목·본문" aria-label="소식 검색"></div>
     <div class="tabs" id="boardTabs" role="tablist"></div>
     <ul class="blist" id="boardList"></ul>
     <div id="postView"></div>
@@ -595,7 +706,7 @@ form.f .chk input{width:auto;flex:none;margin-top:6px}
 </div></section>
 
 <footer class="foot"><div class="wrap">
-  <div class="links"><a href="#about/intro">협회소개</a><a href="#about/charter">정관</a><a href="#business">주요사업</a><a href="#member/join">회원가입</a><a href="#contact">제보·문의</a><a href="#about/map">오시는 길</a></div>
+  <div class="links"><a href="#about/intro">협회소개</a><a href="#about/charter">정관</a><a href="#business">주요사업</a><a href="#member/join">회원가입</a><a href="#contact">제보·문의</a><a href="#about/map">오시는 길</a><a class="brand" href="#home"><svg><use href="#logo"/></svg><span><small>사단법인</small><strong>한국일간기자협회</strong></span></a></div>
   <dl>
     <div><dt>법인명</dt><dd>사단법인 한국일간기자협회</dd></div>
     <div><dt>주소</dt><dd id="addr1"></dd></div>
@@ -630,12 +741,34 @@ const OFFICERS = [
    board: notice(공지사항) statement(성명서) award(기자상) forum(포럼·교육 소식) people(회원 동정)
    ============================================================ */
 const POSTS = [
-  {board:"notice", date:"2026-11-19", title:"사단법인 한국일간기자협회 홈페이지를 열었습니다",
+  {board:"purpose", date:"2026-11-19", title:"“언론이 바로 서야 사회가 나아간다”… 한국일간기자협회 설립 취지",
+   sum:"일간신문 기자를 중심으로 방송·통신·인터넷 매체 종사자와 언론 관련 학자가 함께하는 전국 단위 언론인 연합체를 지향합니다.",
+   body:["언론은 시민의 알권리를 보장하고 건강한 공론을 형성하는 민주사회의 중요한 기둥입니다. 그러나 취재 현장의 언론인은 급변하는 미디어 환경 속에서 전문성 향상의 기회, 안정적인 복지 기반, 열악한 지역 언론의 취재 여건 등 해결해야 할 과제를 안고 있습니다.","한국일간기자협회는 일간신문 기자를 중심으로 방송, 통신, 인터넷 매체 종사자와 언론 관련 학자가 함께하는 전국 단위의 언론인 연합체입니다.","본회는 언론인의 친목 도모와 복지 증진, 전문성 향상을 위한 교육, 취재 협력과 지역신문·인터넷신문 지원을 통해 건전한 언론 문화를 조성하고, 시민과 기업인이 참여하는 정책 논의를 통하여 지역사회와 지역경제 발전 등 공익 증진에 기여하고자 합니다."]},
+  {board:"biz", date:"2026-11-19", c:"r", title:"한눈에 보는 목적사업 11가지", sum:"친목·복지, 전문 교육, AI 취재 지원, 합동취재, 정책 포럼, 법률 지원, 시상, 간행물, 국제 교류, 지부 연대.",
+   body:["정관 제5조는 본회의 목적사업을 11가지로 정하고 있습니다.","회원 친목 도모 및 복지 증진, 각계 전문가 초청 교육, AI 기술과 빅데이터를 활용한 취재·보도 지원, 일간신문·지역신문·인터넷신문의 취재 여건 지원과 합동취재 협력, 지역경제 발전을 위한 정책 세미나 및 포럼, 언론인의 권익 보호와 취재권 독립을 위한 법률·행정 지원, 언론윤리 연구·보도 모니터링·우수 언론인 시상, 회보·단행본·정기간행물 발간, 해외 언론단체 교류, 지부 설치 및 지역 언론단체 연대, 그 밖에 목적 달성에 필요한 사업입니다.","사업별 세부계획은 '주요사업' 메뉴에서 확인하실 수 있습니다."]},
+  {board:"memberinfo", date:"2026-11-19", c:"c", img:"img/press-line.jpg", title:"정회원부터 단체회원까지… 회원 구분과 회비 안내", sum:"회원은 정회원·준회원·특별회원·명예회원·단체회원으로 구분하며, 정회원 회비는 월 1만원 이상입니다.",
+   body:["본회의 회원은 설립 취지에 찬동하여 입회원서를 제출하고 이사회의 승인을 받은 자로 합니다.","정회원은 일간신문사에 소속되어 현재 취재·보도 업무에 종사하는 기자, 준회원은 방송·통신사·인터넷신문·잡지사 등의 언론 종사자와 전직 일간신문 기자입니다. 특별회원은 언론 관련 학자와 전문가, 명예회원은 언론 발전과 지역사회에 기여할 뜻이 있는 인사, 단체회원은 지역 기자단·언론인 단체·언론사입니다.","정회원의 회비는 1인당 월 1만원 이상, 회장·부회장·이사는 월 5만원 이상이며 연회비로 일괄 납부할 수 있습니다. 총회의 의결권은 정회원과 단체회원이 가집니다."]},
+  {board:"edu", date:"2026-11-19", img:"img/camera.jpg", title:"전문가 초청 교육 연 2회, AI 활용 교육 연 1회 운영 계획", sum:"분야별 전문가 강연과 사실 확인(팩트체크) 도구 실습으로 정확한 보도를 뒷받침합니다.",
+   body:["본회는 언론인의 전문성 향상을 위해 상·하반기 연 2회 각계 전문가 초청 교육을 계획하고 있습니다. 회원 및 언론 종사자 50명 내외를 대상으로 분야별 주요 이슈 강연과 전문가 발표를 진행합니다. 회원은 무료입니다.","또한 AI 기술과 빅데이터를 활용한 정확한 정보 습득 교육과정을 연 1회 운영하고, 사실 확인(팩트체크) 등 무료 취재 지원 도구를 안내·실습할 계획입니다."]},
+  {board:"local", date:"2026-11-19", c:"c", img:"img/ci-sign.jpg", title:"지역신문·인터넷신문 취재 여건 지원… 회원사 장비 상호 무상 대여 추진", sum:"회원사 보유 장비 목록을 구축하고 지부 중심 합동취재팀을 구성할 계획입니다.",
+   body:["규모·재정·인력 여건이 어려운 지역신문과 인터넷신문을 위해 취재 장비와 기사 작성 장소를 지원하는 사업을 추진합니다.","회원사 보유 장비의 상호 무상 대여로 취재 비용을 줄이고, 언론사 간 정보 공유와 합동 취재를 활성화할 계획입니다. 이를 위해 회원사 보유 장비 목록과 대여 절차를 마련하고 지부 중심의 합동취재팀을 구성합니다."]},
+  {board:"biz", date:"2026-11-19", title:"시민·기업인과 함께하는 정책 세미나·포럼, 연 2회 계획", sum:"지역에 맞는 정책을 발굴해 정부·지자체 등 관련 기관에 제안합니다.",
+   body:["지역 시민과 기업인이 참여하는 정책 세미나를 상·하반기 연 2회 열 계획입니다. 시민·기업인 등 불특정 다수를 대상으로 하는 공익사업으로 참가비는 무료입니다.","토론 결과는 주요 정책 제안으로 정리해 정부, 지자체 등 관련 기관에 건의합니다."]},
+  {board:"biz", date:"2026-11-19", c:"r", title:"취재권 독립 위한 법률·행정 지원, 자문위원 위촉 계획", sum:"지역별 변호사와 주제별 전문가를 자문위원으로 위촉해 회원과 연결합니다.",
+   body:["취재와 기사 작성 과정에서 발생할 수 있는 법률·행정 업무를 지원합니다. 지역별 법률 전문가(변호사)와 주제별 전문가를 자문위원으로 위촉하고, 전화·전자우편 상담 창구를 운영할 계획입니다.","자문위원은 재능기부(무보수) 방식으로 위촉합니다."]},
+  {board:"biz", date:"2026-11-19", c:"c", title:"해외 언론단체와 화상 간담회… 국제 언론 정보 교류", sum:"1차로 아시아를 중심으로 언론 협력 체계를 구축할 계획입니다.",
+   body:["해외 언론사와의 정보 제휴를 위해 연 1회 외국 언론인 화상(온라인) 간담회를 계획하고 있습니다.","1차로 아시아를 중심으로 언론 협력 시스템을 구축하고, 2차로 유럽·아메리카 등 세계 언론기관과 정보 교류를 넓혀 갈 계획입니다."]},
+  {board:"biz", date:"2026-11-19", title:"시·도 권역별 지부 설치, 지역 언론단체와 연대", sum:"본회 소재지 권역부터 지부를 설치하고 단계적으로 전국으로 확대합니다.",
+   body:["본회는 이사회 의결을 거쳐 시·도 또는 권역별로 지부를 둘 수 있습니다. 지역 기자단 및 언론인 단체와 연대 협약을 맺어 전국 단위 언론인 연대망을 구축할 계획입니다."]},
+  {board:"award", date:"2026-11-19", c:"r", title:"우수 언론인 시상, 매년 12월 계획", sum:"공공의 발전에 기여한 기자와 언론 관련인을 발굴해 포상합니다.",
+   body:["올바른 언론 문화 조성을 위해 언론윤리 연구와 보도 모니터링을 하고, 공공의 발전에 기여한 기자 및 언론 관련인을 발굴해 포상합니다.","시상은 연 1회 12월에 열 계획이며, 시상 내용은 이사회에서 협의합니다."]},
+  {board:"notice", date:"2026-11-19", img:"img/ci-card.jpg", title:"사단법인 한국일간기자협회 홈페이지를 열었습니다", sum:"협회의 설립 취지와 정관, 주요사업, 회원 가입 안내를 확인하실 수 있습니다.",
    body:["한국일간기자협회 홈페이지를 열었습니다.","협회의 설립 취지와 정관, 주요사업, 회원 가입 안내를 이곳에서 확인하실 수 있습니다. 협회 소식과 공지사항도 이 게시판을 통해 알려 드리겠습니다."]},
-  {board:"notice", date:"2026-11-19", title:"회원 가입 안내: 정회원·준회원·특별회원·명예회원·단체회원",
+  {board:"notice", date:"2026-11-19", c:"c", img:"img/ci-press.jpg", title:"회원 가입 안내: 입회원서 제출 후 이사회 승인", sum:"회원안내 메뉴의 '가입 신청'에서 입회원서를 작성·출력해 사무국에 제출해 주십시오.",
    body:["본회의 설립 취지에 찬동하는 언론인과 언론 관련 전문가, 단체의 가입을 기다립니다.","회원안내 메뉴의 '가입 신청'에서 입회원서를 작성·출력해 사무국에 제출하시면 이사회 승인을 거쳐 회원이 됩니다."]}
 ];
-const BOARDS = {notice:"공지사항", statement:"성명서", award:"기자상", forum:"포럼·교육 소식", people:"회원 동정"};
+const BOARDS = {all:"전체", purpose:"설립 취지", biz:"주요사업", edu:"교육·AI", local:"지역언론", memberinfo:"회원", notice:"공지사항", statement:"성명서", award:"기자상", forum:"포럼·교육 소식", people:"회원 동정", column:"회원 칼럼", reporter:"기자 포커스"};
+const PHOTOS = [["img/ci-sign.jpg","사무공간 사인 적용 예시"],["img/ci-card.jpg","명함 적용 예시"],["img/ci-press.jpg","기자증 적용 예시"]];
 
 const BIZ = [
  {t:"회원 친목 도모 및 복지 증진", s:"회원 친선 행사, 경조사 지원, 복지 제휴",
@@ -710,7 +843,6 @@ $("#officerTbl").innerHTML = "<tr><th>직위</th><th>성명</th><th>임기</th><
   OFFICERS.map(o => `<tr><td>${esc(o.role)}</td><td>${o.name ? esc(o.name) : '<span style="color:var(--muted)">선임 후 게시</span>'}</td><td>2년</td></tr>`).join("");
 
 const bizCard = (b,i) => `<div class="card biz"><b class="num">${pad(i+1)}</b><div><h3>${esc(b.t)}</h3><p>${esc(b.s)}</p></div></div>`;
-$("#homeBiz").innerHTML = BIZ.slice(0,6).map(bizCard).join("");
 $("#bizGrid").innerHTML = BIZ.map(bizCard).join("");
 const ul = a => "<ul>" + a.map(x => `<li>${esc(x)}</li>`).join("") + "</ul>";
 $("#bizDetail").innerHTML = BIZ.filter(b => b.why).map((b,i) =>
@@ -720,38 +852,60 @@ $("#feeTbl").innerHTML = "<tr><th>사업</th><th>구분</th><th>참가비</th></
   BIZ.filter(b => b.fee).map((b,i) => `<tr><td>${i+1}. ${esc(b.t)}</td><td>${esc(b.fee[0])}</td><td>${esc(b.fee[1])}</td></tr>`).join("");
 
 const benefit = (t,i) => `<div class="card benefit"><div class="pill ${["n","r","c"][i%3]}">${pad(i+1)}</div><h3>${esc(t)}</h3></div>`;
-$("#homeBenefit").innerHTML = BENEFITS.slice(0,8).map(benefit).join("");
 $("#benefitGrid").innerHTML = BENEFITS.map(benefit).join("");
 
 $("#charter").innerHTML = CHARTER.map((ch,i) => `<details${i===0?" open":""}><summary>${esc(ch.title)}</summary><div class="dbody">` +
   ch.articles.map(a => `<div class="art">${a.head ? `<h4>${esc(a.head)}</h4>` : ""}` +
     a.lines.map(l => `<p class="${/^\d+\./.test(l) ? "i1" : ""}">${esc(l)}</p>`).join("") + "</div>").join("") + "</div></details>").join("");
 
-/* ---------- 게시판 ---------- */
+/* ---------- 게시판 · 첫 화면 ---------- */
 const sorted = POSTS.map((p,i) => ({...p, id:i})).sort((a,b) => b.date.localeCompare(a.date));
-const li = (p, cat) => `<li>${cat ? `<span class="cat${p.board==="statement"?" r":""}">${BOARDS[p.board]}</span>` : ""}<a href="#news" data-post="${p.id}">${esc(p.title)}</a><time>${p.date.replace(/-/g,".")}</time></li>`;
+const dot = d => d.replace(/-/g,".");
+const thumb = p => p.img ? `<img class="th" src="${p.img}" alt="" loading="lazy">` : `<span class="th ${p.c||""}"><b>${BOARDS[p.board]}</b><svg viewBox="0 0 200 200"><use href="#logo"/></svg></span>`;
+const li = (p, cat) => `<li>${cat ? `<span class="cat">${BOARDS[p.board]}</span>` : ""}<a href="#news" data-post="${p.id}">${esc(p.title)}</a><time>${dot(p.date)}</time></li>`;
 const emptyLi = '<li class="empty" style="display:block">등록된 게시물이 없습니다.</li>';
-let board = "notice";
+const of = b => sorted.filter(p => p.board === b);
+let board = "all", query = "";
 function showBoard(b, postId){
   board = b;
   $("#boardTabs").innerHTML = Object.entries(BOARDS).map(([k,v]) => `<button role="tab" aria-selected="${k===b}" class="${k===b?"on":""}" data-tab="${k}">${v}</button>`).join("");
-  const rows = sorted.filter(p => p.board === b);
-  $("#boardList").innerHTML = rows.length ? rows.map(p => li(p)).join("") : emptyLi;
+  const q = query.trim().toLowerCase();
+  const rows = sorted.filter(p => (b === "all" || p.board === b) && (!q || (p.title + p.sum + p.body.join(" ")).toLowerCase().includes(q)));
+  $("#boardList").innerHTML = rows.length ? rows.map(p => li(p, b === "all")).join("") : emptyLi;
   const p = sorted.find(x => x.id === postId);
-  $("#postView").innerHTML = p ? `<article class="post"><h3>${esc(p.title)}</h3><div class="meta">${BOARDS[p.board]} · ${p.date.replace(/-/g,".")}</div>${p.body.map(x => `<p>${esc(x)}</p>`).join("")}</article>` : "";
-  if (p) $("#postView").scrollIntoView({block:"nearest"});
+  $("#postView").innerHTML = p ? `<article class="post"><h3>${esc(p.title)}</h3><div class="meta">${BOARDS[p.board]} · ${dot(p.date)}</div>${p.img ? `<img src="${p.img}" alt="">` : ""}${p.body.map(x => `<p>${esc(x)}</p>`).join("")}</article>` : "";
+  if (p) $("#postView").scrollIntoView({block:"start"});
 }
-const notices = sorted.filter(p => p.board === "notice");
-$("#homeNotice").innerHTML = notices.length ? notices.slice(0,6).map(p => li(p)).join("") : emptyLi;
-const side = sorted.filter(p => p.board === "statement" || p.board === "award");
-$("#homeSide").innerHTML = side.length ? side.slice(0,6).map(p => li(p,true)).join("") : emptyLi;
-if (sorted[0]) { $("#tick").textContent = sorted[0].title; $("#tick").dataset.post = sorted[0].id; $("#tickdate").textContent = sorted[0].date.replace(/-/g,"."); }
+$("#q").addEventListener("input", e => { query = e.target.value; showBoard(board); });
+$("#gsearch").addEventListener("click", () => { pending = {board:"all"}; location.hash === "#news" ? route() : location.hash = "#news"; setTimeout(() => $("#q").focus(), 50); });
+
+const item = p => `<a class="it" href="#news" data-post="${p.id}">${thumb(p)}<h4>${esc(p.title)}</h4><p>${esc(p.sum)}</p></a>`;
+const rowIt = (p, cat) => `<li><a href="#news" data-post="${p.id}">${cat ? thumb(p) : ""}<span>${cat ? `<small>${BOARDS[p.board]}</small>` : ""}<h4>${esc(p.title)}</h4></span>${cat ? "" : thumb(p)}</a></li>`;
+const lead = of("purpose")[0] || sorted[0];
+$("#lead").dataset.post = lead.id; $("#leadT").textContent = lead.title; $("#leadS").textContent = lead.sum;
+$("#sideRows").innerHTML = of("notice").slice(0,3).map(p => rowIt(p)).join("");
+$("#sec4").innerHTML = ["biz","memberinfo","edu","award"].map(b => { const p = of(b)[0]; return p ? `<div><h3><a href="#news" data-board="${b}">${BOARDS[b]}</a></h3>${item(p)}</div>` : ""; }).join("");
+$("#rank").innerHTML = [lead, ...of("memberinfo"), ...of("notice"), ...of("biz")].slice(0,5).map((p,i) => `<li><i>${i+1}</i><a href="#news" data-post="${p.id}">${esc(p.title)}</a></li>`).join("");
+const ops = sorted.filter(p => ["notice","statement","award","forum","people"].includes(p.board));
+let opI = 0;
+function opShow(d){ if (!ops.length) return; opI = (opI + d + ops.length) % ops.length; const p = ops[opI], el = $("#opSlide"); el.dataset.post = p.id; el.innerHTML = `${thumb(p)}<h4>${esc(p.title)}</h4>`; }
+$("#opPrev").onclick = () => opShow(-1); $("#opNext").onclick = () => opShow(1); opShow(0);
+const loc = of("local")[0];
+$("#localCard").innerHTML = loc ? `<a class="cardit" href="#news" data-post="${loc.id}">${thumb(loc)}<h4>${esc(loc.title)}</h4></a>` : "";
+$("#bizRows").innerHTML = of("biz").slice(1,5).map(p => rowIt(p)).join("");
+$("#latest").innerHTML = sorted.slice().reverse().slice(0,4).map(p => rowIt(p,true)).join("");
+let phI = 0;
+function phShow(){ $("#phImg").src = PHOTOS[phI][0]; $("#phImg").alt = PHOTOS[phI][1]; $("#phCap").textContent = "CI " + PHOTOS[phI][1]; $("#dots").innerHTML = PHOTOS.map((_,i) => `<i class="${i===phI?"on":""}"></i>`).join(""); phI = (phI + 1) % PHOTOS.length; }
+phShow(); setInterval(phShow, 4500);
+let tkI = 0;
+function tick(){ const p = sorted[tkI % sorted.length]; $("#tick").textContent = p.title; $("#tick").dataset.post = p.id; $("#tickdate").textContent = dot(p.date); tkI++; }
+tick(); setInterval(tick, 4000);
 
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-tab],[data-post],[data-board]");
   if (!t) return;
   if (t.dataset.tab) return showBoard(t.dataset.tab);
-  if (t.dataset.board) { pending = {board:t.dataset.board}; }
+  if (t.dataset.board) pending = {board:t.dataset.board};
   if (t.dataset.post) { const p = sorted.find(x => x.id === +t.dataset.post); pending = {board:p.board, post:p.id}; }
   if (location.hash === "#news") route();
 });
