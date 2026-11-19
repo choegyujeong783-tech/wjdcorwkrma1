@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>사단법인 한국일간기자협회</title>
+<meta name="description" content="진실을 기록하는 언론, 더 나은 사회를 만듭니다. 사단법인 한국일간기자협회(KDJA) 공식 홈페이지.">
+<meta property="og:title" content="사단법인 한국일간기자협회">
+<meta property="og:description" content="진실을 기록하는 언론, 더 나은 사회를 만듭니다.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='84' fill='none' stroke='%230B2D5B' stroke-width='18'/%3E%3Cpath d='M100 168 74 124 84 102h32l10 22z' fill='%23333'/%3E%3Crect x='80' y='40' width='40' height='56' rx='20' fill='%230B2D5B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B2D5B; --navy-2:#123f7d; --navy-d:#071f40; --char:#333333; --red:#C62828; --gray:#D9D9D9;
+  --bg:#ffffff; --bg-soft:#f3f6fb; --line:#dfe5ee; --text:#1c2430; --muted:#5b6675; --wrap:1160px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:16px;line-height:1.7;word-break:keep-all;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+h1,h2,h3,h4{margin:0;line-height:1.3;letter-spacing:-.02em}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 20px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:8px 12px;z-index:99}
+:focus-visible{outline:3px solid #f2b63c;outline-offset:2px}
+
+/* 상단 유틸 바 */
+.util{background:var(--navy-d);color:#c9d6ea;font-size:13px}
+.util .wrap{display:flex;justify-content:space-between;align-items:center;height:36px;gap:12px}
+.util nav{display:flex;gap:18px}
+.util a:hover{color:#fff}
+/* 헤더 */
+.head .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:18px;padding-bottom:18px}
+.brand{display:flex;align-items:center;gap:14px}
+.brand svg{width:64px;height:64px;flex:none}
+.brand small{display:block;font-size:14px;font-weight:700;color:var(--navy);line-height:1.2}
+.brand strong{display:block;font-size:30px;font-weight:900;color:var(--navy-d);letter-spacing:-.04em;line-height:1.15}
+.brand em{display:block;font-style:normal;font-size:11.5px;letter-spacing:.2em;color:var(--muted);margin-top:2px}
+.head .slogan{text-align:right;font-size:14px;color:var(--muted)}
+.head .slogan b{display:block;font-size:10.5px;letter-spacing:.32em;color:#8b95a3;font-weight:500;margin-top:4px}
+/* GNB */
+.gnb{background:var(--navy);position:sticky;top:0;z-index:30;box-shadow:0 2px 8px rgba(7,31,64,.18)}
+.gnb .wrap{display:flex;align-items:stretch}
+.gnb ul.main{display:flex;flex:1}
+.gnb ul.main>li{position:relative}
+.gnb ul.main>li>a{display:block;padding:14px 22px;color:#fff;font-weight:700;font-size:16.5px}
+.gnb ul.main>li:hover>a,.gnb ul.main>li>a.on{background:var(--red)}
+.gnb .sub{position:absolute;left:0;top:100%;min-width:190px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--red);box-shadow:0 10px 24px rgba(7,31,64,.14);display:none;padding:6px 0}
+.gnb li:hover .sub,.gnb li:focus-within .sub{display:block}
+.gnb .sub a{display:block;padding:9px 18px;font-size:14.5px;color:var(--char)}
+.gnb .sub a:hover{background:var(--bg-soft);color:var(--navy)}
+.burger{display:none;background:none;border:0;color:#fff;font-size:15px;font-weight:700;padding:12px 0}
+/* 속보 티커 */
+.ticker{border-bottom:1px solid var(--line);background:#fff}
+.ticker .wrap{display:flex;align-items:center;gap:14px;height:46px;overflow:hidden}
+.ticker .tag{flex:none;background:var(--red);color:#fff;font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:3px}
+.ticker a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px}
+.ticker a:hover{text-decoration:underline}
+.ticker time{flex:none;margin-left:auto;color:var(--muted);font-size:13px}
+
+/* 페이지 전환 */
+.page{display:none}.page.on{display:block}
+.phead{background:linear-gradient(120deg,var(--navy-d),var(--navy) 60%,var(--navy-2));color:#fff;padding:44px 0 40px;position:relative;overflow:hidden}
+.phead:after{content:"";position:absolute;right:-60px;bottom:-120px;width:420px;height:240px;background:var(--red);transform:skewX(-28deg);opacity:.9}
+.phead .wrap{position:relative;z-index:1}
+.phead span{font-size:12px;letter-spacing:.3em;color:#a9bddc}
+.phead h1{font-size:34px;font-weight:900;margin-top:6px}
+.subnav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:52px;z-index:20}
+.subnav .wrap{display:flex;gap:4px;overflow-x:auto}
+.subnav a{flex:none;padding:13px 16px;font-size:15px;font-weight:500;color:var(--muted);border-bottom:3px solid transparent}
+.subnav a:hover{color:var(--navy);border-color:var(--navy)}
+section.blk{padding:56px 0;scroll-margin-top:110px}
+section.blk.soft{background:var(--bg-soft)}
+.stitle{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.stitle .no{background:var(--navy);color:#fff;font-weight:900;font-size:20px;padding:8px 26px 8px 18px;clip-path:polygon(0 0,100% 0,calc(100% - 16px) 100%,0 100%)}
+.stitle .en{font-size:12px;letter-spacing:.28em;color:var(--navy-2);flex:none}
+.stitle:after{content:"";flex:1;height:1px;background:var(--line)}
+h2.big{font-size:30px;font-weight:900;color:var(--navy-d);margin-bottom:14px}
+h2.big i{font-style:normal;color:var(--red)}
+.lead{color:#3b4656;font-size:17px;max-width:760px}
+.note{border-left:4px solid var(--navy);background:#eef3fa;padding:16px 20px;border-radius:0 8px 8px 0;margin-top:22px}
+.note b{color:var(--navy-d)}
+
+/* 히어로 */
+.hero{background:linear-gradient(115deg,var(--navy-d) 0%,var(--navy) 55%,var(--navy-2) 100%);color:#fff;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;right:-80px;bottom:-140px;width:560px;height:300px;background:var(--red);transform:skewX(-28deg)}
+.hero:after{content:"";position:absolute;right:120px;bottom:-140px;width:90px;height:300px;background:#fff;opacity:.9;transform:skewX(-28deg)}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center;padding-top:64px;padding-bottom:72px}
+.hero .kick{font-size:12.5px;letter-spacing:.34em;color:#a9bddc}
+.hero h1{font-size:46px;font-weight:900;margin:14px 0 18px;line-height:1.25}
+.hero h1 i{font-style:normal;color:#ff8a80}
+.hero p{font-size:17.5px;color:#dbe5f3;max-width:600px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-block;padding:13px 26px;border-radius:6px;font-weight:700;border:2px solid transparent;font-size:16px}
+.btn.red{background:var(--red);color:#fff}.btn.red:hover{background:#a81f1f}
+.btn.line{border-color:#fff;color:#fff}.btn.line:hover{background:#fff;color:var(--navy)}
+.btn.navy{background:var(--navy);color:#fff}.btn.navy:hover{background:var(--navy-d)}
+.hero .mark{justify-self:center;background:#fff;border-radius:50%;width:280px;height:280px;display:grid;place-items:center;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.hero .mark svg{width:210px;height:210px}
+
+/* 카드 그리드 */
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px}
+.pill{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;color:#fff;font-weight:900;font-size:22px;margin-bottom:14px}
+.pill.n{background:var(--navy)}.pill.r{background:var(--red)}.pill.c{background:var(--char)}
+.card h3{font-size:19px;color:var(--navy-d);margin-bottom:6px}
+.card p{color:var(--muted);font-size:15px}
+.biz{display:flex;gap:14px;align-items:flex-start}
+.biz b.num{flex:none;width:38px;height:38px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:15px}
+.biz:nth-child(3n+2) b.num{background:var(--red)}.biz:nth-child(3n) b.num{background:var(--char)}
+.biz h3{font-size:16.5px;margin-bottom:2px}
+.benefit{text-align:center;padding:22px 12px}
+.benefit .pill{margin:0 auto 12px;width:54px;height:54px;font-size:18px}
+.benefit h3{font-size:15.5px}
+
+/* 조직도 */
+.org{display:flex;flex-direction:column;align-items:center;gap:0}
+.org .box{padding:12px 34px;border-radius:8px;font-weight:700;text-align:center;color:#fff;min-width:220px}
+.org .box small{display:block;font-weight:400;font-size:13px;opacity:.9}
+.org .top{background:var(--navy)}.org .mid{background:var(--red)}
+.org .row1{display:flex;align-items:center;gap:0}
+.org .side{background:#e8eef7;color:var(--navy-d);min-width:170px}
+.org .hl{width:60px;height:2px;background:var(--navy)}
+.org .vl{width:2px;height:24px;background:var(--navy)}
+.org .kids{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;width:100%;border-top:2px solid var(--navy);padding-top:22px;margin-top:0}
+.org .kid{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;position:relative}
+.org .kid:before{content:"";position:absolute;left:50%;top:-23px;width:2px;height:22px;background:var(--navy)}
+.org .kid b{display:block;color:var(--navy-d);font-size:16px}
+.org .kid span{color:var(--muted);font-size:14px}
+
+/* 표 */
+.tbl{width:100%;border-collapse:collapse;border-top:2px solid var(--navy);background:#fff;font-size:15.5px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:13px 14px;text-align:left;vertical-align:top}
+.tbl th{background:#f3f6fb;color:var(--navy-d);white-space:nowrap;font-weight:700}
+.tbl td.c,.tbl th.c{text-align:center}
+.scroll{overflow-x:auto}
+
+/* 소식 */
+.newsgrid{display:grid;grid-template-columns:1.6fr 1fr;gap:32px}
+.newsgrid>*,.g2>*,.g3>*,.g4>*{min-width:0}
+.blist li{display:flex;gap:12px;align-items:baseline;padding:13px 2px;border-bottom:1px solid var(--line)}
+.blist .cat{flex:none;font-size:12.5px;font-weight:700;color:var(--navy);border:1px solid var(--navy);border-radius:3px;padding:1px 7px}
+.blist .cat.r{color:var(--red);border-color:var(--red)}
+.blist a{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blist a:hover{text-decoration:underline;color:var(--navy)}
+.blist time{flex:none;color:var(--muted);font-size:13.5px}
+.empty{padding:38px 10px;text-align:center;color:var(--muted);border-bottom:1px solid var(--line)}
+.hd{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--navy);padding-bottom:10px}
+.hd h3{font-size:20px;color:var(--navy-d)}
+.hd a{font-size:13.5px;color:var(--muted)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 18px;font-size:15px;color:var(--muted)}
+.tabs button.on{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:700}
+.post{background:#fff;border:1px solid var(--line);border-radius:10px;padding:28px;margin-top:20px}
+.post h3{font-size:22px;color:var(--navy-d)}
+.post .meta{color:var(--muted);font-size:14px;margin:6px 0 16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.post p{margin-bottom:10px}
+
+/* 사업 상세, 정관 */
+details{background:#fff;border:1px solid var(--line);border-radius:10px;margin-bottom:10px}
+summary{cursor:pointer;padding:16px 20px;font-weight:700;font-size:17px;color:var(--navy-d);display:flex;gap:12px;align-items:center;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";margin-left:auto;color:var(--red);font-size:22px;font-weight:400}
+details[open] summary:after{content:"–"}
+summary .num{flex:none;background:var(--navy);color:#fff;border-radius:6px;min-width:34px;height:30px;display:grid;place-items:center;font-size:14px;padding:0 6px}
+.dbody{padding:4px 22px 22px;border-top:1px solid var(--line)}
+.dbody h4{font-size:15px;color:var(--red);margin:16px 0 4px}
+.dbody li{padding-left:14px;position:relative;font-size:15.5px}
+.dbody li:before{content:"";position:absolute;left:0;top:.75em;width:5px;height:5px;border-radius:50%;background:var(--navy)}
+.art{padding:14px 0;border-bottom:1px dashed var(--line)}
+.art:last-child{border-bottom:0}
+.art h4{font-size:16px;color:var(--navy-d);margin-bottom:4px}
+.art p{font-size:15.5px}
+.art p.i1{padding-left:1.2em}
+
+/* 색상칩 */
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.chip{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.chip i{display:block;height:84px}
+.chip div{padding:12px 14px;font-size:14px;color:var(--muted)}
+.chip b{display:block;color:var(--text);font-size:15px}
+
+/* 폼 */
+form.f{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+form.f label{display:block;font-size:14.5px;font-weight:700;color:var(--navy-d)}
+form.f .full{grid-column:1/-1}
+form.f input,form.f select,form.f textarea{width:100%;margin-top:6px;padding:11px 12px;border:1px solid #c5cedb;border-radius:6px;font:inherit;font-weight:400;background:#fff;color:var(--text)}
+form.f textarea{min-height:110px;resize:vertical}
+.chk{display:flex;gap:8px;align-items:flex-start;font-weight:400!important;color:var(--text)!important}
+form.f .chk input{width:auto;flex:none;margin-top:6px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:s}
+.steps li{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;counter-increment:s}
+.steps li:before{content:"STEP " counter(s);display:block;font-size:12px;letter-spacing:.14em;color:var(--red);font-weight:700;margin-bottom:6px}
+.steps b{display:block;color:var(--navy-d);font-size:17px}
+.steps span{color:var(--muted);font-size:14.5px}
+
+/* CTA, 푸터 */
+.cta{background:linear-gradient(110deg,var(--navy-d),var(--navy));color:#fff;padding:56px 0;position:relative;overflow:hidden}
+.cta:after{content:"";position:absolute;right:-50px;top:0;bottom:0;width:260px;background:var(--red);transform:skewX(-24deg)}
+.cta .wrap{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.cta h2{font-size:28px;font-weight:900}
+.cta p{color:#dbe5f3;margin-top:8px;max-width:640px}
+.foot{background:#0a1a33;color:#aab6c8;font-size:14px;padding:36px 0 44px}
+.foot .links{display:flex;gap:20px;flex-wrap:wrap;padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid #1f3355;color:#e2e9f3;font-weight:500}
+.foot .links a:hover{text-decoration:underline}
+.foot dl{display:flex;flex-wrap:wrap;gap:4px 22px;margin:0 0 12px}
+.foot dl div{display:flex;gap:6px}.foot dt{color:#7e8da3}.foot dd{margin:0}
+.foot .cp{color:#7e8da3;font-size:13px}
+.print-sheet{display:none}
+
+@media (max-width:900px){
+  .head .slogan{display:none}
+  .brand svg{width:50px;height:50px}.brand strong{font-size:23px}.brand small{font-size:12px}.brand em{letter-spacing:.08em;font-size:10px}
+  .burger{display:block}
+  .gnb ul.main{display:none;flex-direction:column;position:absolute;left:0;right:0;top:100%;background:var(--navy);padding-bottom:8px;max-height:75vh;overflow:auto}
+  .gnb.open ul.main{display:flex}
+  .gnb ul.main>li>a{padding:11px 20px}
+  .gnb .sub{position:static;display:block;border:0;box-shadow:none;background:var(--navy-d);padding:4px 0}
+  .gnb .sub a{color:#c9d6ea;padding:7px 32px}
+  .subnav{top:47px}
+  .hero .wrap{grid-template-columns:1fr;padding-top:44px;padding-bottom:56px}
+  .hero h1{font-size:32px}.hero .mark{display:none}.hero:after{display:none}.hero:before{width:260px;height:120px;bottom:-80px}
+  .g3,.g4,.g2,.newsgrid,.chips,.steps,form.f{grid-template-columns:1fr}
+  .g4.keep2,.chips{grid-template-columns:1fr 1fr}
+  .org .kids{grid-template-columns:1fr 1fr}
+  .org .row1{flex-direction:column}.org .hl{width:2px;height:16px}
+  h2.big{font-size:24px}.phead h1{font-size:26px}
+  section.blk{padding:40px 0}
+  .stitle .en{display:none}
+  .util nav a.hide-m{display:none}
+  .cta:after{display:none}
+}
+@media print{
+  body>*:not(.print-sheet){display:none!important}
+  .print-sheet{display:block;padding:24px;font-size:14px;color:#000}
+  .print-sheet h1{text-align:center;font-size:26px;letter-spacing:.4em;margin:10px 0 24px}
+  .print-sheet table{width:100%;border-collapse:collapse}
+  .print-sheet th,.print-sheet td{border:1px solid #000;padding:10px 12px;text-align:left}
+  .print-sheet th{width:26%;background:#eee}
+  .print-sheet .sign{margin-top:40px;text-align:center;line-height:2.4}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 200 200">
+    <g fill="none" stroke-linecap="butt">
+      <path d="M97.1 183.9 A84 84 0 0 1 94.1 16.2" stroke="#0B2D5B" stroke-width="18"/>
+      <path d="M107.8 10.3 A90 90 0 0 1 182.2 63.4" stroke="#C62828" stroke-width="7"/>
+      <path d="M106.7 23.3 A77 77 0 0 1 168.0 63.9" stroke="#C62828" stroke-width="7"/>
+      <path d="M181.5 79.7 A84 84 0 0 1 107.3 183.7" stroke="#333333" stroke-width="18"/>
+    </g>
+    <g fill="#0B2D5B"><rect x="40" y="82" width="32" height="7"/><rect x="40" y="95" width="32" height="7"/><rect x="40" y="108" width="32" height="7"/><rect x="40" y="121" width="32" height="7"/></g>
+    <g fill="#8a8a8a"><rect x="128" y="82" width="32" height="7"/><rect x="128" y="95" width="32" height="7"/><rect x="128" y="108" width="32" height="7"/><rect x="128" y="121" width="32" height="7"/></g>
+    <rect x="80" y="40" width="40" height="58" rx="20" fill="#0B2D5B"/>
+    <g fill="#fff"><rect x="88" y="56" width="24" height="5"/><rect x="88" y="68" width="24" height="5"/><rect x="88" y="80" width="24" height="5"/></g>
+    <path d="M100 170 73 126 84 103h32l11 23z" fill="#333333"/>
+    <circle cx="100" cy="128" r="6.5" fill="#fff"/><rect x="98.6" y="133" width="2.8" height="34" fill="#fff"/>
+  </symbol>
+</svg>
+
+<div class="util"><div class="wrap">
+  <span id="today"></span>
+  <nav aria-label="바로가기">
+    <a href="#about/intro" class="hide-m">협회소개</a>
+    <a href="#member/join">회원가입 안내</a>
+    <a href="#contact">제보·문의</a>
+  </nav>
+</div></div>
+
+<header class="head"><div class="wrap">
+  <a class="brand" href="#home" aria-label="사단법인 한국일간기자협회 홈">
+    <svg><use href="#logo"/></svg>
+    <span><small>사단법인</small><strong>한국일간기자협회</strong><em>Korea Daily Journalists Association</em></span>
+  </a>
+  <p class="slogan">사실을 쓰는 오늘, 더 나은 내일을 만드는 언론<b>TRUTH · PEOPLE · SOCIETY · TOMORROW</b></p>
+</div></header>
+
+<nav class="gnb" id="gnb" aria-label="주메뉴"><div class="wrap">
+  <button class="burger" id="burger" aria-expanded="false" aria-controls="mainmenu">☰ 전체메뉴</button>
+  <ul class="main" id="mainmenu">
+    <li><a href="#about" data-nav="about">협회소개</a>
+      <div class="sub"><a href="#about/intro">설립 취지</a><a href="#about/org">운영체계</a><a href="#about/officers">임원 명단</a><a href="#about/ci">CI 소개</a><a href="#about/charter">정관</a><a href="#about/map">오시는 길</a></div></li>
+    <li><a href="#business" data-nav="business">주요사업</a>
+      <div class="sub"><a href="#business/list">목적사업</a><a href="#business/detail">사업별 세부계획</a><a href="#business/fee">참가비 운영</a></div></li>
+    <li><a href="#news" data-nav="news">협회소식</a>
+      <div class="sub"><a href="#news" data-board="notice">공지사항</a><a href="#news" data-board="statement">성명서</a><a href="#news" data-board="award">기자상</a><a href="#news" data-board="forum">포럼·교육 소식</a><a href="#news" data-board="people">회원 동정</a></div></li>
+    <li><a href="#member" data-nav="member">회원안내</a>
+      <div class="sub"><a href="#member/type">회원 구분</a><a href="#member/benefit">회원 혜택</a><a href="#member/fee">회비</a><a href="#member/join">가입 신청</a></div></li>
+    <li><a href="#contact" data-nav="contact">제보·문의</a></li>
+  </ul>
+</div></nav>
+
+<div class="ticker"><div class="wrap">
+  <span class="tag">협회소식</span><a href="#news" id="tick"></a><time id="tickdate"></time>
+</div></div>
+
+<main id="main">
+
+<!-- ================= 홈 ================= -->
+<div class="page" data-page="home">
+  <section class="hero"><div class="wrap">
+    <div>
+      <span class="kick">KOREA DAILY JOURNALISTS ASSOCIATION</span>
+      <h1>진실을 기록하는 언론,<br><i>더 나은 사회</i>를 만듭니다</h1>
+      <p>사단법인 한국일간기자협회는 신문·방송·통신·인터넷 등 다양한 언론 영역의 언론인과 전문가가 함께하는 공익적 연합체입니다.</p>
+      <div class="btns"><a class="btn red" href="#member/join">회원가입 안내</a><a class="btn line" href="#about/intro">협회 알아보기</a></div>
+    </div>
+    <div class="mark"><svg><use href="#logo"/></svg></div>
+  </div></section>
+
+  <section class="blk"><div class="wrap">
+    <div class="stitle"><span class="no">01 설립 취지</span><span class="en">ESTABLISHMENT PURPOSE</span></div>
+    <h2 class="big">진실한 언론, <i>공정한 사회</i>를 위한 연대</h2>
+    <p class="lead">언론인의 전문성 향상과 권익 보호, 취재 협력, 지역언론 지원을 통해 건전한 언론문화를 조성하고 시민과 지역사회의 발전에 기여하고자 합니다.</p>
+    <div class="g3" style="margin-top:30px">
+      <div class="card"><div class="pill n">01</div><h3>언론인의 전문성 향상</h3><p>각계 전문가 초청 교육과 AI·빅데이터 활용 교육으로 정확한 보도를 뒷받침합니다.</p></div>
+      <div class="card"><div class="pill r">02</div><h3>권익 보호와 복지 증진</h3><p>취재권의 독립을 위한 법률·행정 지원과 회원 복지 사업을 펼칩니다.</p></div>
+      <div class="card"><div class="pill c">03</div><h3>지역사회와 시민을 위한 건강한 언론문화</h3><p>정책 세미나와 포럼, 지역언론 지원으로 시민의 알권리와 지역경제 발전에 기여합니다.</p></div>
+    </div>
+    <div class="note"><b>사단법인 한국일간기자협회는</b> 언론이 바로 서야 사회가 더 나아갈 수 있다는 신념으로 언론의 공적 책임을 실천합니다.</div>
+  </div></section>
+
+  <section class="blk soft"><div class="wrap">
+    <div class="newsgrid">
+      <div>
+        <div class="hd"><h3>공지사항</h3><a href="#news">더보기 +</a></div>
+        <ul class="blist" id="homeNotice"></ul>
+      </div>
+      <div>
+        <div class="hd"><h3>성명서 · 기자상</h3><a href="#news">더보기 +</a></div>
+        <ul class="blist" id="homeSide"></ul>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="blk"><div class="wrap">
+    <div class="stitle"><span class="no">02 주요사업</span><span class="en">MAIN BUSINESS</span></div>
+    <div class="g3" id="homeBiz"></div>
+    <div class="btns"><a class="btn navy" href="#business/detail">사업별 세부계획 보기</a></div>
+  </div></section>
+
+  <section class="blk soft"><div class="wrap">
+    <div class="stitle"><span class="no">03 회원 혜택</span><span class="en">MEMBER BENEFITS</span></div>
+    <div class="g4 keep2" id="homeBenefit"></div>
+  </div></section>
+</div>
+
+<!-- ================= 협회소개 ================= -->
+<div class="page" data-page="about">
+  <div class="phead"><div class="wrap"><span>ABOUT KDJA</span><h1>협회소개</h1></div></div>
+  <div class="subnav"><div class="wrap"><a href="#about/intro">설립 취지</a><a href="#about/org">운영체계</a><a href="#about/officers">임원 명단</a><a href="#about/ci">CI 소개</a><a href="#about/charter">정관</a><a href="#about/map">오시는 길</a></div></div>
+
+  <section class="blk" id="about-intro"><div class="wrap">
+    <div class="stitle"><span class="no">설립 취지</span><span class="en">ESTABLISHMENT PURPOSE</span></div>
+    <h2 class="big">진실한 언론, <i>공정한 사회</i>를 위한 연대</h2>
+    <div class="g2" style="margin-top:20px">
+      <div>
+        <p style="margin-bottom:14px">언론은 시민의 알권리를 보장하고 건강한 공론을 형성하는 민주사회의 중요한 기둥입니다. 그러나 취재 현장의 언론인은 급변하는 미디어 환경 속에서 전문성 향상의 기회, 안정적인 복지 기반, 열악한 지역 언론의 취재 여건 등 해결해야 할 과제를 안고 있습니다.</p>
+        <p style="margin-bottom:14px">이에 일간신문 기자를 중심으로 방송, 통신, 인터넷 매체 종사자와 언론 관련 학자가 함께하는 전국 단위의 언론인 연합체로서 <b>한국일간기자협회</b>를 설립합니다.</p>
+        <p>본회는 언론인의 친목 도모와 복지 증진, 전문성 향상을 위한 교육, 취재 협력과 지역신문·인터넷신문 지원을 통해 건전한 언론 문화를 조성하고, 시민과 기업인이 참여하는 정책 논의를 통하여 지역사회와 지역경제 발전 등 공익 증진에 기여하고자 합니다.</p>
+      </div>
+      <div>
+        <table class="tbl">
+          <tr><th>명칭</th><td>사단법인 한국일간기자협회</td></tr>
+          <tr><th>영문</th><td>Korea Daily Journalists Association (KDJA)</td></tr>
+          <tr><th>설립근거</th><td>「민법」 제32조 및 「문화체육관광부 및 국가유산청 소관 비영리법인의 설립 및 감독에 관한 규칙」</td></tr>
+          <tr><th>사무소</th><td>경기도 평택시 특구로 28 원영빌딩 3층</td></tr>
+          <tr><th>목적</th><td>언론인의 친목 도모와 복지 증진, 전문성 향상 및 취재 협력을 통한 건전한 언론 문화 조성, 시민의 알권리 보장과 지역사회·지역경제 발전 등 공익 증진</td></tr>
+        </table>
+        <div class="note"><b>정치활동 및 영리행위 금지</b><br>본회는 특정 정당이나 공직선거 후보자를 지지·지원하는 정치활동을 하지 않으며, 회원의 사적 이익을 위한 영리행위를 하지 않습니다. (정관 제6조)</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="blk soft" id="about-org"><div class="wrap">
+    <div class="stitle"><span class="no">운영체계</span><span class="en">OPERATING SYSTEM</span></div>
+    <div class="org">
+      <div class="row1"><div class="box top">총회<small>최고 의결기관</small></div><div class="hl"></div><div class="box side">감사<small>재산·업무 감사 및 견제</small></div></div>
+      <div class="vl"></div>
+      <div class="row1"><div class="box mid">이사회<small>회장 · 부회장 · 이사</small></div><div class="hl"></div><div class="box side">고문 · 자문위원단<small>법률·언론·학계 (무보수)</small></div></div>
+      <div class="vl"></div>
+      <div class="kids">
+        <div class="kid"><b>사무국</b><span>사업 운영 및 행정 지원</span></div>
+        <div class="kid"><b>운영위원회</b><span>분과위원회 총괄</span></div>
+        <div class="kid"><b>분과위원회</b><span>대외교육 · 언론미디어 · 취재지원 · 문화복지 · 국제교류 · 출판편집</span></div>
+        <div class="kid"><b>지부</b><span>시·도 또는 권역별 설치 (이사회 의결)</span></div>
+      </div>
+    </div>
+    <div class="scroll" style="margin-top:34px"><table class="tbl">
+      <tr><th>구분</th><th>구성</th><th>역할</th></tr>
+      <tr><td>총회</td><td>회원 전체</td><td>임원 선출·해임, 정관 변경, 예산·결산 및 사업계획 승인</td></tr>
+      <tr><td>이사회</td><td>이사 5명 이상 10명 이내 (회장 1명, 부회장 3명 이내 포함)</td><td>업무집행, 사업계획 운영, 예산·결산서 작성, 지부 설치·운영 심의·의결</td></tr>
+      <tr><td>감사</td><td>1명 이상 2명 이내</td><td>재산상황 및 이사회 운영·업무집행 감사</td></tr>
+      <tr><td>사무국</td><td>사무국장 1명과 필요한 직원 (회원 자원봉사 가능)</td><td>본회 사무 처리</td></tr>
+      <tr><td>위원회</td><td>운영위원회 및 분야별 10개 이내 분과위원회</td><td>분야별 목적사업 수행</td></tr>
+    </table></div>
+  </div></section>
+
+  <section class="blk" id="about-officers"><div class="wrap">
+    <div class="stitle"><span class="no">임원 명단</span><span class="en">OFFICERS</span></div>
+    <div class="scroll"><table class="tbl" id="officerTbl"></table></div>
+    <p class="note">임원은 총회에서 선출하며 임기는 2년(1회 연임 가능)이고 무보수로 봉사합니다. 명단은 선임·등기 후 게시됩니다.</p>
+  </div></section>
+
+  <section class="blk soft" id="about-ci"><div class="wrap">
+    <div class="stitle"><span class="no">CI 소개</span><span class="en">BRAND IDENTITY</span></div>
+    <div class="g2">
+      <div class="card" style="display:grid;place-items:center;padding:36px"><svg style="width:220px;height:220px"><use href="#logo"/></svg></div>
+      <div>
+        <h2 class="big">기록하는 힘이<br>사회를 더 나은 곳으로 만듭니다</h2>
+        <p class="lead">마이크와 펜촉은 말과 글로 진실을 전하는 언론을, 양옆의 행간은 기사와 기록을, 이를 감싸는 원은 언론인의 연대와 사회를 잇는 소통을 뜻합니다.</p>
+        <div class="g4 keep2" style="margin-top:20px">
+          <div class="card benefit"><h3>JOURNALISM</h3><p>언론</p></div><div class="card benefit"><h3>COMMUNICATION</h3><p>소통</p></div>
+          <div class="card benefit"><h3>PUBLIC TRUST</h3><p>공공의 신뢰</p></div><div class="card benefit"><h3>TOMORROW</h3><p>더 나은 사회</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="chips" style="margin-top:24px">
+      <div class="chip"><i style="background:#0B2D5B"></i><div><b>KJNA NAVY</b>신뢰, 전문성 · #0B2D5B</div></div>
+      <div class="chip"><i style="background:#333333"></i><div><b>CHARCOAL</b>균형, 공공성 · #333333</div></div>
+      <div class="chip"><i style="background:#C62828"></i><div><b>TRUST RED</b>진실, 열정 · #C62828</div></div>
+      <div class="chip"><i style="background:#D9D9D9"></i><div><b>LIGHT GRAY</b>세상을 잇는 소통 · #D9D9D9</div></div>
+    </div>
+  </div></section>
+
+  <section class="blk" id="about-charter"><div class="wrap">
+    <div class="stitle"><span class="no">정관</span><span class="en">ARTICLES OF ASSOCIATION</span></div>
+    <p class="lead" style="margin-bottom:20px">각 장을 누르면 조문이 펼쳐집니다.</p>
+    <div id="charter"></div>
+  </div></section>
+
+  <section class="blk soft" id="about-map"><div class="wrap">
+    <div class="stitle"><span class="no">오시는 길</span><span class="en">LOCATION</span></div>
+    <div class="g2">
+      <table class="tbl">
+        <tr><th>주소</th><td id="addr2"></td></tr>
+        <tr><th>대표전화</th><td data-cfg="phone"></td></tr>
+        <tr><th>전자우편</th><td data-cfg="email"></td></tr>
+      </table>
+      <div class="card" style="display:grid;place-items:center;text-align:center">
+        <div><h3>지도에서 위치 확인</h3><p style="margin:6px 0 16px">아래 버튼을 누르면 지도 서비스에서 주소를 검색합니다.</p>
+        <div class="btns" style="justify-content:center;margin:0"><a class="btn navy" id="mapNaver" target="_blank" rel="noopener">네이버 지도</a><a class="btn navy" id="mapKakao" target="_blank" rel="noopener">카카오맵</a></div></div>
+      </div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= 주요사업 ================= -->
+<div class="page" data-page="business">
+  <div class="phead"><div class="wrap"><span>MAIN BUSINESS</span><h1>주요사업</h1></div></div>
+  <div class="subnav"><div class="wrap"><a href="#business/list">목적사업</a><a href="#business/detail">사업별 세부계획</a><a href="#business/fee">참가비 운영</a></div></div>
+
+  <section class="blk" id="business-list"><div class="wrap">
+    <div class="stitle"><span class="no">목적사업</span><span class="en">정관 제5조</span></div>
+    <div class="g3" id="bizGrid"></div>
+    <p class="note">본회는 목적사업 수행에 지장이 없는 범위에서 주무관청의 승인을 받아 수익사업을 할 수 있으며, 그 수익금은 전액 목적사업에 사용합니다.</p>
+  </div></section>
+
+  <section class="blk soft" id="business-detail"><div class="wrap">
+    <div class="stitle"><span class="no">사업별 세부계획</span><span class="en">BUSINESS PLAN</span></div>
+    <div id="bizDetail"></div>
+  </div></section>
+
+  <section class="blk" id="business-fee"><div class="wrap">
+    <div class="stitle"><span class="no">참가비 운영</span><span class="en">PARTICIPATION</span></div>
+    <p class="lead" style="margin-bottom:18px">참가비는 해당 사업의 직접 경비를 넘지 않는 실비 수준으로 받으며, 해당 사업에 전액 사용합니다.</p>
+    <div class="scroll"><table class="tbl" id="feeTbl"></table></div>
+  </div></section>
+</div>
+
+<!-- ================= 협회소식 ================= -->
+<div class="page" data-page="news">
+  <div class="phead"><div class="wrap"><span>NEWS &amp; NOTICE</span><h1>협회소식</h1></div></div>
+  <section class="blk"><div class="wrap">
+    <div class="tabs" id="boardTabs" role="tablist"></div>
+    <ul class="blist" id="boardList"></ul>
+    <div id="postView"></div>
+  </div></section>
+</div>
+
+<!-- ================= 회원안내 ================= -->
+<div class="page" data-page="member">
+  <div class="phead"><div class="wrap"><span>MEMBERSHIP</span><h1>회원안내</h1></div></div>
+  <div class="subnav"><div class="wrap"><a href="#member/type">회원 구분</a><a href="#member/benefit">회원 혜택</a><a href="#member/fee">회비</a><a href="#member/join">가입 신청</a></div></div>
+
+  <section class="blk" id="member-type"><div class="wrap">
+    <div class="stitle"><span class="no">회원 구분</span><span class="en">정관 제7조</span></div>
+    <div class="scroll"><table class="tbl">
+      <tr><th>구분</th><th>자격</th><th class="c">총회 의결권</th></tr>
+      <tr><td><b>정회원</b></td><td>일간신문사에 소속되어 현재 취재·보도 업무에 종사하는 기자</td><td class="c">○</td></tr>
+      <tr><td><b>준회원</b></td><td>방송, 통신사, 인터넷신문, 잡지사 등에 종사하는 언론 종사자 및 일간신문사에 소속되었던 전직 기자</td><td class="c">–</td></tr>
+      <tr><td><b>특별회원</b></td><td>언론 관련 학자 및 전문가로서 언론 발전에 전문성이 인정되는 자</td><td class="c">–</td></tr>
+      <tr><td><b>명예회원</b></td><td>언론에 종사하지 않더라도 본회의 설립 취지에 부합하고 언론 발전과 지역사회에 기여할 뜻이 있는 덕망 있는 인사</td><td class="c">–</td></tr>
+      <tr><td><b>단체회원</b></td><td>본회의 설립 취지에 찬동하는 지역 기자단, 언론인 단체 및 언론사 (대표자 또는 지정 1명이 권리 행사)</td><td class="c">○</td></tr>
+    </table></div>
+    <div class="g2" style="margin-top:26px">
+      <div class="card"><h3>회원의 권리</h3><p>정회원은 임원의 선거권·피선거권을 가지며 총회에서 의견을 제안하고 의결에 참여합니다. 모든 회원은 본회 사업에 참여하고 총회 의사록과 결산서를 열람할 수 있습니다.</p></div>
+      <div class="card"><h3>회원의 의무</h3><p>정관 및 제 규정의 준수, 총회·이사회 결의사항의 이행, 회비 및 각종 부담금의 납부, 본회의 명예와 품위 유지.</p></div>
+    </div>
+  </div></section>
+
+  <section class="blk soft" id="member-benefit"><div class="wrap">
+    <div class="stitle"><span class="no">회원 혜택</span><span class="en">MEMBER BENEFITS</span></div>
+    <div class="g4 keep2" id="benefitGrid"></div>
+  </div></section>
+
+  <section class="blk" id="member-fee"><div class="wrap">
+    <div class="stitle"><span class="no">회비</span><span class="en">정관 제9조</span></div>
+    <div class="scroll"><table class="tbl">
+      <tr><th>대상</th><th>회비</th><th>비고</th></tr>
+      <tr><td>정회원</td><td>1인당 월 1만원 이상</td><td rowspan="2">연회비로 일괄 납부 가능</td></tr>
+      <tr><td>회장 · 부회장 · 이사</td><td>월 5만원 이상</td></tr>
+      <tr><td>준회원 · 특별회원 · 단체회원</td><td>이사회가 정하는 금액</td><td></td></tr>
+      <tr><td>고문 · 자문위원 · 명예이사 · 명예회원</td><td>납부 의무 없음</td><td>찬조금으로 대신할 수 있음</td></tr>
+    </table></div>
+    <p class="note">정회원이 회비를 1년 이상 납부하지 않으면 준회원이 되며, 임원 선출 등 주요 의사결정에 참여할 수 없습니다. 탈퇴하거나 제명된 회원은 이미 납부한 회비의 반환을 청구할 수 없습니다.</p>
+  </div></section>
+
+  <section class="blk soft" id="member-join"><div class="wrap">
+    <div class="stitle"><span class="no">가입 신청</span><span class="en">JOIN US</span></div>
+    <h2 class="big">혼자가 아닌 연대로, <i>경쟁이 아닌 상생으로</i></h2>
+    <p class="lead" style="margin-bottom:24px">더 신뢰받는 언론의 미래를 함께 만들어 주십시오. 한국일간기자협회는 언론인의 책임과 품격을 높이고 사회와 지역을 잇는 건강한 공론의 장이 되겠습니다.</p>
+    <ol class="steps">
+      <li><b>입회원서 작성</b><span>아래 양식을 작성해 출력합니다.</span></li>
+      <li><b>사무국 제출</b><span>서명한 입회원서를 사무국에 제출합니다.</span></li>
+      <li><b>이사회 승인</b><span>이사회가 회원 자격을 심의·승인합니다.</span></li>
+      <li><b>회비 납부</b><span>회비 납부 후 회원 활동을 시작합니다.</span></li>
+    </ol>
+    <div class="card" style="margin-top:26px">
+      <h3 style="margin-bottom:16px">입회원서 작성</h3>
+      <form class="f" id="joinForm">
+        <label>성명<input name="name" required autocomplete="name"></label>
+        <label>생년월일<input name="birth" type="date" required></label>
+        <label>회원 구분<select name="type" required><option value="">선택</option><option>정회원</option><option>준회원</option><option>특별회원</option><option>명예회원</option><option>단체회원</option></select></label>
+        <label>소속 언론사(기관)<input name="org" required></label>
+        <label>직위 · 담당 분야<input name="title"></label>
+        <label>연락처<input name="tel" type="tel" required autocomplete="tel" placeholder="010-0000-0000"></label>
+        <label>전자우편<input name="mail" type="email" autocomplete="email"></label>
+        <label>주소<input name="addr" autocomplete="street-address"></label>
+        <label class="full">주요 약력<textarea name="career"></textarea></label>
+        <label class="full chk"><input type="checkbox" required><span>본회의 설립 취지에 찬동하며 정관을 준수할 것을 서약합니다. 입력한 정보는 이 브라우저에서 입회원서 출력에만 쓰이며 서버로 전송·저장되지 않습니다.</span></label>
+        <div class="full btns" style="margin:0"><button class="btn navy" type="submit">입회원서 출력 (인쇄 · PDF 저장)</button></div>
+      </form>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= 제보·문의 ================= -->
+<div class="page" data-page="contact">
+  <div class="phead"><div class="wrap"><span>CONTACT</span><h1>제보·문의</h1></div></div>
+  <section class="blk"><div class="wrap">
+    <div class="g3">
+      <div class="card"><div class="pill n">제보</div><h3>기사 제보</h3><p>지역 현안과 공익 제보를 받습니다. 제보자의 신원은 보호됩니다.</p></div>
+      <div class="card"><div class="pill r">협력</div><h3>취재 협력 · 합동취재</h3><p>회원사 간 정보 공유, 장비 상호 대여, 합동취재 제안을 받습니다.</p></div>
+      <div class="card"><div class="pill c">자문</div><h3>법률 · 행정 상담</h3><p>취재와 기사 작성 과정에서 생기는 법률·행정 문제를 자문위원과 연결합니다.</p></div>
+    </div>
+    <div class="g2" style="margin-top:28px">
+      <div class="card">
+        <h3 style="margin-bottom:16px">문의하기</h3>
+        <form class="f" id="askForm">
+          <label>구분<select name="kind"><option>기사 제보</option><option>취재 협력</option><option>법률·행정 상담</option><option>회원 가입</option><option>기타 문의</option></select></label>
+          <label>성명<input name="name" required></label>
+          <label class="full">제목<input name="subject" required></label>
+          <label class="full">내용<textarea name="body" required></textarea></label>
+          <div class="full btns" style="margin:0"><button class="btn navy" type="submit">전자우편으로 보내기</button></div>
+          <p class="full" id="askMsg" style="color:var(--red);font-size:14.5px"></p>
+        </form>
+      </div>
+      <div>
+        <table class="tbl">
+          <tr><th>주소</th><td id="addr3"></td></tr>
+          <tr><th>대표전화</th><td data-cfg="phone"></td></tr>
+          <tr><th>전자우편</th><td data-cfg="email"></td></tr>
+        </table>
+        <p class="note">문의하기는 사용 중인 메일 프로그램을 열어 사무국 전자우편으로 보내는 방식입니다.</p>
+      </div>
+    </div>
+  </div></section>
+</div>
+
+</main>
+
+<section class="cta"><div class="wrap">
+  <div><h2>함께할 언론인을 기다립니다</h2><p>혼자의 독립된 외침을, 함께하는 동지들과 연대로. 사단법인 한국일간기자협회가 언론의 공적 책임을 함께 실천합니다.</p></div>
+  <a class="btn red" href="#member/join">회원가입 안내</a>
+</div></section>
+
+<footer class="foot"><div class="wrap">
+  <div class="links"><a href="#about/intro">협회소개</a><a href="#about/charter">정관</a><a href="#business">주요사업</a><a href="#member/join">회원가입</a><a href="#contact">제보·문의</a><a href="#about/map">오시는 길</a></div>
+  <dl>
+    <div><dt>법인명</dt><dd>사단법인 한국일간기자협회</dd></div>
+    <div><dt>주소</dt><dd id="addr1"></dd></div>
+    <div><dt>대표전화</dt><dd data-cfg="phone"></dd></div>
+    <div><dt>전자우편</dt><dd data-cfg="email"></dd></div>
+  </dl>
+  <p class="cp">기록하는 힘이 사회를 더 나은 곳으로 만듭니다. © <span id="year"></span> Korea Daily Journalists Association. All rights reserved.</p>
+</div></footer>
+
+<div class="print-sheet" id="printSheet"></div>
+
+<script>
+/* ============================================================
+   ① 협회 정보: 확정되면 이 부분만 고치면 사이트 전체에 반영됩니다.
+   ============================================================ */
+const CONFIG = {
+  address: "경기도 평택시 특구로 28 원영빌딩 3층",
+  phone: "",   // 예: "031-000-0000"  (비워 두면 '준비 중'으로 표시)
+  email: ""    // 예: "office@example.or.kr"
+};
+/* 임원 명단: name 을 채우면 표에 표시됩니다. */
+const OFFICERS = [
+  {role:"회장 (대표권 있는 이사)", name:""},
+  {role:"부회장 (이사)", name:""},
+  {role:"부회장 (이사)", name:""},
+  {role:"이사", name:""},
+  {role:"이사", name:""},
+  {role:"감사", name:""}
+];
+/* ============================================================
+   ② 협회소식 게시물: 맨 위에 새 글을 추가하세요.
+   board: notice(공지사항) statement(성명서) award(기자상) forum(포럼·교육 소식) people(회원 동정)
+   ============================================================ */
+const POSTS = [
+  {board:"notice", date:"2026-11-19", title:"사단법인 한국일간기자협회 홈페이지를 열었습니다",
+   body:["한국일간기자협회 홈페이지를 열었습니다.","협회의 설립 취지와 정관, 주요사업, 회원 가입 안내를 이곳에서 확인하실 수 있습니다. 협회 소식과 공지사항도 이 게시판을 통해 알려 드리겠습니다."]},
+  {board:"notice", date:"2026-11-19", title:"회원 가입 안내: 정회원·준회원·특별회원·명예회원·단체회원",
+   body:["본회의 설립 취지에 찬동하는 언론인과 언론 관련 전문가, 단체의 가입을 기다립니다.","회원안내 메뉴의 '가입 신청'에서 입회원서를 작성·출력해 사무국에 제출하시면 이사회 승인을 거쳐 회원이 됩니다."]}
+];
+const BOARDS = {notice:"공지사항", statement:"성명서", award:"기자상", forum:"포럼·교육 소식", people:"회원 동정"};
+
+const BIZ = [
+ {t:"회원 친목 도모 및 복지 증진", s:"회원 친선 행사, 경조사 지원, 복지 제휴",
+  why:["회원 간 유대를 강화하고 언론인의 사기를 높여 안정적인 취재·보도 활동 기반 마련","언론인의 복지 증진을 통한 건전한 언론 문화 조성"],
+  what:["추진시기: 연 1회(정기총회 연계) 및 수시","대상: 회원","회원 친선 행사, 경조사 지원, 복지 제휴 정보 제공"],
+  how:["정기총회와 연계한 친선 행사","경조사 지원 기준을 운영규칙으로 정하여 시행","복지 제휴 기관 발굴 및 회원 혜택 안내"],
+  next:["지부별 복지 프로그램 확대","회원 복지 제휴 네트워크 구축"], fee:["유료(실비)","참가 회원 1인 10,000원"]},
+ {t:"각계 전문가 초청 교육", s:"전·현직 언론인의 전문성 향상 교육",
+  why:["각 분야 전문가를 통한 정보 습득과 검증으로 정확한 보도에 이바지하는 품격 있는 언론인 양성","취재 시 발생하는 분야별(의료·법무·기술 등) 문제를 전문가와의 대화와 자문으로 해소"],
+  what:["추진시기: 연 2회(상·하반기)","장소: 본회 회의실 및 지역 공공기관 교육장","대상: 회원 및 언론 종사자 50명 내외(1회당)","분야별 주요 이슈 강연, 전문가 발표를 통한 문제 진단과 해결 방안 모색"],
+  how:["주요 사회적 이슈 및 분야별 정책 관련 주제 선정","주제별 전문가 초빙, 회원 중 전문가의 재능기부 우선 활용","지역 주요 기관과 연계·협력"],
+  next:["전국 시·도별 지역 행사로 확대","국내 사회·경제·문화를 생각하는 대표적 언론인 단체로 정착"], fee:["회원 무료 / 비회원 유료","비회원 1인 10,000원"]},
+ {t:"AI·빅데이터 취재·보도 지원", s:"정확한 정보 습득과 사실 확인 지원",
+  why:["현직 언론인의 전문성 강화를 위한 AI 활용 교육","취재와 기사 작성의 전문성·합리성 강화"],
+  what:["AI 기술과 빅데이터를 활용한 정확한 정보 습득 및 활용 교육","AI 전문가와 언론인이 함께 사회문제 해결 방안을 토론하는 대화의 장 운영"],
+  how:["연 1회 AI 활용 교육과정 운영(본회 회의실)","사실 확인(팩트체크) 등 무료 취재 지원 도구 안내와 실습"],
+  next:["AI 기술로 기사의 사실 확인을 쉽게 할 수 있는 프로그램 제공","지역신문과 인터넷신문에 대한 취재 정보 제공 확대"], fee:["유료(실비)","1인 10,000원(실습 교재비)"]},
+ {t:"취재 여건 지원과 합동취재 협력", s:"지역신문·인터넷신문 장비·장소 지원",
+  why:["규모·재정·인력 여건이 어려운 지역신문과 인터넷신문에 장비와 장소 지원","취재에 필요한 물적 요건과 기사 작성 장소 제공"],
+  what:["지역별 언론사 사무실과 기자실의 합리적 조정을 통한 장소 제공","회원사 보유 장비의 상호 무상 대여를 통한 취재 비용 절감","언론사 간 정보 공유와 합동 취재"],
+  how:["회원사 보유 장비 목록 구축 및 대여 절차 마련","지부 중심 합동취재팀 구성"],
+  next:["합동 취재 활성화","지역에 맞는 기사 제보 시스템 구축"], fee:["무료","–"]},
+ {t:"정책 세미나 및 포럼", s:"지역경제 발전을 위한 시민 참여 정책 논의",
+  why:["시민과 기업인이 참여하는 정책 세미나로 주요 지원 정책을 발굴해 정부 기관에 전달","시민과 함께 만든 정책으로 지역 복지와 지역경제 활성화에 이바지"],
+  what:["추진시기: 연 2회(상·하반기)","장소: 지역 내 공공기관 회의장 등","대상: 시민·기업인 등 50명 내외(1회당)","정보 제공, 토론 및 의견 수렴"],
+  how:["각 지역 시민과 함께 지역에 맞는 정책 발굴","토론 결과를 정부·지자체 등 관련 기관에 제안·건의"],
+  next:["전국 세미나를 통한 지역별 지원 정책 과제 발굴","정부 기관과 함께하는 합동 세미나 추진"], fee:["무료","–"]},
+ {t:"권익 보호와 법률·행정 지원", s:"취재권의 독립을 위한 자문 연계",
+  why:["취재 및 기사 작성 시 발생할 수 있는 법률·행정 업무 지원","무료 법률 지원을 통한 독립적인 취재 활동 보장"],
+  what:["지역별 법률 전문가(변호사)를 자문위원으로 위촉","주제별 전문가(교수·전문가 등)를 자문위원으로 위촉","취재에 필요한 정부 기관과 회원 간의 교류 지원"],
+  how:["각 지역 변호사와 회원 간의 매칭을 통한 지원","법률·행정 상담 창구 운영(전화·전자우편)"],
+  next:["법률 지원 대상과 범위의 단계적 확대","관할 기관과 함께하는 합동 간담회 개최"], fee:["무료","–"]},
+ {t:"언론윤리 연구·모니터링·우수 언론인 시상", s:"올바른 언론 문화 조성",
+  why:["공공의 발전에 기여한 기자 및 언론 관련인의 발굴과 포상","지역 언론인의 자긍심 고취","공정한 보도를 위한 모니터링 활동"],
+  what:["추진시기: 연 1회 12월","대상: 언론인 및 언론 관련 종사자","언론인 시상, 한 해의 지역 언론인 성과와 방향 제시"],
+  how:["각 지역 언론인을 중심으로 시상(시상 내용은 이사회에서 협의)","공정보도 모니터링 결과의 연구 및 공유"],
+  next:["지역 발전에 이바지한 시민을 함께 포상하는 방향으로 발전"], fee:["무료","–"]},
+ {t:"회보·단행본·정기간행물 발간", s:"회원 소통과 대외 홍보",
+  why:["언론과 지역경제 관련 정보를 전달하고 회원 간 소통 강화","본회의 활동과 성과를 대외에 알리는 홍보 수단 확보"],
+  what:["회보 연 1회 발간","회보 인쇄본 및 홈페이지 게시"],
+  how:["출판편집 분과위원회 중심으로 편집 및 발간","관련 법령에 따른 간행물 등록 요건 확인 후 발행"],
+  next:["정기간행물의 정례화 및 온라인 발행 확대"], fee:["무료 배포","–"]},
+ {t:"해외 언론단체 교류", s:"국제 언론 정보 교류",
+  why:["해외 언론사와의 정보 제휴를 통한 국제 뉴스 제공","외국 언론사에 한국 문화와 경제를 알려 국익에 이바지"],
+  what:["연 1회 외국 언론인 화상(온라인) 간담회 개최","상호 정보 제공을 위한 협력 체계 구축"],
+  how:["외국에 거주하는 교민 및 유학생을 통한 현지 취재원 확보","외국 언론사와의 협업을 통한 정보 교류"],
+  next:["1차로 아시아 중심 언론 협력 시스템 구축","2차로 유럽·아메리카 등 세계 언론기관과 정보 교류"], fee:["무료","–"]},
+ {t:"지부 설치 및 지역 언론단체 연대", s:"전국 단위 언론인 연대망 구축",
+  why:["전국 단위 언론인 연대망 구축","지역 언론인과 지역 언론사에 대한 현장 밀착 지원"],
+  what:["시·도 또는 권역별 지부 설치(이사회 의결)","지역 기자단 및 언론인 단체와의 연대 협약"],
+  how:["지부 설치 기준과 운영 지침을 이사회에서 제정","지부 설치 후 지역 기자단·언론사의 단체회원 가입 권유"],
+  next:["본회 소재지 권역을 중심으로 지부를 설치하고 단계적으로 전국으로 확대"], fee:["무료","–"]},
+ {t:"그 밖의 목적 달성에 필요한 사업", s:"이사회 의결을 거쳐 추진", why:null}
+];
+const BENEFITS = ["취재 네트워크 및 정보 공유","전문 교육·세미나·포럼 우선 참여","취재 협력 및 공동기획 지원","전문성 강화 프로그램 및 자격 과정 지원","전문인 권익 보호 법률·행정 자문 연계","우수 기자 시상 및 홍보 기회","지역언론 지원 사업 참여 기회","회원 친선 행사 및 복지 제휴"];
+const CHARTER = [{"title": "제1장 총칙", "articles": [{"head": "제1조(명칭)", "lines": ["이 법인은 “사단법인 한국일간기자협회”(이하 “본회”라 한다)라 칭하며, 영문 표기는 Korea Daily Journalists Association, 영문 약칭은 “KDJA”로 한다."]}, {"head": "제2조(설립근거)", "lines": ["본회는 「민법」 제32조 및 「문화체육관광부 및 국가유산청 소관 비영리법인의 설립 및 감독에 관한 규칙」에 따라 설립한다."]}, {"head": "제3조(목적)", "lines": ["본회는 일간신문 기자를 중심으로 방송, 통신, 인터넷 매체 종사자와 언론 관련 학자 등 언론인의 친목 도모와 복지 증진, 전문성 향상 및 취재 협력을 통하여 건전한 언론 문화를 조성하고, 시민의 알권리 보장과 지역사회 및 지역경제 발전 등 공익 증진에 기여함을 목적으로 한다."]}, {"head": "제4조(소재지 및 지부)", "lines": ["① 본회의 사무소는 경기도 평택시에 둔다.", "② 본회는 목적사업을 효율적으로 수행하기 위하여 이사회의 의결을 거쳐 시·도 또는 권역별로 지부를 둘 수 있다.", "③ 지부의 설치와 운영에 관한 사항은 이사회가 따로 정한다."]}, {"head": "제5조(사업)", "lines": ["① 본회는 제3조의 목적을 달성하기 위하여 다음의 목적사업을 수행한다.", "1. 회원 상호 간의 친목 도모 및 복지 증진 사업", "2. 언론인의 전문성 향상을 위한 각계 전문가 초청 교육사업", "3. AI 기술과 빅데이터를 활용한 정확한 정보 습득 및 취재·보도 지원 사업", "4. 일간신문, 지역신문 및 인터넷신문의 취재 여건 지원과 합동취재 협력 사업", "5. 지역경제 발전을 도모하기 위한 정책 세미나 및 포럼", "6. 언론인의 권익 보호와 취재권의 독립을 위한 법률·행정 지원", "7. 올바른 언론 문화 조성을 위한 언론윤리 연구, 보도 모니터링 및 우수 언론인 시상", "8. 회보, 단행본 및 정기간행물의 발간", "9. 해외 언론단체와의 교류를 통한 국제 언론 정보 교류", "10. 지부 설치 및 전국 지역 언론단체와의 연대 사업", "11. 그 밖에 본회의 목적을 달성하기 위하여 필요한 사업", "② 본회는 목적사업의 수행에 지장이 없는 범위에서 주무관청의 승인을 받아 수익사업을 할 수 있으며, 그 수익금은 전액 목적사업에 사용한다."]}, {"head": "제6조(정치활동 및 영리행위의 금지)", "lines": ["본회는 특정 정당 또는 선출에 의한 공직선거의 후보자를 지지·지원하는 등 정치활동을 하지 아니하며, 회원의 사적 이익을 위한 영리행위를 하지 아니한다."]}]}, {"title": "제2장 회원", "articles": [{"head": "제7조(회원의 자격 및 구분)", "lines": ["① 본회의 회원은 본회의 설립 취지에 찬동하여 소정의 입회원서를 제출하고 이사회의 승인을 받은 자로 한다.", "② 회원은 정회원, 준회원, 특별회원, 명예회원 및 단체회원으로 구분하며, 총회의 의결권은 정회원과 단체회원이 가진다.", "1. 정회원 : 일간신문사에 소속되어 현재 취재·보도 업무에 종사하는 기자", "2. 준회원 : 방송, 통신사, 인터넷신문, 잡지사 등에 종사하는 언론 종사자 및 일간신문사에 소속되었던 전직 기자", "3. 특별회원 : 언론 관련 학자 및 전문가로서 언론 발전에 전문성이 인정되는 자", "4. 명예회원 : 언론에 종사하지 아니하더라도 본회의 설립 취지에 부합하고 언론 발전과 지역사회에 기여할 뜻이 있는 덕망 있는 인사", "5. 단체회원 : 본회의 설립 취지에 찬동하는 지역 기자단, 언론인 단체 및 언론사", "③ 단체회원은 그 대표자 또는 대표자가 지정한 1명이 회원의 권리를 행사한다.", "④ 정회원이 회비를 1년 이상 납부하지 아니한 때에는 준회원으로 한다."]}, {"head": "제8조(회원의 권리와 의무)", "lines": ["① 정회원은 임원의 선거권 및 피선거권을 가지며, 총회에 출석하여 의견을 제안하고 의결에 참여할 권리를 가진다.", "② 모든 회원은 본회의 사업에 참여하고, 총회 의사록 및 결산서를 열람할 권리를 가진다.", "③ 회원은 다음의 의무를 진다.", "1. 본회의 정관 및 제 규정의 준수", "2. 총회 및 이사회 결의사항의 이행", "3. 회비 및 각종 부담금의 납부", "4. 본회의 명예와 품위 유지"]}, {"head": "제9조(회비)", "lines": ["① 정회원의 회비는 1인당 월 1만원 이상으로 하고, 회장, 부회장 및 이사는 월 5만원 이상으로 한다. 회비는 연회비로 일괄 납부할 수 있다.", "② 준회원, 특별회원 및 단체회원의 회비는 이사회가 정한다.", "③ 고문, 자문위원, 명예이사 및 명예회원은 회비 납부 의무가 없으며 찬조금으로 대신할 수 있다.", "④ 회비를 1년 이상 납부하지 아니한 회원은 임원의 선출 등 주요 의사결정에 참여할 수 없다."]}, {"head": "제10조(회원의 탈퇴)", "lines": ["회원은 회장에게 탈퇴서를 제출함으로써 자유롭게 탈퇴할 수 있다."]}, {"head": "제11조(회원의 상벌)", "lines": ["① 본회의 발전에 기여한 회원은 이사회의 의결을 거쳐 포상할 수 있다.", "② 회원이 본회의 목적에 배치되는 행위를 하거나 본회의 명예와 위신을 손상시킨 때 또는 1년 이상 회원의 의무를 이행하지 아니한 때에는 이사회의 의결을 거쳐 제명할 수 있다. 이 경우 제명 전에 해당 회원에게 소명할 기회를 주어야 한다.", "③ 탈퇴하거나 제명된 회원은 이미 납부한 회비 등의 반환을 청구할 수 없다."]}]}, {"title": "제3장 임원", "articles": [{"head": "제12조(임원의 종류와 정수)", "lines": ["① 본회에 다음의 임원을 둔다.", "1. 이사 5명 이상 10명 이내(회장 1명 및 부회장 3명 이내를 포함한다)", "2. 감사 1명 이상 2명 이내", "② 회장은 본회의 대표권 있는 이사(이사장)로 한다."]}, {"head": "제13조(임원의 선임 방법 및 임기)", "lines": ["① 임원은 총회에서 선출하며, 회장과 부회장은 이사 중에서 총회에서 선출한다.", "② 임원의 임기는 2년으로 하되, 1회에 한하여 연임할 수 있다.", "③ 임원이 취임한 때에는 지체 없이 등기하고 주무관청에 보고하여야 한다.", "④ 임원의 결원이 생기거나 추가 선임이 필요한 때에는 그 사유가 발생한 날부터 2개월 이내에 보선하며, 보선된 임원의 임기는 전임자의 잔여기간으로 한다.", "⑤ 임기가 만료된 임원은 후임자가 취임할 때까지 그 직무를 수행한다."]}, {"head": "제14조(임원의 해임)", "lines": ["① 임원이 다음 각 호의 어느 하나에 해당하는 때에는 총회의 의결을 거쳐 해임할 수 있다.", "1. 본회의 목적에 위배되는 행위를 한 때", "2. 임원 간의 분쟁, 회계부정 또는 현저한 부당행위를 한 때", "3. 본회의 업무를 방해하거나 직무를 현저히 태만히 한 때", "② 해임 안건은 재적회원 과반수의 출석과 출석회원 3분의 2 이상의 찬성으로 의결하며, 의결 전에 해당 임원에게 소명할 기회를 주어야 한다."]}, {"head": "제15조(임원의 결격사유)", "lines": ["① 다음 각 호의 어느 하나에 해당하는 자는 임원이 될 수 없다.", "1. 미성년자", "2. 피성년후견인 또는 피한정후견인", "3. 파산선고를 받고 복권되지 아니한 자", "4. 금고 이상의 실형을 선고받고 그 집행이 끝나거나 집행을 받지 아니하기로 확정된 날부터 2년이 지나지 아니한 자", "5. 법원의 판결 또는 다른 법령에 따라 자격이 상실되거나 정지된 자", "② 임원이 제1항 각 호의 어느 하나에 해당하게 된 때에는 당연히 퇴임한다."]}, {"head": "제16조(임원의 직무)", "lines": ["① 회장은 본회를 대표하고 업무를 총괄하며, 총회와 이사회의 의장이 된다.", "② 부회장은 회장을 보좌하며, 회장이 사고가 있을 때에는 회장이 지명하는 부회장이 그 직무를 대행한다.", "③ 이사는 이사회에 출석하여 본회의 업무에 관한 사항을 심의·의결하며, 이사회 또는 회장으로부터 위임받은 사항을 처리한다.", "④ 감사는 다음의 직무를 수행한다.", "1. 본회의 재산상황을 감사하는 일", "2. 이사회의 운영과 업무집행 상황을 감사하는 일", "3. 재산상황 또는 업무집행에 관하여 부정 또는 불비한 점을 발견한 때에는 이를 총회 또는 주무관청에 보고하는 일", "4. 제3호의 보고를 하기 위하여 필요한 때에는 총회의 소집을 요구하는 일", "5. 총회 및 이사회의 의사록에 기명·날인하는 일"]}, {"head": "제17조(회장의 직무대행)", "lines": ["① 회장이 궐위된 때에는 부회장(부회장이 없는 때에는 이사) 중 연장자 순으로 그 직무를 대행한다.", "② 제1항에 따라 직무를 대행하는 자는 궐위된 날부터 2개월 이내에 회장 선출을 위한 총회를 소집하여야 한다."]}, {"head": "제18조(임원의 보수)", "lines": ["임원은 무보수로 한다. 다만, 업무 수행에 필요한 실비는 지급할 수 있다."]}]}, {"title": "제4장 총회", "articles": [{"head": "제19조(총회의 구성 및 기능)", "lines": ["① 총회는 본회의 최고 의결기관이며 회원으로 구성한다.", "② 총회는 다음 사항을 의결한다.", "1. 임원의 선출 및 해임에 관한 사항", "2. 정관의 변경에 관한 사항", "3. 본회의 해산에 관한 사항", "4. 기본재산의 처분에 관한 사항", "5. 예산 및 결산의 승인", "6. 사업계획의 승인", "7. 그 밖에 본회 운영에 관한 중요한 사항"]}, {"head": "제20조(총회의 구분 및 소집)", "lines": ["① 총회는 정기총회와 임시총회로 구분하며, 정기총회는 매 회계연도 종료 후 2개월 이내에 소집하고, 임시총회는 회장이 필요하다고 인정할 때 소집한다.", "② 회장은 회의 안건을 명기하여 회의 7일 전까지 각 회원에게 서면, 전자우편 또는 문자메시지 등으로 통지하여야 한다.", "③ 총회는 통지한 안건에 한하여 의결할 수 있다.", "④ 총회는 회원의 본인 확인이 가능한 화상회의 방식으로 개최할 수 있으며, 이 경우 화상으로 참석한 회원은 출석한 것으로 본다."]}, {"head": "제21조(총회의 의결정족수)", "lines": ["① 총회는 재적회원 과반수의 출석으로 개회하고, 출석회원 과반수의 찬성으로 의결한다. 다만, 이 정관에서 달리 정한 사항은 그에 따른다.", "② 회원은 서면으로 다른 회원에게 의결권의 행사를 위임할 수 있으며, 이 경우 해당 회원은 출석한 것으로 본다.", "③ 본회와 특정 회원의 관계에 관한 사항을 의결하는 경우 해당 회원은 의결권이 없다."]}, {"head": "제22조(총회 의사록)", "lines": ["① 총회의 의사에 관하여는 의사록을 작성하여야 한다.", "② 의사록에는 의사의 경과, 요령 및 결과를 기재하고 의장 및 출석한 이사가 기명·날인하여야 하며, 이사는 의사록을 주된 사무소에 비치하여야 한다."]}, {"head": "제23조(총회소집의 특례)", "lines": ["① 회장은 다음 각 호의 어느 하나에 해당하는 소집 요구가 있을 때에는 그 요구일부터 14일 이내에 총회를 소집하여야 한다.", "1. 재적이사 과반수가 회의의 목적 사항을 제시하고 소집을 요구한 때", "2. 회원 5분의 1 이상이 회의의 목적 사항을 제시하고 소집을 요구한 때", "3. 감사가 제16조제4항제4호에 따라 소집을 요구한 때", "② 회장이 정당한 이유 없이 제1항의 기간 내에 총회를 소집하지 아니한 때에는 소집을 요구한 자가 법원의 허가를 받아 총회를 소집할 수 있다."]}]}, {"title": "제5장 이사회", "articles": [{"head": "제24조(이사회의 구성과 기능)", "lines": ["① 이사회는 회장과 이사로 구성한다.", "② 이사회는 다음 사항을 심의·의결한다.", "1. 업무집행에 관한 사항", "2. 사업계획의 운영에 관한 사항", "3. 예산·결산서의 작성 및 차입금에 관한 사항", "4. 지부의 설치 및 운영에 관한 사항", "5. 총회에서 위임받은 사항", "6. 이 정관에 따라 그 권한에 속하는 사항", "7. 그 밖에 본회 운영상 중요하다고 회장이 부의하는 사항"]}, {"head": "제25조(이사회의 소집 및 의결)", "lines": ["① 이사회는 회장이 소집하고 그 의장이 되며, 정기이사회는 상·하반기 각 1회, 임시이사회는 회장이 필요하다고 인정할 때 소집한다.", "② 이사회를 소집하려는 때에는 회의 7일 전까지 목적 사항을 명시하여 각 이사에게 서면, 전자우편 또는 문자메시지 등으로 통지하여야 한다.", "③ 이사회는 통지한 사항에 한하여 의결할 수 있다. 다만, 재적이사 전원이 출석하고 출석이사 전원이 찬성한 때에는 통지하지 아니한 사항도 의결할 수 있다.", "④ 이사회는 재적이사 과반수의 출석으로 개회하고, 출석이사 과반수의 찬성으로 의결한다.", "⑤ 이사회의 의사는 서면결의에 의할 수 없다. 다만, 본인 확인이 가능한 화상회의 방식으로 참석한 이사는 출석한 것으로 본다.", "⑥ 이사회의 의사에 관하여는 의사록을 작성하고 출석한 임원이 기명·날인한다."]}, {"head": "제26조(이사회소집의 특례)", "lines": ["회장은 재적이사 과반수가 회의의 목적 사항을 제시하여 소집을 요구한 때에는 그 요구일부터 20일 이내에 이사회를 소집하여야 한다."]}]}, {"title": "제6장 재산 및 회계", "articles": [{"head": "제27조(재산의 구분)", "lines": ["① 본회의 재산은 기본재산과 운영(보통)재산으로 구분한다.", "② 다음 각 호의 재산은 기본재산으로 하고, 그 밖의 재산은 운영(보통)재산으로 한다.", "1. 설립 시 기본재산으로 출연한 재산(별지 기본재산 목록)", "2. 기부 또는 그 밖의 무상으로 취득한 재산. 다만, 기부 목적에 비추어 기본재산으로 하기 곤란하여 총회의 승인을 얻은 재산은 제외한다.", "3. 운영재산 중 총회에서 기본재산으로 편입할 것을 의결한 재산", "③ 기본재산의 목록은 별지와 같으며, 기본재산에 변동이 있는 때에는 지체 없이 별지 목록을 변경하여 정관변경 절차를 밟아야 한다."]}, {"head": "제28조(재산의 관리)", "lines": ["① 기본재산을 매도, 증여, 임대, 교환하거나 담보로 제공하거나 의무를 부담하거나 권리를 포기하려는 때에는 이사회의 의결과 총회의 승인을 거쳐 주무관청의 허가를 받아야 한다.", "② 매수, 기부채납, 그 밖의 방법으로 재산을 취득한 때에는 지체 없이 이를 본회의 재산으로 편입하여야 한다.", "③ 현금인 기본재산은 금융기관에 법인 명의로 예치하여 관리한다."]}, {"head": "제29조(재정)", "lines": ["① 본회의 재정은 회원의 회비, 기본재산의 과실, 사업수익, 출연금, 기부금, 보조금 및 그 밖의 수입으로 충당한다.", "② 수입금은 본회의 유지와 목적사업의 운영을 위하여 지출하며, 회원의 사적 이익이 아닌 공익을 위하여 사용한다."]}, {"head": "제30조(회계연도)", "lines": ["본회의 회계연도는 정부의 회계연도에 따른다."]}, {"head": "제31조(예산 및 결산)", "lines": ["① 본회는 매 회계연도 개시 전까지 사업계획 및 수지예산을 편성하여 이사회의 의결과 총회의 승인을 받아야 한다.", "② 본회는 매 회계연도 종료 후 2개월 이내에 다음의 서류를 이사회의 의결과 총회의 승인을 거쳐 주무관청에 제출한다.", "1. 다음 사업연도의 사업계획 및 수지예산서", "2. 해당 사업연도의 사업실적 및 수지결산서", "3. 해당 사업연도 말 현재의 재산목록 및 회원 현황", "③ 기부금은 관련 법령에 따라 연간 모금액과 활용 실적을 정기총회 개최 후 1개월 이내에 본회 인터넷 홈페이지 등을 통하여 공개한다."]}, {"head": "제32조(재산목록 등의 비치)", "lines": ["본회는 주된 사무소에 재산목록, 회원명부, 총회 및 이사회 의사록, 회계장부를 비치하여야 한다."]}]}, {"title": "제7장 사무국 및 위원회", "articles": [{"head": "제33조(사무국)", "lines": ["① 회장은 본회의 사무를 처리하기 위하여 사무국을 둔다.", "② 사무국에는 사무국장 1명과 필요한 직원을 둘 수 있으며, 회원 중 자원봉사자로 대신할 수 있다.", "③ 사무국장과 직원은 이사회의 동의를 거쳐 회장이 임명하며, 사무국의 조직과 운영에 관한 사항은 이사회가 따로 정한다."]}, {"head": "제34조(위원회 및 고문·자문위원)", "lines": ["① 본회는 효율적인 운영을 위하여 운영위원회와 대외교육, 언론미디어, 취재지원, 문화복지, 국제교류, 출판편집 등 분야별 10개 이내의 분과위원회를 둘 수 있다.", "② 본회는 고문, 자문위원(법률·언론·학계 등) 및 명예이사를 위촉할 수 있으며, 이들은 이사회의 동의를 거쳐 회장이 위촉하고 무보수로 한다."]}]}, {"title": "제8장 보칙", "articles": [{"head": "제35조(정관의 변경)", "lines": ["① 정관을 변경하려는 때에는 총회에서 재적회원 3분의 2 이상의 찬성으로 의결하고, 다음 서류를 첨부하여 주무관청의 허가를 받아야 한다.", "1. 변경사유서 1부", "2. 정관개정안(신·구조문대비표를 포함한다) 1부", "3. 정관의 변경에 관한 총회 회의록 사본 1부", "4. 기본재산의 처분에 따른 정관변경인 경우에는 처분의 사유, 처분 재산의 목록 및 처분의 방법을 적은 서류 1부"]}, {"head": "제36조(해산)", "lines": ["① 본회를 해산하려는 때에는 총회에서 재적회원 3분의 2 이상의 찬성으로 의결하여 해산등기를 하고, 등기사항증명서와 다음 서류를 첨부하여 주무관청에 해산신고를 하여야 한다.", "1. 해산 당시의 재산목록 1부", "2. 잔여재산의 처분 방법의 대강을 적은 서류 1부", "3. 해산 당시의 정관 1부", "4. 해산을 결의한 총회의 회의록 사본 1부"]}, {"head": "제37조(잔여재산의 귀속)", "lines": ["본회가 해산한 때의 잔여재산은 주무관청의 허가를 받아 국가, 지방자치단체 또는 본회와 유사한 목적을 가진 다른 비영리법인에 귀속한다."]}, {"head": "제38조(운영규칙)", "lines": ["회비 징수, 지부 운영 등 이 정관의 시행에 필요한 사항은 이사회의 의결을 거쳐 운영규칙으로 정한다."]}, {"head": "제39조(준용)", "lines": ["이 정관에 정하지 아니한 사항은 「민법」 중 사단법인에 관한 규정과 「문화체육관광부 및 국가유산청 소관 비영리법인의 설립 및 감독에 관한 규칙」을 준용한다."]}]}, {"title": "부칙", "articles": [{"head": "", "lines": ["1. (시행일) 이 정관은 주무관청의 허가를 받아 법원에 설립등기를 한 날부터 시행한다.", "2. (경과조치) 이 정관 시행 당시 법인 설립을 위하여 발기인 등이 행한 행위는 이 정관에 따라 행한 것으로 본다.", "3. (설립 당초의 임원 및 임기) 본회 설립 당초의 임원은 창립총회에서 선출된 자로 하며, 그 임기는 설립등기일부터 기산한다."]}]}];
+
+/* ---------- 렌더링 ---------- */
+const $ = (s, r=document) => r.querySelector(s), $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pad = n => String(n).padStart(2,"0");
+
+const now = new Date();
+$("#today").textContent = `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 (${"일월화수목금토"[now.getDay()]})`;
+$("#year").textContent = now.getFullYear();
+["addr1","addr2","addr3"].forEach(id => $("#"+id).textContent = CONFIG.address);
+$$("[data-cfg]").forEach(el => el.textContent = CONFIG[el.dataset.cfg] || "준비 중");
+$("#mapNaver").href = "https://map.naver.com/p/search/" + encodeURIComponent(CONFIG.address);
+$("#mapKakao").href = "https://map.kakao.com/?q=" + encodeURIComponent(CONFIG.address);
+
+$("#officerTbl").innerHTML = "<tr><th>직위</th><th>성명</th><th>임기</th></tr>" +
+  OFFICERS.map(o => `<tr><td>${esc(o.role)}</td><td>${o.name ? esc(o.name) : '<span style="color:var(--muted)">선임 후 게시</span>'}</td><td>2년</td></tr>`).join("");
+
+const bizCard = (b,i) => `<div class="card biz"><b class="num">${pad(i+1)}</b><div><h3>${esc(b.t)}</h3><p>${esc(b.s)}</p></div></div>`;
+$("#homeBiz").innerHTML = BIZ.slice(0,6).map(bizCard).join("");
+$("#bizGrid").innerHTML = BIZ.map(bizCard).join("");
+const ul = a => "<ul>" + a.map(x => `<li>${esc(x)}</li>`).join("") + "</ul>";
+$("#bizDetail").innerHTML = BIZ.filter(b => b.why).map((b,i) =>
+  `<details${i===0?" open":""}><summary><span class="num">${pad(i+1)}</span>${esc(b.t)}</summary><div class="dbody">
+   <h4>목적</h4>${ul(b.why)}<h4>사업내용</h4>${ul(b.what)}<h4>시행방법</h4>${ul(b.how)}<h4>향후계획</h4>${ul(b.next)}</div></details>`).join("");
+$("#feeTbl").innerHTML = "<tr><th>사업</th><th>구분</th><th>참가비</th></tr>" +
+  BIZ.filter(b => b.fee).map((b,i) => `<tr><td>${i+1}. ${esc(b.t)}</td><td>${esc(b.fee[0])}</td><td>${esc(b.fee[1])}</td></tr>`).join("");
+
+const benefit = (t,i) => `<div class="card benefit"><div class="pill ${["n","r","c"][i%3]}">${pad(i+1)}</div><h3>${esc(t)}</h3></div>`;
+$("#homeBenefit").innerHTML = BENEFITS.slice(0,8).map(benefit).join("");
+$("#benefitGrid").innerHTML = BENEFITS.map(benefit).join("");
+
+$("#charter").innerHTML = CHARTER.map((ch,i) => `<details${i===0?" open":""}><summary>${esc(ch.title)}</summary><div class="dbody">` +
+  ch.articles.map(a => `<div class="art">${a.head ? `<h4>${esc(a.head)}</h4>` : ""}` +
+    a.lines.map(l => `<p class="${/^\d+\./.test(l) ? "i1" : ""}">${esc(l)}</p>`).join("") + "</div>").join("") + "</div></details>").join("");
+
+/* ---------- 게시판 ---------- */
+const sorted = POSTS.map((p,i) => ({...p, id:i})).sort((a,b) => b.date.localeCompare(a.date));
+const li = (p, cat) => `<li>${cat ? `<span class="cat${p.board==="statement"?" r":""}">${BOARDS[p.board]}</span>` : ""}<a href="#news" data-post="${p.id}">${esc(p.title)}</a><time>${p.date.replace(/-/g,".")}</time></li>`;
+const emptyLi = '<li class="empty" style="display:block">등록된 게시물이 없습니다.</li>';
+let board = "notice";
+function showBoard(b, postId){
+  board = b;
+  $("#boardTabs").innerHTML = Object.entries(BOARDS).map(([k,v]) => `<button role="tab" aria-selected="${k===b}" class="${k===b?"on":""}" data-tab="${k}">${v}</button>`).join("");
+  const rows = sorted.filter(p => p.board === b);
+  $("#boardList").innerHTML = rows.length ? rows.map(p => li(p)).join("") : emptyLi;
+  const p = sorted.find(x => x.id === postId);
+  $("#postView").innerHTML = p ? `<article class="post"><h3>${esc(p.title)}</h3><div class="meta">${BOARDS[p.board]} · ${p.date.replace(/-/g,".")}</div>${p.body.map(x => `<p>${esc(x)}</p>`).join("")}</article>` : "";
+  if (p) $("#postView").scrollIntoView({block:"nearest"});
+}
+const notices = sorted.filter(p => p.board === "notice");
+$("#homeNotice").innerHTML = notices.length ? notices.slice(0,6).map(p => li(p)).join("") : emptyLi;
+const side = sorted.filter(p => p.board === "statement" || p.board === "award");
+$("#homeSide").innerHTML = side.length ? side.slice(0,6).map(p => li(p,true)).join("") : emptyLi;
+if (sorted[0]) { $("#tick").textContent = sorted[0].title; $("#tick").dataset.post = sorted[0].id; $("#tickdate").textContent = sorted[0].date.replace(/-/g,"."); }
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-tab],[data-post],[data-board]");
+  if (!t) return;
+  if (t.dataset.tab) return showBoard(t.dataset.tab);
+  if (t.dataset.board) { pending = {board:t.dataset.board}; }
+  if (t.dataset.post) { const p = sorted.find(x => x.id === +t.dataset.post); pending = {board:p.board, post:p.id}; }
+  if (location.hash === "#news") route();
+});
+let pending = null;
+
+/* ---------- 라우터: #페이지/구역 ---------- */
+function route(){
+  const [page, sec] = (location.hash.slice(1) || "home").split("/");
+  const el = $(`.page[data-page="${page}"]`) || $('.page[data-page="home"]');
+  $$(".page").forEach(p => p.classList.toggle("on", p === el));
+  $$("[data-nav]").forEach(a => a.classList.toggle("on", a.dataset.nav === el.dataset.page));
+  $("#gnb").classList.remove("open"); $("#burger").setAttribute("aria-expanded","false");
+  if (el.dataset.page === "news") { showBoard(pending ? pending.board : board, pending ? pending.post : undefined); pending = null; }
+  const target = sec && document.getElementById(page + "-" + sec);
+  if (target) target.scrollIntoView(); else window.scrollTo(0,0);
+}
+addEventListener("hashchange", route);
+$("#burger").addEventListener("click", () => {
+  const open = $("#gnb").classList.toggle("open"); $("#burger").setAttribute("aria-expanded", open);
+});
+
+/* ---------- 입회원서 출력 ---------- */
+$("#joinForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(e.target));
+  const row = (k,v) => `<tr><th>${k}</th><td>${esc(v || "")}</td></tr>`;
+  $("#printSheet").innerHTML = `<h1>입회원서</h1><table>${row("성명",d.name)}${row("생년월일",d.birth)}${row("회원 구분",d.type)}${row("소속 언론사(기관)",d.org)}${row("직위 · 담당 분야",d.title)}${row("연락처",d.tel)}${row("전자우편",d.mail)}${row("주소",d.addr)}<tr><th>주요 약력</th><td style="height:160px;vertical-align:top;white-space:pre-wrap">${esc(d.career || "")}</td></tr></table>
+  <div class="sign">본인은 사단법인 한국일간기자협회의 설립 취지에 찬동하여 정관을 준수할 것을 서약하고 입회를 신청합니다.<br>${now.getFullYear()}년 &nbsp;&nbsp;&nbsp; 월 &nbsp;&nbsp;&nbsp; 일<br>신청인 : ${esc(d.name)} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (서명 또는 인)<br><b>사단법인 한국일간기자협회 귀중</b></div>`;
+  window.print();
+});
+/* ---------- 문의 (메일 프로그램 열기) ---------- */
+$("#askForm").addEventListener("submit", e => {
+  e.preventDefault();
+  if (!CONFIG.email) { $("#askMsg").textContent = "사무국 전자우편이 아직 등록되지 않았습니다. 등록 후 이용하실 수 있습니다."; return; }
+  const d = Object.fromEntries(new FormData(e.target));
+  location.href = `mailto:${CONFIG.email}?subject=${encodeURIComponent(`[${d.kind}] ${d.subject}`)}&body=${encodeURIComponent(`성명: ${d.name}\n\n${d.body}`)}`;
+});
+route();
+</script>
+</body>
+</html>

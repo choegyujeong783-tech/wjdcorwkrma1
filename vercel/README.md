@@ -4,6 +4,7 @@
 |---|---|---|
 | `vercel/semoon` | 세무회계 세문 경정청구 랜딩페이지 | semoon.store |
 | `vercel/kbss`   | KBSS 정책자금 랜딩페이지 | (Vercel 기본 주소 또는 별도 도메인) |
+| `vercel/kdja`   | 사단법인 한국일간기자협회 홈페이지 | (Vercel 기본 주소 또는 별도 도메인) |
 
 Vercel 에서 이 저장소를 두 번 가져와(Import) 프로젝트를 두 개 만들고,
 각각 **Root Directory** 를 `vercel/semoon`, `vercel/kbss` 로 지정합니다.
