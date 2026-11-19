@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>한국일간기자협회</title>
+<meta name="description" content="진실을 기록하는 언론, 더 나은 사회를 만듭니다. 사단법인 한국일간기자협회 공식 홈페이지">
+<meta property="og:title" content="사단법인 한국일간기자협회">
+<meta property="og:description" content="진실을 기록하는 언론, 더 나은 사회를 만듭니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B2D5B; --navy-2:#123d78; --navy-3:#0a2550;
+  --red:#C62828; --char:#333333; --gray:#D9D9D9;
+  --bg:#ffffff; --bg-soft:#f4f6f9; --line:#e3e6ea;
+  --text:#1d1f23; --muted:#6b7280;
+  --wrap:1200px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans KR',system-ui,-apple-system,sans-serif;color:var(--text);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+a:hover .ttl,a.ttl:hover{color:var(--navy);text-decoration:underline;text-underline-offset:3px}
+ul{list-style:none}
+img,svg{display:block}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,select,textarea{font:inherit}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- Header ---------- */
+.top{border-bottom:1px solid var(--line)}
+.top .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-top:18px;padding-bottom:18px}
+.top-ad{display:flex;align-items:center;gap:10px;width:220px;height:66px;border:1px solid var(--line);border-radius:4px;padding:8px 12px;background:linear-gradient(120deg,#eef3fb,#fff);font-size:12px;color:var(--navy);line-height:1.35}
+.top-ad b{font-size:14px;display:block}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-txt small{display:block;font-size:12px;font-weight:700;color:var(--navy);letter-spacing:.02em}
+.brand-txt strong{display:block;font-size:30px;font-weight:900;color:var(--navy);letter-spacing:-.02em;line-height:1.05}
+.brand-txt em{display:block;font-style:normal;font-size:10.5px;letter-spacing:.22em;color:var(--char);margin-top:3px}
+.top-right{justify-self:end;text-align:right;font-size:13px;color:var(--muted)}
+.top-right .util{display:flex;gap:6px;justify-content:flex-end;margin-top:6px}
+.top-right .util a{padding:3px 8px;border-radius:3px}
+.top-right .util a:hover{background:var(--bg-soft)}
+.top-right .util a.dark{background:#111;color:#fff}
+
+.gnb{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:50}
+.gnb .wrap{display:flex;align-items:center;height:56px;gap:4px}
+.gnb .menu-btn{width:40px;height:40px;display:grid;place-items:center;border-radius:4px}
+.gnb .menu-btn:hover{background:var(--bg-soft)}
+.gnb nav{display:flex;flex:1;gap:4px;margin-left:12px}
+.gnb nav>div{position:relative}
+.gnb nav>div>a{display:block;padding:0 18px;line-height:56px;font-size:17px;font-weight:700}
+.gnb nav>div>a.on,.gnb nav>div>a:hover{color:var(--navy);box-shadow:inset 0 -3px 0 var(--navy)}
+.gnb .drop{display:none;position:absolute;top:56px;left:0;min-width:220px;background:#fff;border:1px solid var(--line);border-top:3px solid var(--navy);box-shadow:0 10px 24px rgba(0,0,0,.08);padding:8px 0}
+.gnb nav>div:hover .drop,.gnb nav>div:focus-within .drop{display:block}
+.gnb .drop a{display:block;padding:8px 18px;font-size:14px}
+.gnb .drop a:hover{background:var(--bg-soft);color:var(--navy)}
+.gnb .search-btn{width:40px;height:40px;display:grid;place-items:center;border-radius:4px;margin-left:auto}
+.gnb .search-btn:hover{background:var(--bg-soft)}
+.search-bar{display:none;border-bottom:1px solid var(--line);background:var(--bg-soft)}
+.search-bar.open{display:block}
+.search-bar form{display:flex;gap:8px;padding:12px 0}
+.search-bar input{flex:1;border:1px solid #cfd5dd;border-radius:4px;padding:10px 14px;background:#fff}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 18px;border-radius:4px;background:var(--navy);color:#fff;font-weight:700;font-size:14px}
+.btn:hover{background:var(--navy-2)}
+.btn.red{background:var(--red)}
+.btn.line{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+
+.sub{background:var(--bg-soft);border-bottom:1px solid var(--line)}
+.sub .wrap{display:flex;gap:22px;height:42px;align-items:center;font-size:14px;color:#444;overflow-x:auto;white-space:nowrap}
+.sub a:hover,.sub a.on{color:var(--navy);font-weight:700}
+
+.ticker{background:var(--navy);color:#fff}
+.ticker .wrap{display:flex;align-items:center;height:48px;gap:24px}
+.ticker strong{font-size:15px;flex:none}
+.ticker strong::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:#ff5a5a;margin-right:8px;vertical-align:middle;animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.25}}
+.ticker .rail{flex:1;height:48px;overflow:hidden;position:relative}
+.ticker .rail ul{transition:transform .5s ease}
+.ticker .rail li{height:48px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.ticker .rail li a{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ticker .rail li time{font-size:13px;opacity:.75;flex:none}
+
+/* ---------- Common blocks ---------- */
+main{min-height:60vh}
+.sec{padding:32px 0}
+.sec-h{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--text);padding-bottom:10px;margin-bottom:16px}
+.sec-h h2{font-size:19px;font-weight:900}
+.sec-h a.more{font-size:13px;color:var(--muted)}
+.sec-h a.more:hover{color:var(--navy)}
+.thumb{position:relative;overflow:hidden;border-radius:4px;aspect-ratio:16/10;background:var(--navy)}
+.thumb .ph{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;color:#fff}
+.thumb .ph svg{position:absolute;right:-6%;top:-10%;width:60%;height:auto;opacity:.16}
+.thumb .ph span{font-size:11px;font-weight:700;letter-spacing:.08em;background:rgba(255,255,255,.16);align-self:flex-start;padding:2px 8px;border-radius:2px}
+a:hover .thumb .ph{filter:brightness(1.08)}
+.cat-tag{display:inline-block;font-size:12px;font-weight:700;color:var(--red);margin-bottom:4px}
+.ttl{font-weight:700;line-height:1.45;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden}
+.l1{-webkit-line-clamp:1}.l2{-webkit-line-clamp:2}.l3{-webkit-line-clamp:3}
+.desc{color:var(--muted);font-size:13.5px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:6px}
+.meta{font-size:12.5px;color:var(--muted)}
+
+/* hero */
+.hero-grid{display:grid;grid-template-columns:1fr 300px;gap:28px;padding-top:28px}
+.slider{position:relative;border-radius:6px;overflow:hidden;background:#000;align-self:start}
+.slide .thumb .ph span{display:none}
+.slides{display:flex;transition:transform .6s ease}
+.slide{flex:0 0 100%;position:relative;aspect-ratio:16/10}
+.slide .thumb{border-radius:0;aspect-ratio:auto;height:100%}
+.slide .cap{position:absolute;left:0;right:0;bottom:0;padding:80px 28px 26px;background:linear-gradient(transparent,rgba(0,0,0,.82));color:#fff}
+.slide .cap .ttl{font-size:clamp(20px,2.6vw,30px);-webkit-line-clamp:2}
+.slide .cap p{opacity:.85;font-size:14px;margin-top:8px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.dots{position:absolute;right:20px;top:18px;display:flex;gap:6px}
+.dots button{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.45)}
+.dots button.on{background:#fff;width:24px;border-radius:5px}
+.s-arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.35);color:#fff;display:grid;place-items:center}
+.s-arrow:hover{background:rgba(0,0,0,.6)}
+.s-arrow.prev{left:14px}.s-arrow.next{right:14px}
+
+.side-box{border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.side-box h3{background:var(--navy);color:#fff;text-align:center;font-size:15px;padding:10px}
+.paper{padding:16px;text-align:center}
+.paper-cover{border:1px solid var(--line);aspect-ratio:3/4;padding:14px 12px;text-align:left;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.08);display:flex;flex-direction:column;gap:8px}
+.paper-cover .mast{display:flex;align-items:center;gap:6px;border-bottom:3px double var(--navy);padding-bottom:6px}
+.paper-cover .mast b{font-size:15px;font-weight:900;color:var(--navy)}
+.paper-cover .hl{font-weight:900;font-size:15px;line-height:1.35}
+.paper-cover .bar{height:6px;background:#e8ebef;border-radius:2px}
+.paper-cover .img{flex:1;border-radius:2px;background:linear-gradient(135deg,var(--navy),#3d6db3)}
+.paper .btns{display:flex;gap:8px;margin-top:12px}
+.paper .btns a{flex:1;padding:8px;border:1px solid var(--line);border-radius:4px;font-size:13px}
+.paper .btns a:hover{border-color:var(--navy);color:var(--navy)}
+.vod{margin-top:22px}
+.vod h4{font-size:16px;font-weight:900;margin-bottom:10px}
+.vod .thumb{aspect-ratio:16/9}
+.vod .vbox{position:relative}
+.vod .play{position:absolute;inset:0;display:grid;place-items:center}
+.vod .play i{width:52px;height:52px;border-radius:50%;background:rgba(198,40,40,.92);display:grid;place-items:center}
+.vod .ttl{margin-top:8px;font-size:14px}
+
+/* 4 cols */
+.cols4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.cols4 h3{font-size:17px;font-weight:900;margin-bottom:12px}
+.cols4 .ttl{font-size:15.5px;margin-top:10px}
+
+/* band */
+.band{background:linear-gradient(90deg,var(--navy-3),var(--navy) 60%,#1d4b8f);color:#fff;margin-top:24px}
+.band .wrap{display:grid;grid-template-columns:1fr 1.25fr;gap:0}
+.band .most{padding:36px 32px 36px 0}
+.band h3{font-size:20px;font-weight:900;margin-bottom:18px}
+.band ol{counter-reset:n}
+.band ol li{counter-increment:n;display:flex;gap:12px;align-items:flex-start;padding:7px 0}
+.band ol li::before{content:counter(n);flex:none;width:22px;height:22px;border-radius:50%;background:#fff;color:var(--navy);font-size:12px;font-weight:900;display:grid;place-items:center;margin-top:2px}
+.band ol li a{font-weight:500}
+.band ol li a:hover{text-decoration:underline}
+.band .ops{background:rgba(255,255,255,.08);padding:36px 32px;display:grid;grid-template-columns:150px 1fr;gap:24px}
+.band .ops .ctrl{display:flex;gap:6px;margin-top:auto}
+.band .ops .ctrl button{width:44px;height:34px;background:rgba(0,0,0,.35);border-radius:3px;display:grid;place-items:center}
+.band .ops .ctrl button:hover{background:rgba(0,0,0,.6)}
+.band .ops .left{display:flex;flex-direction:column}
+.band .ops-track{overflow:hidden}
+.band .ops-row{display:flex;gap:16px;transition:transform .5s ease}
+.band .ops-row a{flex:0 0 calc(50% - 8px)}
+.band .ops-row .ttl{font-size:14.5px;margin-top:10px;-webkit-line-clamp:2}
+.band .ops-row a:hover .ttl{color:#fff}
+
+/* 3 cols layout */
+.cols3{display:grid;grid-template-columns:1fr 1fr 300px;gap:32px}
+.feature .ttl{font-size:16px;margin-top:12px;padding:0 0 12px;border-bottom:1px solid var(--line)}
+.feature{border:1px solid var(--line);border-radius:6px;padding:12px}
+.list-thumb li{display:grid;grid-template-columns:1fr 96px;gap:14px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.list-thumb li:first-child{padding-top:0}
+.list-thumb .thumb{aspect-ratio:4/3}
+.list-thumb .ttl{font-size:14.5px;-webkit-line-clamp:2}
+.ad-stack{display:flex;flex-direction:column;gap:10px}
+.ad{border-radius:4px;padding:16px;color:#fff;min-height:92px;display:flex;flex-direction:column;justify-content:center}
+.ad b{font-size:18px;font-weight:900}
+.ad small{opacity:.85;font-size:12px}
+.ad.light{background:#fff;color:var(--text);border:1px solid var(--line)}
+
+/* partners */
+.partners{background:var(--bg-soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:24px}
+.partners .wrap{display:flex;align-items:center;gap:12px;padding-top:16px;padding-bottom:16px}
+.partners .track{overflow:hidden;flex:1}
+.partners .row{display:flex;gap:12px;transition:transform .5s ease}
+.partners .row a{flex:0 0 calc(20% - 9.6px);height:58px;background:#fff;border:1px solid var(--line);border-radius:4px;display:grid;place-items:center;font-weight:900;font-size:17px;letter-spacing:-.02em}
+.partners .arr{width:36px;height:36px;display:grid;place-items:center;border-radius:50%}
+.partners .arr:hover{background:#fff}
+
+.cols3b{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:32px}
+.latest li{display:grid;grid-template-columns:88px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.latest li:first-child{padding-top:0}
+.latest .thumb{aspect-ratio:4/3}
+.latest .ttl{font-size:14px;-webkit-line-clamp:2}
+.latest .meta{font-size:12px}
+.photo-box{background:#3a5276;border-radius:6px;padding:14px 16px 16px;color:#fff}
+.photo-box .h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.photo-box .h b{font-size:17px}
+.photo-box .ttl{margin-top:10px;font-size:15px}
+.photo-box .pdots{display:flex;gap:5px}
+.photo-box .pdots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4)}
+.photo-box .pdots i.on{background:#fff}
+.opinion li{display:grid;grid-template-columns:72px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.opinion li:first-child{padding-top:0}
+.opinion .avatar{width:72px;height:72px;border-radius:50%;overflow:hidden}
+.opinion .avatar .thumb{aspect-ratio:1;border-radius:50%}
+.opinion .ttl{font-size:14.5px;-webkit-line-clamp:2}
+
+/* ---------- Footer ---------- */
+footer{background:#1a1d22;color:#b6bcc6;margin-top:48px;font-size:13px}
+.f-links{border-bottom:1px solid #2c3139}
+.f-links .wrap{display:flex;flex-wrap:wrap;gap:4px 20px;padding-top:14px;padding-bottom:14px}
+.f-links a{color:#e5e7eb}
+.f-links a:hover{color:#fff;text-decoration:underline}
+.f-links a.b{font-weight:700;color:#fff}
+.f-body .wrap{display:grid;grid-template-columns:auto 1fr;gap:32px;padding-top:28px;padding-bottom:36px;align-items:start}
+.f-body .brand-txt strong{color:#fff;font-size:22px}
+.f-body .brand-txt small{color:#9fb3d6}
+.f-body .brand-txt em{color:#9aa1ab}
+.f-info{display:flex;flex-wrap:wrap;gap:4px 16px;line-height:1.8}
+.f-info li span{color:#7d8591;margin-right:4px}
+.f-copy{margin-top:10px;color:#7d8591}
+
+/* ---------- Drawer ---------- */
+.drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;opacity:0;pointer-events:none;transition:opacity .25s}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:min(340px,86vw);background:#fff;z-index:91;transform:translateX(-100%);transition:transform .3s ease;overflow-y:auto}
+body.drawer-open .drawer{transform:none}
+body.drawer-open .drawer-bg{opacity:1;pointer-events:auto}
+.drawer .d-head{display:flex;align-items:center;justify-content:space-between;padding:16px;background:var(--navy);color:#fff}
+.drawer .d-head b{font-size:17px}
+.drawer .d-sec{border-bottom:1px solid var(--line);padding:14px 16px}
+.drawer .d-sec>a{font-weight:900;font-size:16px;display:block;margin-bottom:6px}
+.drawer .d-sec div{display:flex;flex-wrap:wrap;gap:4px 14px}
+.drawer .d-sec div a{font-size:14px;color:#444;padding:2px 0}
+.drawer .d-sec div a:hover{color:var(--navy)}
+
+/* ---------- Sub pages ---------- */
+.page-head{background:linear-gradient(100deg,var(--navy-3),var(--navy) 55%,#1e4f96);color:#fff;position:relative;overflow:hidden}
+.page-head::after{content:"";position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;border:34px solid rgba(255,255,255,.06)}
+.page-head .wrap{padding-top:40px;padding-bottom:40px;position:relative;z-index:1}
+.page-head small{letter-spacing:.2em;font-size:12px;opacity:.7}
+.page-head h1{font-size:30px;font-weight:900;margin-top:6px}
+.page-head .crumb{font-size:13px;opacity:.75;margin-top:8px}
+.page-body{display:grid;grid-template-columns:220px 1fr;gap:40px;padding-top:36px}
+.lnb{align-self:start;border:1px solid var(--line);border-radius:6px;overflow:hidden;position:sticky;top:76px}
+.lnb h4{background:var(--bg-soft);padding:14px 16px;font-size:15px;border-bottom:1px solid var(--line)}
+.lnb a{display:block;padding:11px 16px;font-size:14.5px;border-bottom:1px solid var(--line)}
+.lnb a:last-child{border-bottom:0}
+.lnb a.on{color:var(--navy);font-weight:700;background:#eef3fb;box-shadow:inset 3px 0 0 var(--navy)}
+.lnb a:hover{color:var(--navy)}
+.content h2{font-size:24px;font-weight:900;margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid var(--text)}
+.content h3{font-size:18px;font-weight:900;margin:28px 0 10px;color:var(--navy)}
+.content p{margin-bottom:12px;color:#33373d}
+.content .lead{font-size:20px;font-weight:700;color:var(--navy);line-height:1.6;margin-bottom:20px}
+.content .lead em{font-style:normal;color:var(--red)}
+.sign{text-align:right;margin-top:28px;font-size:15px}
+.sign b{font-size:20px;font-weight:900;margin-left:8px}
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0}
+.pillar{border:1px solid var(--line);border-radius:6px;padding:22px;text-align:center}
+.pillar i{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;margin:0 auto 12px;color:#fff}
+.pillar b{display:block;font-size:16px}
+.pillar p{font-size:13.5px;color:var(--muted);margin:6px 0 0}
+.note{background:var(--bg-soft);border-left:4px solid var(--navy);padding:16px 18px;border-radius:0 6px 6px 0;margin:18px 0}
+.timeline{border-left:2px solid var(--line);margin-left:8px;padding-left:24px}
+.timeline li{position:relative;padding-bottom:22px}
+.timeline li::before{content:"";position:absolute;left:-31px;top:6px;width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid var(--navy)}
+.timeline li b{color:var(--navy);font-size:15px}
+.timeline li p{margin:2px 0 0}
+.org{display:flex;flex-direction:column;align-items:center;gap:0;margin:18px 0}
+.org .node{border-radius:6px;padding:12px 24px;text-align:center;color:#fff;font-weight:700;min-width:220px}
+.org .node small{display:block;font-weight:400;font-size:12.5px;opacity:.85}
+.org .vline{width:2px;height:22px;background:var(--navy)}
+.org .row1{display:flex;align-items:center;gap:0}
+.org .hline{width:40px;height:2px;background:var(--navy)}
+.org .committees{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;width:100%;position:relative;padding-top:22px}
+.org .committees::before{content:"";position:absolute;top:0;left:10%;right:10%;height:2px;background:var(--navy)}
+.org .committees div{position:relative;border:1px solid var(--line);background:var(--bg-soft);border-radius:6px;padding:14px 10px;text-align:center}
+.org .committees div::before{content:"";position:absolute;top:-22px;left:50%;width:2px;height:22px;background:var(--navy)}
+.org .committees b{display:block;color:var(--navy);font-size:14.5px}
+.org .committees small{font-size:12.5px;color:var(--muted)}
+table.tbl{width:100%;border-collapse:collapse;font-size:14.5px;margin:10px 0 20px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:12px 10px;text-align:left}
+.tbl thead th{background:var(--bg-soft);border-top:2px solid var(--text);font-weight:700}
+.benefits{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin:16px 0}
+.benefit{border:1px solid var(--line);border-radius:6px;padding:18px 14px;text-align:center}
+.benefit i{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;margin:0 auto 10px;color:#fff}
+.benefit b{font-size:14.5px;line-height:1.45;display:block}
+.form{display:grid;gap:14px;max-width:640px}
+.form label{display:grid;gap:6px;font-size:14px;font-weight:700}
+.form input,.form select,.form textarea{border:1px solid #cfd5dd;border-radius:4px;padding:11px 12px;font-weight:400}
+.form input:focus,.form select:focus,.form textarea:focus{outline:2px solid var(--navy);outline-offset:-1px}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form .chk{display:flex;gap:8px;align-items:flex-start;font-weight:400;font-size:13.5px}
+.form .chk input{margin-top:4px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(30px);background:#111;color:#fff;padding:12px 20px;border-radius:6px;font-size:14px;opacity:0;transition:.3s;z-index:100;max-width:calc(100vw - 32px)}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+/* list page */
+.alist li{display:grid;grid-template-columns:220px 1fr;gap:20px;padding:20px 0;border-bottom:1px solid var(--line)}
+.alist .ttl{font-size:18px;-webkit-line-clamp:2}
+.alist .meta{margin-top:8px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.tabs a{padding:6px 14px;border:1px solid var(--line);border-radius:20px;font-size:13.5px}
+.tabs a.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.tabs a:hover:not(.on){border-color:var(--navy);color:var(--navy)}
+.empty{padding:60px 0;text-align:center;color:var(--muted)}
+.pager{display:flex;justify-content:center;gap:6px;margin-top:24px}
+.pager button{min-width:36px;height:36px;border:1px solid var(--line);border-radius:4px;font-size:14px}
+.pager button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* article */
+.art-grid{display:grid;grid-template-columns:1fr 300px;gap:40px;padding-top:32px}
+.art-head{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:24px}
+.art-head h1{font-size:clamp(24px,3vw,32px);font-weight:900;line-height:1.35;letter-spacing:-.02em}
+.art-head .subt{font-size:17px;color:#555;margin-top:10px;border-left:3px solid var(--navy);padding-left:12px}
+.art-head .info{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:16px;font-size:13px;color:var(--muted);align-items:center}
+.art-head .tools{margin-left:auto;display:flex;gap:6px}
+.art-head .tools button{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center}
+.art-head .tools button:hover{border-color:var(--navy);color:var(--navy)}
+.art-body{font-size:17px;line-height:1.95;color:#25282d}
+.art-body.big{font-size:19px}
+.art-body p{margin-bottom:22px}
+.art-body figure{margin:4px 0 26px}
+.art-body figcaption{font-size:13px;color:var(--muted);margin-top:8px;text-align:center}
+.art-sign{margin-top:26px;padding:16px;background:var(--bg-soft);border-radius:6px;font-size:14px;display:flex;gap:12px;align-items:center}
+.art-sign i{width:44px;height:44px;border-radius:50%;background:var(--navy);display:grid;place-items:center;color:#fff;font-style:normal;font-weight:900}
+.copyright{font-size:12.5px;color:var(--muted);margin-top:16px}
+.sample-badge{display:inline-block;background:#fff4e5;color:#a35a00;border:1px solid #ffd9a3;border-radius:3px;font-size:11.5px;padding:1px 6px;font-weight:700}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1100px){
+  .cols3{grid-template-columns:1fr 1fr}
+  .cols3 .ad-stack{grid-column:1/-1;flex-direction:row;flex-wrap:wrap}
+  .cols3 .ad-stack .ad{flex:1 1 220px}
+}
+@media (max-width:960px){
+  .top .wrap{grid-template-columns:1fr auto}
+  .top-ad{display:none}
+  .top-right .date{display:none}
+  .gnb nav{display:none}
+  .hero-grid,.art-grid{grid-template-columns:1fr}
+  .cols4{grid-template-columns:repeat(2,1fr)}
+  .band .wrap{grid-template-columns:1fr}
+  .band .most{padding:28px 0}
+  .band .ops{margin:0 -16px;padding:28px 16px}
+  .cols3b{grid-template-columns:1fr 1fr}
+  .cols3b>:first-child{grid-column:1/-1}
+  .page-body{grid-template-columns:1fr;gap:20px}
+  .lnb{position:static;display:flex;overflow-x:auto}
+  .lnb h4{display:none}
+  .lnb a{border-bottom:0;border-right:1px solid var(--line);white-space:nowrap}
+  .lnb a.on{box-shadow:inset 0 -3px 0 var(--navy)}
+  .org .committees{grid-template-columns:repeat(2,1fr)}
+  .org .committees::before,.org .committees div::before{display:none}
+  .partners .row a{flex-basis:calc(33.33% - 8px)}
+}
+@media (max-width:640px){
+  .brand svg{width:46px;height:46px}
+  .brand-txt strong{font-size:21px}
+  .brand-txt em{font-size:8.5px;letter-spacing:.12em}
+  .top-right .util a:not(.dark){display:none}
+  .cols4,.cols3,.cols3b{grid-template-columns:1fr}
+  .band .ops{grid-template-columns:1fr}
+  .band .ops-row a{flex-basis:100%}
+  .pillars{grid-template-columns:1fr}
+  .alist li{grid-template-columns:110px 1fr;gap:12px}
+  .alist .ttl{font-size:15.5px}
+  .alist .desc{display:none}
+  .form .two{grid-template-columns:1fr}
+  .partners .row a{flex-basis:calc(50% - 6px)}
+  .ticker .rail li time{display:none}
+  .slide .cap{padding:60px 16px 16px}
+  .s-arrow{display:none}
+  .f-body .wrap{grid-template-columns:1fr}
+  .tbl{font-size:13px}
+}
+@media print{.top,.gnb,.sub,.ticker,footer,.art-grid>aside,.art-head .tools{display:none!important}}
+</style>
+</head>
+<body>
+
+<!-- SVG symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="logo" viewBox="0 0 120 120">
+      <!-- ring segments -->
+      <path d="M60 8 A52 52 0 0 0 30 103" fill="none" stroke="#0B2D5B" stroke-width="11"/>
+      <path d="M30 103 A52 52 0 0 0 60 112" fill="none" stroke="#C62828" stroke-width="11"/>
+      <path d="M67 8.5 A52 52 0 0 1 104 33" fill="none" stroke="#C62828" stroke-width="11"/>
+      <path d="M68 18 A42 42 0 0 1 95 37" fill="none" stroke="#C62828" stroke-width="4.5"/>
+      <path d="M108 40 A52 52 0 0 1 66 111.6" fill="none" stroke="#333333" stroke-width="11"/>
+      <!-- side lines -->
+      <g fill="#0B2D5B"><rect x="22" y="52" width="20" height="4.6" rx="1"/><rect x="20" y="60" width="22" height="4.6" rx="1"/><rect x="22" y="68" width="20" height="4.6" rx="1"/></g>
+      <g fill="#8a8a8a"><rect x="78" y="52" width="20" height="4.6" rx="1"/><rect x="78" y="60" width="22" height="4.6" rx="1"/><rect x="78" y="68" width="20" height="4.6" rx="1"/></g>
+      <!-- mic head -->
+      <path d="M48 46 V36 a12 12 0 0 1 24 0 V46 Z" fill="#0B2D5B"/>
+      <g fill="#fff"><rect x="44" y="37" width="12" height="2.4"/><rect x="64" y="37" width="12" height="2.4"/><rect x="44" y="42" width="32" height="2.4"/></g>
+      <!-- pen nib -->
+      <path d="M46 48 H74 L74 62 L60 90 L46 62 Z" fill="#333333"/>
+      <rect x="58.6" y="72" width="2.8" height="16" fill="#fff"/>
+      <circle cx="60" cy="70" r="4.6" fill="#fff"/><circle cx="60" cy="70" r="2.2" fill="#333"/>
+    </symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm17.71-10.21a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/></symbol>
+    <symbol id="i-news" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h13v14a2 2 0 0 0 2 2H5a3 3 0 0 1-3-3V6a2 2 0 0 1 2-2zm2 3v4h5V7H6zm7 0v2h2V7h-2zm0 3v1h2v-1h-2zM6 13v1.5h9V13H6zm0 3v1.5h9V16H6zM19 8h2v10a2 2 0 0 1-4 0V8h2z"/></symbol>
+    <symbol id="i-people" viewBox="0 0 24 24"><path fill="currentColor" d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm-8 0a3 3 0 1 0-3-3 3 3 0 0 0 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05A4.2 4.2 0 0 1 17 16.5V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path fill="currentColor" d="M12.2 5.3 9.6 7.9a1.5 1.5 0 0 0 2.1 2.1l1.6-1.6 5.8 5.8 1.4-1.4-6.6-6.6a2.7 2.7 0 0 0-1.7-.9zM2 9.5l4.4-4.4 3 1-2.5 2.5a3.5 3.5 0 0 0 4.9 4.9l1.4-1.4 4.2 4.2-1.1 1.1-1.6-1.6-1.1 1.1 1.6 1.6-1.1 1.1-1.6-1.6-1.1 1.1 1.6 1.6-1.4 1.4c-.6.6-1.5.6-2.1 0L2 14.3V9.5zM22 9l-3.8 3.8-5-5L16 5h3l3 3v1z"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm6.9 6h-2.95a15.7 15.7 0 0 0-1.38-3.56A8 8 0 0 1 18.9 8zM12 4.04A14 14 0 0 1 13.91 8h-3.82A14 14 0 0 1 12 4.04zM4.26 14a8.2 8.2 0 0 1 0-4h3.38a16.5 16.5 0 0 0 0 4zm.84 2h2.95a15.7 15.7 0 0 0 1.38 3.56A8 8 0 0 1 5.1 16zM8.05 8H5.1a8 8 0 0 1 4.33-3.56A15.7 15.7 0 0 0 8.05 8zM12 19.96A14 14 0 0 1 10.09 16h3.82A14 14 0 0 1 12 19.96zM14.34 14H9.66a14.7 14.7 0 0 1 0-4h4.68a14.7 14.7 0 0 1 0 4zm.25 5.56A15.7 15.7 0 0 0 15.95 16h2.95a8 8 0 0 1-4.31 3.56zM16.36 14a16.5 16.5 0 0 0 0-4h3.38a8.2 8.2 0 0 1 0 4z"/></symbol>
+    <symbol id="i-cap" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path fill="currentColor" d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4.2 5 2.2V11c0 3.5-2.24 6.8-5 7.86-2.76-1.06-5-4.36-5-7.86V7.4l5-2.2z"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path fill="currentColor" d="M19 5h-2V3H7v2H5a2 2 0 0 0-2 2v1a5 5 0 0 0 4.39 4.96A5 5 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1a5 5 0 0 0 3.61-2.94A5 5 0 0 0 21 8V7a2 2 0 0 0-2-2zM5 8V7h2v3.82A3 3 0 0 1 5 8zm14 0a3 3 0 0 1-2 2.82V7h2v1z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path fill="currentColor" d="M3 21h18v-2H3v2zM5 17h3v-6H5v6zm5 0h3V7h-3v10zm5 0h3V3h-3v14z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path fill="currentColor" d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 9.5 16a6.47 6.47 0 0 0 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.49 4.49 0 0 1 9.5 14z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path fill="currentColor" d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="#fff" d="M8 5v14l11-7z"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path fill="currentColor" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a3.3 3.3 0 0 0 0-1.39l7.05-4.11A3 3 0 1 0 15 5a3 3 0 0 0 .04.49L8 9.6a3 3 0 1 0 0 4.8l7.12 4.16a2.8 2.8 0 0 0-.08.65A2.96 2.96 0 1 0 18 16.08z"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24"><path fill="currentColor" d="M19 8H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3zm-3 11H8v-5h8v5zm3-7a1 1 0 1 1 1-1 1 1 0 0 1-1 1zm-1-9H6v4h12V3z"/></symbol>
+    <symbol id="i-font" viewBox="0 0 24 24"><path fill="currentColor" d="M9 4v3h5v12h3V7h5V4H9zm-6 8h3v7h3v-7h3V9H3v3z"/></symbol>
+  </defs>
+</svg>
+
+<header>
+  <div class="top">
+    <div class="wrap">
+      <a class="top-ad" href="#/about/join" aria-label="회원 모집 안내">
+        <svg width="34" height="34" style="color:var(--red);flex:none"><use href="#i-people"/></svg>
+        <span><b>2027 정회원 모집</b>함께할 언론인을 기다립니다</span>
+      </a>
+      <a class="brand" href="#/" aria-label="한국일간기자협회 홈">
+        <svg width="62" height="62"><use href="#logo"/></svg>
+        <span class="brand-txt"><small>사단법인</small><strong>한국일간기자협회</strong><em>KOREA DAILY JOURNALISTS ASSOCIATION</em></span>
+      </a>
+      <div class="top-right">
+        <div class="date">발행일: <span id="today"></span></div>
+        <div class="util">
+          <a href="#/about/join">회원가입</a>
+          <a href="#/report">기사제보</a>
+          <a class="dark" href="#/login">로그인</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gnb">
+    <div class="wrap">
+      <button class="menu-btn" id="openDrawer" aria-label="전체메뉴 열기"><svg width="24" height="24"><use href="#i-menu"/></svg></button>
+      <nav id="gnb"></nav>
+      <button class="search-btn" id="toggleSearch" aria-label="기사검색"><svg width="22" height="22"><use href="#i-search"/></svg></button>
+    </div>
+  </div>
+  <div class="search-bar" id="searchBar">
+    <div class="wrap">
+      <form id="searchForm" role="search">
+        <label class="sr" for="q">기사검색</label>
+        <input id="q" type="search" placeholder="검색어를 입력하세요" autocomplete="off">
+        <button class="btn" type="submit">검색</button>
+      </form>
+    </div>
+  </div>
+  <div class="sub"><div class="wrap" id="subnav"></div></div>
+  <div class="ticker">
+    <div class="wrap">
+      <strong>실시간</strong>
+      <div class="rail"><ul id="ticker"></ul></div>
+    </div>
+  </div>
+</header>
+
+<main id="app" tabindex="-1"></main>
+
+<footer>
+  <div class="f-links"><div class="wrap">
+    <a class="b" href="#/about/greeting">협회소개</a>
+    <a href="#/report">기사제보</a>
+    <a href="#/ad">광고문의</a>
+    <a href="#/policy/terms">이용약관</a>
+    <a class="b" href="#/policy/privacy">개인정보처리방침</a>
+    <a href="#/policy/youth">청소년보호정책</a>
+    <a href="#/policy/copyright">저작권보호정책</a>
+    <a href="#/policy/email">이메일무단수집거부</a>
+  </div></div>
+  <div class="f-body"><div class="wrap">
+    <div class="brand">
+      <svg width="54" height="54" style="background:#fff;border-radius:50%;padding:3px"><use href="#logo"/></svg>
+      <span class="brand-txt"><small>사단법인</small><strong>한국일간기자협회</strong><em>KOREA DAILY JOURNALISTS ASSOCIATION</em></span>
+    </div>
+    <div>
+      <ul class="f-info">
+        <li><span>법인명</span>사단법인 한국일간기자협회</li>
+        <li><span>주소</span>(주소를 입력하세요)</li>
+        <li><span>대표전화</span>02-000-0000</li>
+        <li><span>이메일</span>contact@kdja.or.kr</li>
+        <li><span>제호</span>한국일간기자협회</li>
+        <li><span>등록번호</span>(등록번호)</li>
+        <li><span>등록일</span>(등록일)</li>
+        <li><span>발행인</span>(발행인)</li>
+        <li><span>편집인</span>(편집인)</li>
+        <li><span>청소년보호책임자</span>(성명)</li>
+      </ul>
+      <p class="f-copy">기록하는 힘이 사회를 더 나은 곳으로 만듭니다. · Copyright © 한국일간기자협회 All rights reserved.</p>
+    </div>
+  </div></div>
+</footer>
+
+<div class="drawer-bg" id="drawerBg"></div>
+<aside class="drawer" id="drawer" aria-label="전체메뉴">
+  <div class="d-head"><b>전체메뉴</b><button id="closeDrawer" aria-label="닫기"><svg width="24" height="24"><use href="#i-close"/></svg></button></div>
+  <div id="drawerBody"></div>
+</aside>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* =====================================================================
+   1) 사이트 구조 (메뉴) — kja.co.kr 의 정보구조를 참고해 재구성
+   ===================================================================== */
+const MENU = [
+  { key:'issue', name:'이슈 포커스', subs:[
+    ['politics','정치'],['economy','경제'],['society','사회'],['culture','생활·문화'],['local','전국 소식']]},
+  { key:'opinion', name:'오피니언', subs:[
+    ['interview','인터뷰·기획특집'],['focus','기자 포커스'],['column','칼럼·외부 필진'],['people','인사·부고'],['photo','포토뉴스']]},
+  { key:'assoc', name:'협회 운영소식', subs:[
+    ['statement','성명서'],['award','기자상'],['notice','협회 공지사항'],['forum','포럼·교육원 소식'],['book','저서 출간 소개'],['move','회원 이직·보직 변경']]},
+  { key:'about', name:'협회 소개', page:true, subs:[
+    ['greeting','인사말'],['purpose','설립 취지'],['history','연혁'],['org','조직도'],['executives','임원 명단'],['benefits','회원 혜택'],['join','회원 가입 안내'],['ethics','윤리강령'],['bylaws','정관']]},
+];
+const CAT = {}; MENU.forEach(m => m.subs.forEach(([k,n]) => CAT[k] = {name:n, parent:m.key}));
+const SEC_NAME = Object.fromEntries(MENU.map(m => [m.key, m.name]));
+
+/* =====================================================================
+   2) 기사 데이터 (샘플) — 실제 운영 시 CMS / DB / JSON 으로 교체
+   ===================================================================== */
+const A = [
+ {id:1,cat:'forum',date:'2026-11-18',writer:'편집국',title:'(사)한국일간기자협회, 다음 달 서울서 ‘AI 시대 언론의 책임’ 포럼 개최',sub:'현직 기자·학계 전문가 참여… 생성형 AI 활용 취재윤리 기준 논의',body:['사단법인 한국일간기자협회가 다음 달 서울에서 ‘AI 시대 언론의 책임’을 주제로 언론포럼을 연다.','이번 포럼에서는 생성형 AI를 활용한 기사 작성과 팩트체크 과정에서 발생할 수 있는 오류, 저작권 문제, 취재원 보호 원칙 등을 집중적으로 다룰 예정이다. 현직 일간지 기자와 언론학계 전문가가 발제자로 나서고, 이어 종합 토론이 진행된다.','협회 관계자는 “기술의 변화가 빨라질수록 기자의 기본, 즉 사실 확인과 책임 있는 보도가 더 중요해진다”며 “현장 기자들이 바로 적용할 수 있는 실천 가이드라인을 마련하는 자리가 되도록 하겠다”고 밝혔다.','포럼은 회원과 일반 시민 누구나 사전 신청을 통해 참여할 수 있으며, 세부 일정은 협회 공지사항을 통해 안내된다.']},
+ {id:2,cat:'notice',date:'2026-11-17',writer:'사무국',title:'[공지] 2027년도 정회원·준회원 모집 안내',sub:'신문·방송·통신·인터넷 언론 종사자 대상… 연중 상시 접수',body:['사단법인 한국일간기자협회가 2027년도 정회원 및 준회원을 모집한다.','신청 대상은 신문·방송·통신·인터넷 등 언론사에 재직 중인 기자와 전문기자, 그리고 언론 관련 분야 종사자다. 회원에게는 취재 네트워크 및 정보 공유, 전문 교육·세미나 우선 참여, 취재 협력 및 공동기획 지원, 전문인 권익 보호를 위한 법률·행정 자문 연계 등의 혜택이 제공된다.','가입 신청은 협회 홈페이지 ‘회원 가입 안내’ 메뉴에서 할 수 있으며, 이사회 심사를 거쳐 최종 승인된다.']},
+ {id:3,cat:'economy',date:'2026-11-16',writer:'경제부',title:'[분석] 상장사 3분기 실적 시즌 마감… 반도체 ‘웃고’ 석유화학 ‘울고’',sub:'영업이익률 격차 확대… 재무제표로 본 업종별 명암',body:['국내 상장사의 3분기 실적 발표가 마무리되면서 업종별 명암이 뚜렷하게 갈렸다.','반도체 업종은 고부가 메모리 수요 확대에 힘입어 매출과 영업이익이 동반 증가한 반면, 석유화학 업종은 공급 과잉과 수요 둔화가 겹치며 수익성이 크게 악화했다.','재무제표를 살펴보면 차이는 더 분명하다. 영업활동현금흐름이 개선된 기업들은 설비투자를 늘리고 있지만, 부채비율이 높아진 일부 기업은 차입금 상환 부담이 커지고 있다. 전문가들은 “분기 실적뿐 아니라 현금흐름표와 재무상태표를 함께 봐야 기업의 실제 체력을 판단할 수 있다”고 조언했다.']},
+ {id:4,cat:'politics',date:'2026-11-15',writer:'정치부',title:'국회, 내년도 예산안 심사 본격화… 지역 균형발전 예산 쟁점',sub:'',body:['국회가 내년도 정부 예산안 심사에 본격 착수했다.','여야는 지역 균형발전 관련 예산과 민생 지원 사업 규모를 놓고 이견을 보이고 있으며, 상임위원회별 예비심사를 거쳐 예산결산특별위원회에서 최종 조율에 들어갈 예정이다.']},
+ {id:5,cat:'society',date:'2026-11-14',writer:'사회부',title:'“지역 언론이 살아야 지역이 산다”… 지역언론 지원 정책 토론회',sub:'',body:['지역 언론의 지속 가능성을 모색하는 정책 토론회가 열렸다.','참석자들은 지역 언론이 주민의 알 권리와 지방 행정 감시에 핵심적인 역할을 하고 있음에도 재정 여건이 악화하고 있다며 제도적 지원이 필요하다고 입을 모았다.']},
+ {id:6,cat:'culture',date:'2026-11-13',writer:'문화부',title:'한국일간기자협회·지역 문화재단, 문화예술 발전 위한 업무협약',sub:'',body:['한국일간기자협회가 지역 문화재단과 문화예술 발전 및 지역사회 상생을 위한 업무협약을 체결했다.','양 기관은 지역 문화 행사 홍보, 문화예술 분야 기획 보도, 시민 대상 미디어 교육 등에서 협력하기로 했다.']},
+ {id:7,cat:'local',date:'2026-11-12',writer:'지역취재팀',title:'전국 지부 기자 간담회 개최… 지역 취재 현안 공유',sub:'',body:['한국일간기자협회 전국 지부 소속 기자들이 한자리에 모여 지역 취재 현안을 공유했다.','간담회에서는 지역 행정 감시 보도, 재난 보도 원칙, 취재 협력 체계 구축 방안 등이 논의됐다.']},
+ {id:8,cat:'interview',date:'2026-11-11',writer:'기획취재팀',title:'[특별인터뷰] 한국일간기자협회장 “연대와 상생으로 신뢰받는 언론 만들 것”',sub:'',body:['한국일간기자협회장은 “혼자가 아닌 연대로, 경쟁이 아닌 상생으로 언론의 미래를 함께 만들겠다”고 말했다.','회장은 협회의 핵심 과제로 언론인의 전문성 향상, 권익 보호와 복지 증진, 지역사회와 시민을 위한 건강한 언론문화 조성을 꼽았다.']},
+ {id:9,cat:'focus',date:'2026-11-10',writer:'편집국',title:'AI가 뉴스를 쓰는 시대, 기자는 ‘기본’으로 돌아가야 한다',sub:'',body:['생성형 AI가 기사 초안을 쓰는 시대가 됐다. 그러나 사실을 확인하고, 맥락을 짚고, 책임을 지는 일은 여전히 기자의 몫이다.','기술은 도구일 뿐이다. 언론의 신뢰는 결국 현장을 확인한 기자의 발품에서 나온다.']},
+ {id:10,cat:'column',date:'2026-11-09',writer:'외부 필진',title:'[칼럼] 감시와 견제, 언론이 놓쳐서는 안 될 공적 책무',sub:'',body:['권력에 대한 감시와 견제는 언론의 존재 이유다.','언론이 스스로 신뢰를 지킬 때 비로소 사회는 더 나은 방향으로 나아갈 수 있다.']},
+ {id:11,cat:'statement',date:'2026-11-08',writer:'협회',title:'[성명] 취재 현장의 언론 자유 침해에 대한 한국일간기자협회 입장',sub:'',body:['한국일간기자협회는 최근 취재 현장에서 발생한 기자의 정당한 취재 활동 방해 사례에 깊은 유감을 표한다.','협회는 언론 자유가 민주주의의 근간임을 다시 한번 강조하며, 회원 기자의 권익 보호를 위해 법률 자문 등 필요한 모든 지원을 아끼지 않겠다.']},
+ {id:12,cat:'award',date:'2026-11-07',writer:'사무국',title:'제1회 한국일간기자상 공모… 탐사·지역·경제보도 부문',sub:'',body:['한국일간기자협회가 제1회 한국일간기자상 공모를 시작한다.','시상 부문은 탐사보도, 지역보도, 경제보도, 사진·영상보도 등이며 회원사 소속 기자라면 누구나 응모할 수 있다.']},
+ {id:13,cat:'economy',date:'2026-11-06',writer:'경제부',title:'기준금리 동결 후 시장 반응… 중소기업 자금조달 부담 여전',sub:'',body:['기준금리가 동결된 가운데 중소기업의 자금조달 부담은 여전한 것으로 나타났다.','특히 이자보상배율이 1 미만인 한계기업 비중이 늘면서 정책자금 수요도 증가하고 있다.']},
+ {id:14,cat:'forum',date:'2026-11-05',writer:'교육원',title:'언론교육원, 회원 대상 ‘데이터 저널리즘 실무’ 과정 개설',sub:'',body:['한국일간기자협회 언론교육원이 회원 기자를 대상으로 데이터 저널리즘 실무 과정을 개설한다.','과정은 공공데이터 수집, 엑셀·파이썬을 활용한 데이터 분석, 기업 재무제표 읽기, 시각화 등으로 구성된다.']},
+ {id:15,cat:'photo',date:'2026-11-04',writer:'사진부',title:'[포토] 한국일간기자협회 정기총회 현장',sub:'',body:['한국일간기자협회 정기총회가 회원들이 참석한 가운데 열렸다.']},
+ {id:16,cat:'people',date:'2026-11-03',writer:'편집국',title:'[인사] 한국일간기자협회 신임 사무총장 선임',sub:'',body:['한국일간기자협회는 이사회 의결을 거쳐 신임 사무총장을 선임했다.']},
+ {id:17,cat:'book',date:'2026-11-02',writer:'편집국',title:'[신간] 현직 기자가 쓴 ‘숫자로 읽는 기업’… 재무제표 읽기 입문서',sub:'',body:['현직 경제부 기자가 기업 재무제표를 쉽게 읽는 법을 담은 책을 펴냈다.','저자는 현장 취재 경험을 바탕으로 손익계산서, 재무상태표, 현금흐름표를 기사 사례와 함께 풀어냈다.']},
+ {id:18,cat:'move',date:'2026-11-01',writer:'편집국',title:'[회원 소식] 회원사 기자 이직·보직 변경 안내 (11월)',sub:'',body:['11월 회원사 소속 기자들의 이직 및 보직 변경 내용을 안내한다.']},
+ {id:19,cat:'politics',date:'2026-10-30',writer:'정치부',title:'지방의회 행정사무감사 돌입… 재정 건전성 집중 점검',sub:'',body:['전국 지방의회가 행정사무감사에 돌입했다. 올해는 지방재정 건전성과 대형 사업 예산 집행이 주요 점검 대상이다.']},
+ {id:20,cat:'society',date:'2026-10-29',writer:'사회부',title:'청소년 미디어 리터러시 교육, 학교 현장 확대된다',sub:'',body:['가짜뉴스 판별 능력을 기르는 청소년 미디어 리터러시 교육이 학교 현장으로 확대된다.']},
+ {id:21,cat:'local',date:'2026-10-28',writer:'지역취재팀',title:'[지역 진단] 원도심 재생 사업, 주민 체감도는 아직',sub:'',body:['원도심 재생 사업이 수년째 이어지고 있지만 주민이 체감하는 변화는 아직 크지 않다는 지적이 나온다.']},
+ {id:22,cat:'culture',date:'2026-10-27',writer:'문화부',title:'가을 지역 축제 잇따라… 관광객 유치 경쟁 본격화',sub:'',body:['전국 각지에서 가을 축제가 잇따라 열리며 지자체 간 관광객 유치 경쟁이 본격화하고 있다.']},
+ {id:23,cat:'interview',date:'2026-10-25',writer:'기획취재팀',title:'[인터뷰] 30년 경제기자 “공시와 재무제표에 답이 있다”',sub:'',body:['30년간 경제 현장을 취재해 온 한 베테랑 기자는 “기업의 진실은 보도자료가 아니라 공시와 재무제표에 있다”고 말했다.']},
+ {id:24,cat:'notice',date:'2026-10-24',writer:'사무국',title:'[공지] 기자증 발급 및 갱신 절차 안내',sub:'',body:['한국일간기자협회 회원 기자증 발급 및 갱신 절차를 안내한다. 신청서와 재직증명서, 사진 파일을 제출하면 된다.']},
+];
+A.forEach(a => { a.views = 300 + ((a.id*7919)%2400); if(!a.sub) a.sub=''; });
+const byDate = [...A].sort((x,y) => y.date.localeCompare(x.date) || y.id-x.id);
+const inCat = c => byDate.filter(a => a.cat===c);
+const inSec = s => byDate.filter(a => CAT[a.cat].parent===s);
+const get = id => A.find(a => a.id===+id);
+
+/* =====================================================================
+   3) 썸네일 — 사진이 없을 때 쓰는 브랜드 컬러 플레이스홀더
+   ===================================================================== */
+const PAL = [['#0B2D5B','#2d5fa8'],['#1f2a37','#4b5563'],['#7f1d1d','#C62828'],['#0f3d3e','#2a7f7a'],['#1e3a5f','#6b8fbf'],['#3b2f63','#6c5ba8']];
+const ICON = {issue:'i-news',opinion:'i-pen',assoc:'i-mic'};
+function thumb(a, cls=''){
+  const [c1,c2] = PAL[a.id % PAL.length];
+  return `<div class="thumb ${cls}"><div class="ph" style="background:linear-gradient(135deg,${c1},${c2})">
+    <svg viewBox="0 0 24 24"><use href="#${ICON[CAT[a.cat].parent]}"/></svg>
+    <span>${CAT[a.cat].name}</span></div></div>`;
+}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const url = a => `#/article/${a.id}`;
+const dot = d => d.replaceAll('-','.');
+const excerpt = a => a.body.join(' ').slice(0,110)+'…';
+
+/* =====================================================================
+   4) 공통 영역 렌더링 (메뉴, 서브메뉴, 실시간 티커, 드로어)
+   ===================================================================== */
+function renderChrome(){
+  const d = new Date(); const w='일월화수목금토'[d.getDay()];
+  document.getElementById('today').textContent =
+    `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} (${w})`;
+
+  document.getElementById('gnb').innerHTML = MENU.map(m => `
+    <div><a href="${m.page?'#/about/greeting':'#/list/'+m.key}" data-sec="${m.key}">${m.name}</a>
+      <div class="drop">${m.subs.map(([k,n]) => `<a href="${m.page?'#/about/'+k:'#/list/'+k}">${n}</a>`).join('')}</div></div>`).join('');
+
+  document.getElementById('drawerBody').innerHTML =
+    `<div class="d-sec"><a href="#/list/all">전체기사</a></div>` +
+    MENU.map(m => `<div class="d-sec"><a href="${m.page?'#/about/greeting':'#/list/'+m.key}">${m.name}</a>
+      <div>${m.subs.map(([k,n]) => `<a href="${m.page?'#/about/'+k:'#/list/'+k}">${n}</a>`).join('')}</div></div>`).join('') +
+    `<div class="d-sec"><div><a href="#/about/join">회원가입</a><a href="#/login">로그인</a><a href="#/report">기사제보</a><a href="#/ad">광고문의</a></div></div>`;
+
+  const items = byDate.slice(0,10);
+  const ul = document.getElementById('ticker');
+  ul.innerHTML = [...items, items[0]].map(a => `<li><a href="${url(a)}">${esc(a.title)}</a><time>${dot(a.date)}</time></li>`).join('');
+  let i = 0;
+  setInterval(() => {
+    i++; ul.style.transition = 'transform .5s ease'; ul.style.transform = `translateY(-${i*48}px)`;
+    if(i === items.length){ setTimeout(() => { ul.style.transition='none'; ul.style.transform='translateY(0)'; i=0; }, 520); }
+  }, 3500);
+}
+function renderSubnav(sec, active){
+  const m = MENU.find(x => x.key===sec) || MENU[0];
+  document.getElementById('subnav').innerHTML = m.subs.map(([k,n]) =>
+    `<a href="${m.page?'#/about/'+k:'#/list/'+k}" class="${k===active?'on':''}">${n}</a>`).join('');
+  document.querySelectorAll('#gnb [data-sec]').forEach(a => a.classList.toggle('on', a.dataset.sec===sec));
+}
+
+/* =====================================================================
+   5) 페이지: 홈 (kja.co.kr 메인 레이아웃 구조 참고)
+   ===================================================================== */
+function pageHome(){
+  renderSubnav('issue');
+  const top = byDate.slice(0,5);
+  const assoc = inSec('assoc');
+  const most = [...A].sort((x,y) => y.views-x.views).slice(0,6);
+  const cols = ['politics','economy','society','culture'];
+  const local = inCat('local'), inter = [...inCat('interview'), ...inCat('focus')].slice(0,4);
+  const ops = [...inSec('opinion').filter(a=>a.cat!=='photo')].slice(0,3);
+  const photos = inCat('photo').concat(inCat('culture')).slice(0,3);
+  const partners = ['한국경제일보','대한일보','코리아데일리','아시아경제신문','뉴스한국','지역일보','미디어타임즈','경제투데이'];
+
+  return `
+  <div class="wrap hero-grid">
+    <section class="slider" aria-label="주요 기사">
+      <div class="slides" id="slides">${top.map(a => `
+        <a class="slide" href="${url(a)}">${thumb(a)}
+          <div class="cap"><span class="cat-tag" style="color:#ffb4b4">${CAT[a.cat].name}</span>
+          <div class="ttl">${esc(a.title)}</div><p>${esc(a.sub||excerpt(a))}</p></div></a>`).join('')}
+      </div>
+      <div class="dots" id="dots">${top.map((_,i)=>`<button aria-label="${i+1}번 기사" class="${i?'':'on'}"></button>`).join('')}</div>
+      <button class="s-arrow prev" aria-label="이전"><svg width="24" height="24"><use href="#i-left"/></svg></button>
+      <button class="s-arrow next" aria-label="다음"><svg width="24" height="24"><use href="#i-right"/></svg></button>
+    </section>
+    <aside>
+      <div class="side-box">
+        <h3>한국일간기자협회, 오늘 자 소식지</h3>
+        <div class="paper">
+          <a class="paper-cover" href="${url(top[0])}">
+            <div class="mast"><svg width="22" height="22"><use href="#logo"/></svg><b>한국일간기자협회보</b></div>
+            <div class="hl">${esc(top[0].title)}</div>
+            <div class="bar"></div><div class="bar" style="width:80%"></div>
+            <div class="img"></div>
+            <div class="bar"></div><div class="bar" style="width:60%"></div>
+          </a>
+          <div class="btns"><a href="#/about/join">구독신청</a><a href="#/list/notice">지면보기</a></div>
+        </div>
+      </div>
+      <div class="vod">
+        <h4>영상뉴스</h4>
+        <a href="${url(get(15))}"><div class="vbox">${thumb(get(15))}<span class="play"><i><svg width="24" height="24"><use href="#i-play"/></svg></i></span></div>
+        <div class="ttl l2">${esc(get(15).title)}</div></a>
+      </div>
+    </aside>
+  </div>
+
+  <section class="wrap sec">
+    <div class="cols4">${cols.map(c => { const a = inCat(c)[0]; return `
+      <div><h3><a href="#/list/${c}">${CAT[c].name}</a></h3>
+        <a href="${url(a)}">${thumb(a)}<div class="ttl l2">${esc(a.title)}</div><p class="desc">${esc(excerpt(a))}</p></a></div>`;}).join('')}
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="most"><h3>많이 본 뉴스</h3>
+        <ol>${most.map(a => `<li><a href="${url(a)}">${esc(a.title)}</a></li>`).join('')}</ol></div>
+      <div class="ops">
+        <div class="left"><h3><a href="#/list/assoc">한국일간기자협회<br>운영소식</a></h3>
+          <div class="ctrl"><button id="opsPrev" aria-label="이전"><svg width="20" height="20"><use href="#i-left"/></svg></button><button id="opsNext" aria-label="다음"><svg width="20" height="20"><use href="#i-right"/></svg></button></div></div>
+        <div class="ops-track"><div class="ops-row" id="opsRow">${assoc.map(a => `
+          <a href="${url(a)}">${thumb(a)}<div class="ttl">${esc(a.title)}</div></a>`).join('')}</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap sec">
+    <div class="cols3">
+      <div><div class="sec-h"><h2>전국 소식</h2><a class="more" href="#/list/local">더보기 +</a></div>
+        <a class="feature" href="${url(local[0])}" style="display:block">${thumb(local[0])}<div class="ttl l2">${esc(local[0].title)}</div>
+        ${local.slice(1,3).map(a=>`<p class="meta" style="margin-top:10px">· ${esc(a.title)}</p>`).join('')}</a></div>
+      <div><div class="sec-h"><h2>인터뷰·기획특집</h2><a class="more" href="#/list/interview">더보기 +</a></div>
+        <ul class="list-thumb">${inter.map(a => `<li><a class="ttl" href="${url(a)}">${esc(a.title)}</a><a href="${url(a)}">${thumb(a)}</a></li>`).join('')}</ul></div>
+      <div class="ad-stack">
+        <a class="ad" href="#/about/join" style="background:linear-gradient(120deg,#0B2D5B,#2d5fa8)"><b>함께할 언론인을 기다립니다</b><small>2027 정회원 모집 · 연중 상시 접수</small></a>
+        <a class="ad" href="#/list/forum" style="background:linear-gradient(120deg,#7f1d1d,#C62828)"><b>AI 시대 언론의 책임</b><small>한국일간기자협회 언론포럼 · 사전신청</small></a>
+        <a class="ad" href="#/list/forum" style="background:linear-gradient(120deg,#0f3d3e,#2a7f7a)"><b>데이터 저널리즘 실무</b><small>언론교육원 회원 과정 개설</small></a>
+        <a class="ad light" href="#/ad"><b style="color:var(--navy)">광고 문의</b><small style="color:var(--muted)">배너 광고 영역 (300×90)</small></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="partners" aria-label="회원사">
+    <div class="wrap">
+      <button class="arr" id="pPrev" aria-label="이전"><svg width="24" height="24"><use href="#i-left"/></svg></button>
+      <div class="track"><div class="row" id="pRow">${partners.map((p,i) => `<a href="#/about/executives" style="color:${['#0B2D5B','#C62828','#333','#1e4f96'][i%4]}">${p}</a>`).join('')}</div></div>
+      <button class="arr" id="pNext" aria-label="다음"><svg width="24" height="24"><use href="#i-right"/></svg></button>
+    </div>
+  </section>
+
+  <section class="wrap sec">
+    <div class="cols3b">
+      <div><div class="sec-h"><h2>최신뉴스</h2><a class="more" href="#/list/all">더보기 +</a></div>
+        <ul class="latest">${byDate.slice(0,6).map(a => `<li><a href="${url(a)}">${thumb(a)}</a>
+          <div><span class="meta">${CAT[a.cat].name} · ${dot(a.date)}</span><a class="ttl" href="${url(a)}">${esc(a.title)}</a></div></li>`).join('')}</ul></div>
+      <div><div class="photo-box">
+        <div class="h"><b><a href="#/list/photo">포토뉴스</a></b><div class="pdots" id="pdots">${photos.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div></div>
+        <div id="photoSlot"></div></div></div>
+      <div><div class="sec-h"><h2>오피니언</h2><a class="more" href="#/list/opinion">더보기 +</a></div>
+        <ul class="opinion">${ops.map(a => `<li><a class="avatar" href="${url(a)}">${thumb(a)}</a>
+          <div><a class="ttl" href="${url(a)}">${esc(a.title)}</a><span class="meta">${CAT[a.cat].name} · ${a.writer}</span></div></li>`).join('')}</ul></div>
+    </div>
+  </section>`;
+}
+function bindHome(){
+  // hero slider
+  const slides = document.getElementById('slides'), dots=[...document.querySelectorAll('#dots button')];
+  let i=0; const n=dots.length;
+  const go = k => { i=(k+n)%n; slides.style.transform=`translateX(-${i*100}%)`; dots.forEach((d,j)=>d.classList.toggle('on',j===i)); };
+  dots.forEach((d,j)=>d.onclick=()=>go(j));
+  document.querySelector('.s-arrow.prev').onclick=()=>go(i-1);
+  document.querySelector('.s-arrow.next').onclick=()=>go(i+1);
+  timers.push(setInterval(()=>go(i+1), 5000));
+  // ops carousel
+  carousel('opsRow','opsPrev','opsNext', () => innerWidth<=640?1:2);
+  carousel('pRow','pPrev','pNext', () => innerWidth<=640?2:innerWidth<=960?3:5, 3000);
+  // photo rotator
+  const photos = inCat('photo').concat(inCat('culture')).slice(0,3); let p=0;
+  const pd=[...document.querySelectorAll('#pdots i')];
+  const show=()=>{ const a=photos[p]; document.getElementById('photoSlot').innerHTML=`<a href="${url(a)}">${thumb(a)}<div class="ttl l2">${esc(a.title)}</div></a>`; pd.forEach((d,j)=>d.classList.toggle('on',j===p)); };
+  show(); timers.push(setInterval(()=>{p=(p+1)%photos.length; show();}, 4000));
+}
+function carousel(rowId, prevId, nextId, perView, auto){
+  const row=document.getElementById(rowId); if(!row) return;
+  const total=row.children.length; let i=0;
+  const go=k=>{ const max=Math.max(0,total-perView()); i=k<0?max:k>max?0:k;
+    const w=row.children[0].getBoundingClientRect().width + parseFloat(getComputedStyle(row).gap||0);
+    row.style.transform=`translateX(-${i*w}px)`; };
+  document.getElementById(prevId).onclick=()=>go(i-1);
+  document.getElementById(nextId).onclick=()=>go(i+1);
+  if(auto) timers.push(setInterval(()=>go(i+1), auto));
+}
+
+/* =====================================================================
+   6) 페이지: 기사 목록 / 기사 보기 / 검색
+   ===================================================================== */
+const PER = 8;
+function pageList(key, page=1, query=''){
+  let list, title, sec, tabs='';
+  if(key==='all'){ list=byDate; title='전체기사'; sec='issue'; }
+  else if(key==='search'){ const q=query.toLowerCase(); list=byDate.filter(a=>(a.title+a.sub+a.body.join(' ')).toLowerCase().includes(q)); title=`‘${esc(query)}’ 검색 결과 (${list.length}건)`; sec='issue'; }
+  else if(SEC_NAME[key]){ list=inSec(key); title=SEC_NAME[key]; sec=key; }
+  else if(CAT[key]){ list=inCat(key); title=CAT[key].name; sec=CAT[key].parent; }
+  else return page404();
+  const m = MENU.find(x=>x.key===sec);
+  if(key!=='search' && key!=='all') tabs = `<div class="tabs"><a href="#/list/${sec}" class="${key===sec?'on':''}">전체</a>${m.subs.map(([k,n])=>`<a href="#/list/${k}" class="${k===key?'on':''}">${n}</a>`).join('')}</div>`;
+  renderSubnav(sec, key);
+  const pages = Math.max(1, Math.ceil(list.length/PER)); page=Math.min(page,pages);
+  const items = list.slice((page-1)*PER, page*PER);
+  return `${pageHead(key==='search'?'SEARCH':SEC_NAME[sec], title, key==='search'?'기사검색':(SEC_NAME[sec]+(CAT[key]?' › '+CAT[key].name:'')))}
+  <div class="wrap art-grid"><section>${tabs}
+    ${items.length?`<ul class="alist">${items.map(a=>`<li><a href="${url(a)}">${thumb(a)}</a><div>
+      <span class="cat-tag">${CAT[a.cat].name}</span><a class="ttl" href="${url(a)}">${esc(a.title)}</a>
+      <p class="desc">${esc(a.sub||excerpt(a))}</p><p class="meta">${a.writer} · ${dot(a.date)}</p></div></li>`).join('')}</ul>`
+      :`<div class="empty">등록된 기사가 없습니다.</div>`}
+    ${pages>1?`<div class="pager">${Array.from({length:pages},(_,k)=>`<button data-p="${k+1}" class="${k+1===page?'on':''}">${k+1}</button>`).join('')}</div>`:''}
+  </section>${sideBar()}</div>`;
+}
+function bindList(key, query){
+  document.querySelectorAll('.pager button').forEach(b => b.onclick = () => {
+    location.hash = key==='search' ? `#/search/${encodeURIComponent(query)}/${b.dataset.p}` : `#/list/${key}/${b.dataset.p}`;
+  });
+}
+function sideBar(){
+  const most=[...A].sort((x,y)=>y.views-x.views).slice(0,5);
+  return `<aside>
+    <div class="sec-h"><h2>많이 본 뉴스</h2></div>
+    <ol class="latest" style="counter-reset:n">${most.map((a,i)=>`<li style="grid-template-columns:28px 1fr"><b style="color:var(--navy);font-size:20px;font-weight:900">${i+1}</b><a class="ttl" href="${url(a)}">${esc(a.title)}</a></li>`).join('')}</ol>
+    <a class="ad" href="#/about/join" style="background:linear-gradient(120deg,#0B2D5B,#2d5fa8);margin-top:22px"><b>함께할 언론인을 기다립니다</b><small>혼자가 아닌 연대로, 경쟁이 아닌 상생으로</small></a>
+  </aside>`;
+}
+function pageArticle(id){
+  const a=get(id); if(!a) return page404();
+  renderSubnav(CAT[a.cat].parent, a.cat);
+  const related = byDate.filter(x=>x.cat===a.cat && x.id!==a.id).slice(0,4);
+  const initials = a.writer.slice(0,1);
+  return `<div class="wrap art-grid"><article>
+    <div class="art-head">
+      <a class="cat-tag" href="#/list/${a.cat}">${SEC_NAME[CAT[a.cat].parent]} › ${CAT[a.cat].name}</a>
+      <h1>${esc(a.title)}</h1>
+      ${a.sub?`<p class="subt">${esc(a.sub)}</p>`:''}
+      <div class="info"><span>${a.writer}</span><span>입력 ${dot(a.date)} 09:00</span><span>조회 ${a.views.toLocaleString()}</span><span class="sample-badge">샘플 기사</span>
+        <span class="tools">
+          <button id="fontBtn" aria-label="글자 크기"><svg width="18" height="18"><use href="#i-font"/></svg></button>
+          <button id="printBtn" aria-label="인쇄"><svg width="18" height="18"><use href="#i-print"/></svg></button>
+          <button id="shareBtn" aria-label="링크 복사"><svg width="18" height="18"><use href="#i-share"/></svg></button>
+        </span></div>
+    </div>
+    <div class="art-body" id="artBody">
+      <figure>${thumb(a)}<figcaption>${esc(a.title)} ⓒ한국일간기자협회</figcaption></figure>
+      ${a.body.map(p=>`<p>${esc(p)}</p>`).join('')}
+    </div>
+    <div class="art-sign"><i>${initials}</i><div><b>${a.writer}</b><br><span class="meta">contact@kdja.or.kr</span></div></div>
+    <p class="copyright">저작권자 © 한국일간기자협회 무단전재 및 재배포 금지</p>
+    ${related.length?`<div class="sec" style="padding-bottom:0"><div class="sec-h"><h2>관련기사</h2></div>
+      <div class="cols4">${related.map(r=>`<a href="${url(r)}">${thumb(r)}<div class="ttl l2" style="margin-top:8px;font-size:14.5px">${esc(r.title)}</div></a>`).join('')}</div></div>`:''}
+  </article>${sideBar()}</div>`;
+}
+function bindArticle(){
+  const body=document.getElementById('artBody'); if(!body) return;
+  document.getElementById('fontBtn').onclick=()=>body.classList.toggle('big');
+  document.getElementById('printBtn').onclick=()=>print();
+  document.getElementById('shareBtn').onclick=()=>{
+    (navigator.clipboard?navigator.clipboard.writeText(location.href):Promise.reject()).then(()=>toast('기사 링크를 복사했습니다.')).catch(()=>toast(location.href));
+  };
+}
+
+/* =====================================================================
+   7) 페이지: 협회 소개 (설립 취지·운영체계·회원 혜택은 첨부 안내문 반영)
+   ===================================================================== */
+const ic = (id,color) => `<i style="background:${color}"><svg width="28" height="28"><use href="#${id}"/></svg></i>`;
+const ABOUT = {
+  greeting:['인사말',`
+    <p class="lead">“진실을 기록하는 언론, <em>더 나은 사회</em>를 만듭니다.”</p>
+    <p>사단법인 한국일간기자협회 홈페이지를 찾아주신 여러분, 반갑습니다.</p>
+    <p>한국일간기자협회는 신문·방송·통신·인터넷 등 다양한 언론 영역의 언론인과 전문기자가 함께하는 공익적 연합체입니다. 우리는 언론이 바로 서야 사회가 더 나아갈 수 있다는 신념으로 언론의 공적 책임을 실천하고자 모였습니다.</p>
+    <p>급변하는 미디어 환경 속에서 언론은 그 어느 때보다 신뢰의 위기를 맞고 있습니다. 협회는 언론인의 전문성 향상과 권익 보호, 취재 협력, 지역언론 지원을 통해 건전한 언론문화를 만들고, 시민과 지역사회의 발전에 기여하겠습니다.</p>
+    <p>혼자가 아닌 연대로, 경쟁이 아닌 상생으로 — 더 신뢰받는 언론의 미래를 회원 여러분과 함께 만들어 가겠습니다.</p>
+    <p class="sign">사단법인 한국일간기자협회 회장 <b>(회장 성명)</b></p>`],
+  purpose:['설립 취지',`
+    <p class="lead">진실한 언론, <em>공정한 사회</em>를 위한 연대</p>
+    <p>사단법인 한국일간기자협회는 신문·방송·통신·인터넷 등 다양한 언론 영역의 언론인과 전문기자가 함께하는 공익적 연합체입니다. 언론인의 전문성 향상과 권익 보호, 취재 협력, 지역언론 지원을 통해 건전한 언론문화 조성과 시민과 지역사회의 발전에 기여하고자 합니다.</p>
+    <div class="pillars">
+      <div class="pillar">${ic('i-people','var(--navy)')}<b>언론인의 전문성 향상</b><p>교육·세미나·연구를 통한 역량 강화</p></div>
+      <div class="pillar">${ic('i-hand','var(--red)')}<b>권익 보호와 복지 증진</b><p>법률·행정 자문 연계, 회원 복지</p></div>
+      <div class="pillar">${ic('i-globe','var(--char)')}<b>건강한 언론문화</b><p>지역사회와 시민을 위한 공론의 장</p></div>
+    </div>
+    <div class="note"><b>사단법인 한국일간기자협회는</b><br>언론이 바로 서야, 사회가 더 나아갈 수 있다는 신념으로 언론의 공적 책임을 실천합니다.</div>
+    <h3>핵심 가치</h3>
+    <table class="tbl"><thead><tr><th>가치</th><th>의미</th></tr></thead><tbody>
+      <tr><td><b>JOURNALISM · 언론</b></td><td>사실을 기록하고 진실을 전하는 언론 본연의 사명</td></tr>
+      <tr><td><b>COMMUNICATION · 소통</b></td><td>시민과 지역, 언론인 사이를 잇는 열린 소통</td></tr>
+      <tr><td><b>PUBLIC TRUST · 공공의 신뢰</b></td><td>윤리와 책임으로 쌓아가는 공적 신뢰</td></tr>
+      <tr><td><b>A BETTER TOMORROW · 더 나은 사회</b></td><td>기록하는 힘으로 만드는 더 나은 내일</td></tr>
+    </tbody></table>`],
+  history:['연혁',`
+    <p>협회가 걸어온 길입니다. <span class="sample-badge">실제 일정으로 수정하세요</span></p>
+    <ul class="timeline" style="margin-top:20px">
+      <li><b>2026. 11</b><p>‘AI 시대 언론의 책임’ 언론포럼 개최 예정 / 2027년도 회원 모집 개시</p></li>
+      <li><b>2026. 10</b><p>언론교육원 ‘데이터 저널리즘 실무’ 과정 개설</p></li>
+      <li><b>2026. 09</b><p>지역 문화재단과 업무협약(MOU) 체결</p></li>
+      <li><b>2026. 07</b><p>창립총회 및 초대 회장 취임</p></li>
+      <li><b>2026. 06</b><p>사단법인 설립 허가 및 법인 등기</p></li>
+      <li><b>2026. 03</b><p>발기인 대회 개최</p></li>
+    </ul>`],
+  org:['조직도',`
+    <p>한국일간기자협회는 총회를 최고 의결기구로, 이사회와 5개 위원회 체계로 운영됩니다.</p>
+    <div class="org">
+      <div class="row1"><div class="node" style="background:var(--navy)">총회<small>최고 의결기구</small></div><div class="hline"></div><div class="node" style="background:#eef3fb;color:var(--navy);min-width:140px;border:1px solid #cdd9ee">감사<small style="color:var(--muted)">감사 및 견제</small></div></div>
+      <div class="vline"></div>
+      <div class="node" style="background:var(--red)">이사회<small>회장 · 부회장 · 이사</small></div>
+      <div class="vline"></div>
+      <div class="committees">
+        <div><b>사무국</b><small>사업 운영 및 행정 지원</small></div>
+        <div><b>기획위원회</b><small>사업 기획 및 정책 개발</small></div>
+        <div><b>교육·연구위원회</b><small>세미나, 포럼, 전문교육 운영</small></div>
+        <div><b>홍보·미디어위원회</b><small>대외협력 및 홍보 활동</small></div>
+        <div><b>지역협력위원회</b><small>지역언론 지원 및 네트워크 구축</small></div>
+      </div>
+    </div>`],
+  executives:['임원 명단',`
+    <p><span class="sample-badge">임원 정보를 입력하세요</span></p>
+    <table class="tbl"><thead><tr><th>직위</th><th>성명</th><th>소속 / 약력</th></tr></thead><tbody>
+      <tr><td>회장</td><td>(성명)</td><td>(소속)</td></tr>
+      <tr><td>수석부회장</td><td>(성명)</td><td>(소속)</td></tr>
+      <tr><td>부회장</td><td>(성명)</td><td>(소속)</td></tr>
+      <tr><td>사무총장</td><td>(성명)</td><td>(소속)</td></tr>
+      <tr><td>이사</td><td>(성명)</td><td>(소속)</td></tr>
+      <tr><td>감사</td><td>(성명)</td><td>(소속)</td></tr>
+    </tbody></table>
+    <h3>회원사</h3><p>신문·방송·통신·인터넷 언론사 회원사 목록이 이곳에 표시됩니다.</p>`],
+  benefits:['회원 혜택',`
+    <p class="lead">회원이 되시면 이런 지원을 받습니다.</p>
+    <div class="benefits">
+      <div class="benefit">${ic('i-people','var(--navy)')}<b>취재 네트워크<br>및 정보 공유</b></div>
+      <div class="benefit">${ic('i-book','var(--red)')}<b>전문 교육·세미나<br>포럼 우선 참여</b></div>
+      <div class="benefit">${ic('i-news','var(--char)')}<b>취재 협력 및<br>공동기획 지원</b></div>
+      <div class="benefit">${ic('i-chart','var(--navy)')}<b>전문성 강화 프로그램<br>및 자격 과정 지원</b></div>
+      <div class="benefit">${ic('i-shield','var(--red)')}<b>전문인 권익 보호<br>법률·행정 자문 연계</b></div>
+      <div class="benefit">${ic('i-trophy','var(--char)')}<b>우수 기자 시상<br>및 홍보 기회</b></div>
+      <div class="benefit">${ic('i-globe','var(--navy)')}<b>지역언론 지원 사업<br>참여 기회</b></div>
+    </div>
+    <p style="margin-top:20px"><a class="btn red" href="#/about/join">회원 가입 신청하기</a></p>`],
+  join:['회원 가입 안내',`
+    <p class="lead">함께할 언론인을 기다립니다</p>
+    <p>혼자가 아닌 연대로, 경쟁이 아닌 상생으로 더 신뢰받는 언론의 미래를 함께 만들어 주십시오. 한국일간기자협회는 언론인의 책임과 품격을 높이고, 사회와 지역을 잇는 건강한 공론의 장이 되겠습니다.</p>
+    <table class="tbl"><thead><tr><th>구분</th><th>자격</th></tr></thead><tbody>
+      <tr><td>정회원</td><td>신문·방송·통신·인터넷 언론사에 재직 중인 기자 및 전문기자</td></tr>
+      <tr><td>준회원</td><td>언론 관련 분야 종사자, 프리랜서 기자, 언론학 연구자</td></tr>
+      <tr><td>회원사</td><td>협회 설립 취지에 동의하는 언론사</td></tr>
+    </tbody></table>
+    <h3>가입 신청서</h3>
+    <form class="form" id="joinForm">
+      <div class="two"><label>성명 *<input name="name" required></label><label>회원 구분 *<select name="type" required><option value="">선택</option><option>정회원</option><option>준회원</option><option>회원사</option></select></label></div>
+      <div class="two"><label>소속 언론사 *<input name="org" required></label><label>직위 / 부서<input name="pos"></label></div>
+      <div class="two"><label>연락처 *<input name="tel" type="tel" required placeholder="010-0000-0000"></label><label>이메일 *<input name="email" type="email" required></label></div>
+      <label>가입 동기<textarea name="msg" rows="4"></textarea></label>
+      <label class="chk"><input type="checkbox" required> 개인정보 수집·이용(성명, 소속, 연락처, 이메일 — 회원 심사 목적, 심사 후 1년 보관)에 동의합니다.</label>
+      <div><button class="btn" type="submit">가입 신청</button></div>
+    </form>`],
+  ethics:['윤리강령',`
+    <p>한국일간기자협회 회원은 언론의 사회적 책임을 자각하며 다음의 윤리강령을 준수한다.</p>
+    <h3>제1조 (진실 보도)</h3><p>기자는 사실을 정확하게 확인하여 진실을 보도하며, 오보가 확인되면 신속히 바로잡는다.</p>
+    <h3>제2조 (공정 보도)</h3><p>기자는 특정 정파·집단·이해관계에 치우치지 않고 공정하게 보도한다.</p>
+    <h3>제3조 (독립성)</h3><p>기자는 취재 및 보도와 관련하여 부당한 금품이나 향응을 받지 않으며 외부 압력에 굴하지 않는다.</p>
+    <h3>제4조 (인권 존중)</h3><p>기자는 개인의 명예와 사생활을 존중하며, 사회적 약자를 보호한다.</p>
+    <h3>제5조 (취재원 보호)</h3><p>기자는 취재원의 신원을 보호하며, 정당한 방법으로 정보를 수집한다.</p>
+    <h3>제6조 (품위 유지)</h3><p>기자는 언론인으로서의 품위를 지키고 직업적 책임을 다한다.</p>`],
+  bylaws:['정관',`
+    <p><span class="sample-badge">실제 정관 전문으로 교체하세요</span></p>
+    <h3>제1장 총칙</h3>
+    <p><b>제1조 (명칭)</b> 이 법인은 사단법인 한국일간기자협회(이하 “협회”)라 한다.</p>
+    <p><b>제2조 (목적)</b> 협회는 언론인의 전문성 향상과 권익 보호, 취재 협력 및 지역언론 지원을 통하여 건전한 언론문화를 조성하고 시민과 지역사회의 발전에 기여함을 목적으로 한다.</p>
+    <p><b>제3조 (사무소)</b> 협회의 주된 사무소는 (소재지)에 둔다.</p>
+    <p><b>제4조 (사업)</b> 협회는 제2조의 목적을 달성하기 위하여 다음 사업을 한다. ① 언론인 교육·연구 및 세미나 ② 회원 권익 보호 및 복지 증진 ③ 지역언론 지원 및 협력 ④ 기자상 시상 ⑤ 기타 목적 달성에 필요한 사업</p>
+    <h3>제2장 회원</h3>
+    <p><b>제5조 (회원의 자격)</b> 협회의 회원은 설립 목적에 찬동하는 언론인으로서 이사회의 승인을 받은 자로 한다.</p>`],
+};
+function pageAbout(k){
+  const v = ABOUT[k]; if(!v) return page404();
+  renderSubnav('about', k);
+  const m = MENU.find(x=>x.key==='about');
+  return `${pageHead('ABOUT US', v[0], '협회 소개 › '+v[0])}
+  <div class="wrap page-body">
+    <nav class="lnb"><h4>협회 소개</h4>${m.subs.map(([s,n])=>`<a href="#/about/${s}" class="${s===k?'on':''}">${n}</a>`).join('')}</nav>
+    <section class="content"><h2>${v[0]}</h2>${v[1]}</section>
+  </div>`;
+}
+
+/* =====================================================================
+   8) 기타 페이지 (로그인, 기사제보, 광고문의, 정책)
+   ===================================================================== */
+function pageSimple(kind){
+  renderSubnav('about');
+  const forms = {
+    login:['로그인','MEMBER',`<form class="form" id="loginForm" style="max-width:420px">
+      <label>아이디<input required autocomplete="username"></label><label>비밀번호<input type="password" required autocomplete="current-password"></label>
+      <button class="btn" type="submit">로그인</button><p class="meta">아직 회원이 아니신가요? <a href="#/about/join" style="color:var(--navy);font-weight:700">회원가입</a></p></form>`],
+    report:['기사제보','REPORT',`<p>제보해 주신 내용은 사실 확인 후 기사화 여부를 결정하며, 제보자의 신원은 철저히 보호됩니다.</p>
+      <form class="form" id="reportForm" style="margin-top:16px"><div class="two"><label>이름(익명 가능)<input></label><label>연락처 *<input required></label></div>
+      <label>제목 *<input required></label><label>제보 내용 *<textarea rows="7" required></textarea></label><button class="btn" type="submit">제보하기</button></form>`],
+    ad:['광고문의','ADVERTISING',`<p>배너 광고, 기사형 광고, 행사 후원 등 광고·제휴 문의를 남겨 주세요.</p>
+      <form class="form" id="adForm" style="margin-top:16px"><div class="two"><label>회사/기관명 *<input required></label><label>담당자 *<input required></label></div>
+      <div class="two"><label>연락처 *<input required></label><label>이메일<input type="email"></label></div><label>문의 내용 *<textarea rows="6" required></textarea></label><button class="btn" type="submit">문의하기</button></form>`],
+  };
+  const v=forms[kind];
+  return `${pageHead(v[1], v[0], v[0])}<div class="wrap" style="padding-top:36px"><section class="content">${v[2]}</section></div>`;
+}
+const POLICY={terms:'이용약관',privacy:'개인정보처리방침',youth:'청소년보호정책',copyright:'저작권보호정책',email:'이메일무단수집거부'};
+function pagePolicy(k){
+  if(!POLICY[k]) return page404();
+  renderSubnav('about');
+  return `${pageHead('POLICY', POLICY[k], POLICY[k])}<div class="wrap" style="padding-top:36px"><section class="content">
+    <h2>${POLICY[k]}</h2><p><span class="sample-badge">법률 검토를 거친 실제 문안으로 교체하세요</span></p>
+    <p>사단법인 한국일간기자협회(이하 “협회”)의 ${POLICY[k]} 전문이 이곳에 게시됩니다.</p></section></div>`;
+}
+function pageHead(en, title, crumb){
+  return `<div class="page-head"><div class="wrap"><small>${en}</small><h1>${title}</h1><p class="crumb">홈 › ${crumb}</p></div></div>`;
+}
+function page404(){ renderSubnav('issue'); return `<div class="wrap empty"><h2 style="color:var(--text);margin-bottom:8px">페이지를 찾을 수 없습니다</h2><a class="btn" href="#/">홈으로</a></div>`; }
+
+/* =====================================================================
+   9) 라우터 (해시 기반: 서버 설정 없이 어디서나 동작)
+   ===================================================================== */
+let timers=[];
+function route(){
+  timers.forEach(clearInterval); timers=[];
+  const [, p1='', p2='', p3=''] = location.hash.replace(/^#/,'').split('/');
+  const app=document.getElementById('app');
+  let html, after=()=>{};
+  if(!p1){ html=pageHome(); after=bindHome; }
+  else if(p1==='list'){ html=pageList(p2||'all', +p3||1); after=()=>bindList(p2); }
+  else if(p1==='search'){ const q=decodeURIComponent(p2); html=pageList('search', +p3||1, q); after=()=>bindList('search', q); }
+  else if(p1==='article'){ html=pageArticle(p2); after=bindArticle; }
+  else if(p1==='about'){ html=pageAbout(p2||'greeting'); }
+  else if(p1==='policy'){ html=pagePolicy(p2); }
+  else if(['login','report','ad'].includes(p1)){ html=pageSimple(p1); }
+  else html=page404();
+  app.innerHTML=html; after(); bindForms();
+  document.title = (p1 ? (document.querySelector('.page-head h1, .art-head h1')?.textContent+' - ') : '') + '한국일간기자협회';
+  document.body.classList.remove('drawer-open');
+  scrollTo({top:0});
+}
+function bindForms(){
+  const msg={joinForm:'가입 신청이 접수되었습니다. 이사회 심사 후 연락드리겠습니다.',loginForm:'로그인 기능은 회원 시스템 연동 후 사용할 수 있습니다.',reportForm:'제보가 접수되었습니다. 감사합니다.',adForm:'광고 문의가 접수되었습니다.'};
+  Object.keys(msg).forEach(id=>{ const f=document.getElementById(id); if(f) f.onsubmit=e=>{ e.preventDefault(); f.reset(); toast(msg[id]); }; });
+}
+function toast(t){ const el=document.getElementById('toast'); el.textContent=t; el.classList.add('show'); clearTimeout(toast.t); toast.t=setTimeout(()=>el.classList.remove('show'),2600); }
+
+/* =====================================================================
+   10) 이벤트 연결
+   ===================================================================== */
+renderChrome();
+document.getElementById('openDrawer').onclick=()=>document.body.classList.add('drawer-open');
+document.getElementById('closeDrawer').onclick=()=>document.body.classList.remove('drawer-open');
+document.getElementById('drawerBg').onclick=()=>document.body.classList.remove('drawer-open');
+document.getElementById('toggleSearch').onclick=()=>{ const s=document.getElementById('searchBar'); s.classList.toggle('open'); if(s.classList.contains('open')) document.getElementById('q').focus(); };
+document.getElementById('searchForm').onsubmit=e=>{ e.preventDefault(); const q=document.getElementById('q').value.trim(); if(q) location.hash=`#/search/${encodeURIComponent(q)}`; };
+addEventListener('keydown',e=>{ if(e.key==='Escape') document.body.classList.remove('drawer-open'); });
+addEventListener('hashchange', route);
+route();
+</script>
+</body>
+</html>
