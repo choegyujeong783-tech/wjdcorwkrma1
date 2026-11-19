@@ -17,6 +17,7 @@
   --bg:#ffffff; --bg-soft:#f4f6f9; --line:#e3e6ea;
   --text:#1d1f23; --muted:#6b7280;
   --wrap:1200px;
+  color-scheme:light;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -45,7 +46,7 @@ input,select,textarea{font:inherit}
 .top-right .util a:hover{background:var(--bg-soft)}
 .top-right .util a.dark{background:#111;color:#fff}
 
-.gnb{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:50}
+.gnb{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:env(safe-area-inset-top,0px);z-index:50}
 .gnb .wrap{display:flex;align-items:center;height:56px;gap:4px}
 .gnb .menu-btn{width:40px;height:40px;display:grid;place-items:center;border-radius:4px}
 .gnb .menu-btn:hover{background:var(--bg-soft)}
@@ -429,20 +430,20 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14.5px;margin:10px 0 20p
 <header>
   <div class="top">
     <div class="wrap">
-      <a class="top-ad" href="#/about/join" aria-label="회원 모집 안내">
+      <a class="top-ad" href="#about-join" aria-label="회원 모집 안내">
         <svg width="34" height="34" style="color:var(--red);flex:none"><use href="#i-people"/></svg>
         <span><b>창립회원 모집</b>함께할 언론인을 기다립니다</span>
       </a>
-      <a class="brand" href="#/" aria-label="한국일간기자협회 홈">
+      <a class="brand" href="#home" aria-label="한국일간기자협회 홈">
         <svg width="62" height="62"><use href="#logo"/></svg>
         <span class="brand-txt"><small>사단법인</small><strong>한국일간기자협회</strong><em>KOREA DAILY JOURNALISTS ASSOCIATION</em></span>
       </a>
       <div class="top-right">
         <div class="date">발행일: <span id="today"></span></div>
         <div class="util">
-          <a href="#/about/join">회원가입</a>
-          <a href="#/report">기사제보</a>
-          <a class="dark" href="#/login">로그인</a>
+          <a href="#about-join">회원가입</a>
+          <a href="#report">기사제보</a>
+          <a class="dark" href="#login">로그인</a>
         </div>
       </div>
     </div>
@@ -476,14 +477,14 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14.5px;margin:10px 0 20p
 
 <footer>
   <div class="f-links"><div class="wrap">
-    <a class="b" href="#/about/greeting">협회소개</a>
-    <a href="#/report">기사제보</a>
-    <a href="#/ad">광고문의</a>
-    <a href="#/policy/terms">이용약관</a>
-    <a class="b" href="#/policy/privacy">개인정보처리방침</a>
-    <a href="#/policy/youth">청소년보호정책</a>
-    <a href="#/policy/copyright">저작권보호정책</a>
-    <a href="#/policy/email">이메일무단수집거부</a>
+    <a class="b" href="#about-greeting">협회소개</a>
+    <a href="#report">기사제보</a>
+    <a href="#ad">광고문의</a>
+    <a href="#policy-terms">이용약관</a>
+    <a class="b" href="#policy-privacy">개인정보처리방침</a>
+    <a href="#policy-youth">청소년보호정책</a>
+    <a href="#policy-copyright">저작권보호정책</a>
+    <a href="#policy-email">이메일무단수집거부</a>
   </div></div>
   <div class="f-body"><div class="wrap">
     <div class="brand">
@@ -583,7 +584,7 @@ function thumb(a, cls=''){
     <span>${CAT[a.cat].name}</span></div></div>`;
 }
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const url = a => `#/article/${a.id}`;
+const url = a => `#article-${a.id}`;
 const dot = d => d.replaceAll('-','.');
 const excerpt = a => a.body.join(' ').slice(0,110)+'…';
 
@@ -596,14 +597,14 @@ function renderChrome(){
     `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')} (${w})`;
 
   document.getElementById('gnb').innerHTML = MENU.map(m => `
-    <div><a href="${m.page?'#/about/greeting':'#/list/'+m.key}" data-sec="${m.key}">${m.name}</a>
-      <div class="drop">${m.subs.map(([k,n]) => `<a href="${m.page?'#/about/'+k:'#/list/'+k}">${n}</a>`).join('')}</div></div>`).join('');
+    <div><a href="${m.page?'#about-greeting':'#list-'+m.key}" data-sec="${m.key}">${m.name}</a>
+      <div class="drop">${m.subs.map(([k,n]) => `<a href="${m.page?'#about-'+k:'#list-'+k}">${n}</a>`).join('')}</div></div>`).join('');
 
   document.getElementById('drawerBody').innerHTML =
-    `<div class="d-sec"><a href="#/list/all">전체기사</a></div>` +
-    MENU.map(m => `<div class="d-sec"><a href="${m.page?'#/about/greeting':'#/list/'+m.key}">${m.name}</a>
-      <div>${m.subs.map(([k,n]) => `<a href="${m.page?'#/about/'+k:'#/list/'+k}">${n}</a>`).join('')}</div></div>`).join('') +
-    `<div class="d-sec"><div><a href="#/about/join">회원가입</a><a href="#/login">로그인</a><a href="#/report">기사제보</a><a href="#/ad">광고문의</a></div></div>`;
+    `<div class="d-sec"><a href="#list-all">전체기사</a></div>` +
+    MENU.map(m => `<div class="d-sec"><a href="${m.page?'#about-greeting':'#list-'+m.key}">${m.name}</a>
+      <div>${m.subs.map(([k,n]) => `<a href="${m.page?'#about-'+k:'#list-'+k}">${n}</a>`).join('')}</div></div>`).join('') +
+    `<div class="d-sec"><div><a href="#about-join">회원가입</a><a href="#login">로그인</a><a href="#report">기사제보</a><a href="#ad">광고문의</a></div></div>`;
 
   const items = byDate.slice(0,10);
   const ul = document.getElementById('ticker');
@@ -617,7 +618,7 @@ function renderChrome(){
 function renderSubnav(sec, active){
   const m = MENU.find(x => x.key===sec) || MENU[0];
   document.getElementById('subnav').innerHTML = m.subs.map(([k,n]) =>
-    `<a href="${m.page?'#/about/'+k:'#/list/'+k}" class="${k===active?'on':''}">${n}</a>`).join('');
+    `<a href="${m.page?'#about-'+k:'#list-'+k}" class="${k===active?'on':''}">${n}</a>`).join('');
   document.querySelectorAll('#gnb [data-sec]').forEach(a => a.classList.toggle('on', a.dataset.sec===sec));
 }
 
@@ -658,7 +659,7 @@ function pageHome(){
             <div class="img"></div>
             <div class="bar"></div><div class="bar" style="width:60%"></div>
           </a>
-          <div class="btns"><a href="#/about/join">구독신청</a><a href="#/list/notice">지면보기</a></div>
+          <div class="btns"><a href="#about-join">구독신청</a><a href="#list-notice">지면보기</a></div>
         </div>
       </div>
       <div class="vod">
@@ -671,7 +672,7 @@ function pageHome(){
 
   <section class="wrap sec">
     <div class="cols4">${cols.map(c => { const a = inCat(c)[0]; return `
-      <div><h3><a href="#/list/${c}">${CAT[c].name}</a></h3>
+      <div><h3><a href="#list-${c}">${CAT[c].name}</a></h3>
         <a href="${url(a)}">${thumb(a)}<div class="ttl l2">${esc(a.title)}</div><p class="desc">${esc(excerpt(a))}</p></a></div>`;}).join('')}
     </div>
   </section>
@@ -681,7 +682,7 @@ function pageHome(){
       <div class="most"><h3>많이 본 뉴스</h3>
         <ol>${most.map(a => `<li><a href="${url(a)}">${esc(a.title)}</a></li>`).join('')}</ol></div>
       <div class="ops">
-        <div class="left"><h3><a href="#/list/assoc">한국일간기자협회<br>운영소식</a></h3>
+        <div class="left"><h3><a href="#list-assoc">한국일간기자협회<br>운영소식</a></h3>
           <div class="ctrl"><button id="opsPrev" aria-label="이전"><svg width="20" height="20"><use href="#i-left"/></svg></button><button id="opsNext" aria-label="다음"><svg width="20" height="20"><use href="#i-right"/></svg></button></div></div>
         <div class="ops-track"><div class="ops-row" id="opsRow">${assoc.map(a => `
           <a href="${url(a)}">${thumb(a)}<div class="ttl">${esc(a.title)}</div></a>`).join('')}</div></div>
@@ -691,16 +692,16 @@ function pageHome(){
 
   <section class="wrap sec">
     <div class="cols3">
-      <div><div class="sec-h"><h2>전국 소식</h2><a class="more" href="#/list/local">더보기 +</a></div>
+      <div><div class="sec-h"><h2>전국 소식</h2><a class="more" href="#list-local">더보기 +</a></div>
         <a class="feature" href="${url(local[0])}" style="display:block">${thumb(local[0])}<div class="ttl l2">${esc(local[0].title)}</div>
         ${local.slice(1,3).map(a=>`<p class="meta" style="margin-top:10px">· ${esc(a.title)}</p>`).join('')}</a></div>
-      <div><div class="sec-h"><h2>인터뷰·기획특집</h2><a class="more" href="#/list/interview">더보기 +</a></div>
+      <div><div class="sec-h"><h2>인터뷰·기획특집</h2><a class="more" href="#list-interview">더보기 +</a></div>
         <ul class="list-thumb">${inter.map(a => `<li><a class="ttl" href="${url(a)}">${esc(a.title)}</a><a href="${url(a)}">${thumb(a)}</a></li>`).join('')}</ul></div>
       <div class="ad-stack">
-        <a class="ad" href="#/about/join" style="background:linear-gradient(120deg,#0B2D5B,#2d5fa8)"><b>함께할 언론인을 기다립니다</b><small>창립회원 모집 · 정회원·준회원·단체회원</small></a>
-        <a class="ad" href="#/article/5" style="background:linear-gradient(120deg,#7f1d1d,#C62828)"><b>지역경제 정책 세미나</b><small>시민·기업인과 정책과제 발굴 · 연 2회</small></a>
-        <a class="ad" href="#/article/3" style="background:linear-gradient(120deg,#0f3d3e,#2a7f7a)"><b>AI·빅데이터 취재 교육</b><small>팩트체크 도구 실습 · 연 1회</small></a>
-        <a class="ad light" href="#/ad"><b style="color:var(--navy)">광고 문의</b><small style="color:var(--muted)">배너 광고 영역 (300×90)</small></a>
+        <a class="ad" href="#about-join" style="background:linear-gradient(120deg,#0B2D5B,#2d5fa8)"><b>함께할 언론인을 기다립니다</b><small>창립회원 모집 · 정회원·준회원·단체회원</small></a>
+        <a class="ad" href="#article-5" style="background:linear-gradient(120deg,#7f1d1d,#C62828)"><b>지역경제 정책 세미나</b><small>시민·기업인과 정책과제 발굴 · 연 2회</small></a>
+        <a class="ad" href="#article-3" style="background:linear-gradient(120deg,#0f3d3e,#2a7f7a)"><b>AI·빅데이터 취재 교육</b><small>팩트체크 도구 실습 · 연 1회</small></a>
+        <a class="ad light" href="#ad"><b style="color:var(--navy)">광고 문의</b><small style="color:var(--muted)">배너 광고 영역 (300×90)</small></a>
       </div>
     </div>
   </section>
@@ -708,20 +709,20 @@ function pageHome(){
   <section class="partners" aria-label="위원회">
     <div class="wrap">
       <button class="arr" id="pPrev" aria-label="이전"><svg width="24" height="24"><use href="#i-left"/></svg></button>
-      <div class="track"><div class="row" id="pRow">${partners.map((p,i) => `<a href="#/about/org" style="color:${['#0B2D5B','#C62828','#333','#1e4f96'][i%4]}">${p}</a>`).join('')}</div></div>
+      <div class="track"><div class="row" id="pRow">${partners.map((p,i) => `<a href="#about-org" style="color:${['#0B2D5B','#C62828','#333','#1e4f96'][i%4]}">${p}</a>`).join('')}</div></div>
       <button class="arr" id="pNext" aria-label="다음"><svg width="24" height="24"><use href="#i-right"/></svg></button>
     </div>
   </section>
 
   <section class="wrap sec">
     <div class="cols3b">
-      <div><div class="sec-h"><h2>최신뉴스</h2><a class="more" href="#/list/all">더보기 +</a></div>
+      <div><div class="sec-h"><h2>최신뉴스</h2><a class="more" href="#list-all">더보기 +</a></div>
         <ul class="latest">${byDate.slice(0,6).map(a => `<li><a href="${url(a)}">${thumb(a)}</a>
           <div><span class="meta">${CAT[a.cat].name} · ${dot(a.date)}</span><a class="ttl" href="${url(a)}">${esc(a.title)}</a></div></li>`).join('')}</ul></div>
       <div><div class="photo-box">
-        <div class="h"><b><a href="#/list/photo">포토뉴스</a></b><div class="pdots" id="pdots">${photos.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div></div>
+        <div class="h"><b><a href="#list-photo">포토뉴스</a></b><div class="pdots" id="pdots">${photos.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}</div></div>
         <div id="photoSlot"></div></div></div>
-      <div><div class="sec-h"><h2>오피니언</h2><a class="more" href="#/list/opinion">더보기 +</a></div>
+      <div><div class="sec-h"><h2>오피니언</h2><a class="more" href="#list-opinion">더보기 +</a></div>
         <ul class="opinion">${ops.map(a => `<li><a class="avatar" href="${url(a)}">${thumb(a)}</a>
           <div><a class="ttl" href="${url(a)}">${esc(a.title)}</a><span class="meta">${CAT[a.cat].name} · ${a.writer}</span></div></li>`).join('')}</ul></div>
     </div>
@@ -768,7 +769,7 @@ function pageList(key, page=1, query=''){
   else if(CAT[key]){ list=inCat(key); title=CAT[key].name; sec=CAT[key].parent; }
   else return page404();
   const m = MENU.find(x=>x.key===sec);
-  if(key!=='search' && key!=='all') tabs = `<div class="tabs"><a href="#/list/${sec}" class="${key===sec?'on':''}">전체</a>${m.subs.map(([k,n])=>`<a href="#/list/${k}" class="${k===key?'on':''}">${n}</a>`).join('')}</div>`;
+  if(key!=='search' && key!=='all') tabs = `<div class="tabs"><a href="#list-${sec}" class="${key===sec?'on':''}">전체</a>${m.subs.map(([k,n])=>`<a href="#list-${k}" class="${k===key?'on':''}">${n}</a>`).join('')}</div>`;
   renderSubnav(sec, key);
   const pages = Math.max(1, Math.ceil(list.length/PER)); page=Math.min(page,pages);
   const items = list.slice((page-1)*PER, page*PER);
@@ -783,7 +784,7 @@ function pageList(key, page=1, query=''){
 }
 function bindList(key, query){
   document.querySelectorAll('.pager button').forEach(b => b.onclick = () => {
-    location.hash = key==='search' ? `#/search/${encodeURIComponent(query)}/${b.dataset.p}` : `#/list/${key}/${b.dataset.p}`;
+    if(key==='search'){ searchPage=+b.dataset.p; route(); } else location.hash=`#list-${key}-${b.dataset.p}`;
   });
 }
 function sideBar(){
@@ -791,7 +792,7 @@ function sideBar(){
   return `<aside>
     <div class="sec-h"><h2>많이 본 뉴스</h2></div>
     <ol class="latest" style="counter-reset:n">${most.map((a,i)=>`<li style="grid-template-columns:28px 1fr"><b style="color:var(--navy);font-size:20px;font-weight:900">${i+1}</b><a class="ttl" href="${url(a)}">${esc(a.title)}</a></li>`).join('')}</ol>
-    <a class="ad" href="#/about/join" style="background:linear-gradient(120deg,#0B2D5B,#2d5fa8);margin-top:22px"><b>함께할 언론인을 기다립니다</b><small>혼자가 아닌 연대로, 경쟁이 아닌 상생으로</small></a>
+    <a class="ad" href="#about-join" style="background:linear-gradient(120deg,#0B2D5B,#2d5fa8);margin-top:22px"><b>함께할 언론인을 기다립니다</b><small>혼자가 아닌 연대로, 경쟁이 아닌 상생으로</small></a>
   </aside>`;
 }
 function pageArticle(id){
@@ -801,14 +802,13 @@ function pageArticle(id){
   const initials = a.writer.slice(0,1);
   return `<div class="wrap art-grid"><article>
     <div class="art-head">
-      <a class="cat-tag" href="#/list/${a.cat}">${SEC_NAME[CAT[a.cat].parent]} › ${CAT[a.cat].name}</a>
+      <a class="cat-tag" href="#list-${a.cat}">${SEC_NAME[CAT[a.cat].parent]} › ${CAT[a.cat].name}</a>
       <h1>${esc(a.title)}</h1>
       ${a.sub?`<p class="subt">${esc(a.sub)}</p>`:''}
       <div class="info"><span>${a.writer}</span><span>입력 ${dot(a.date)} 09:00</span><span>조회 ${a.views.toLocaleString()}</span>${a.doc?'<span class="sample-badge" style="background:#eef3fb;color:var(--navy);border-color:#cdd9ee">협회 자료</span>':'<span class="sample-badge">샘플 기사</span>'}
         <span class="tools">
           <button id="fontBtn" aria-label="글자 크기"><svg width="18" height="18"><use href="#i-font"/></svg></button>
-          <button id="printBtn" aria-label="인쇄"><svg width="18" height="18"><use href="#i-print"/></svg></button>
-          <button id="shareBtn" aria-label="링크 복사"><svg width="18" height="18"><use href="#i-share"/></svg></button>
+                    <button id="shareBtn" aria-label="링크 복사"><svg width="18" height="18"><use href="#i-share"/></svg></button>
         </span></div>
     </div>
     <div class="art-body" id="artBody">
@@ -824,7 +824,6 @@ function pageArticle(id){
 function bindArticle(){
   const body=document.getElementById('artBody'); if(!body) return;
   document.getElementById('fontBtn').onclick=()=>body.classList.toggle('big');
-  document.getElementById('printBtn').onclick=()=>print();
   document.getElementById('shareBtn').onclick=()=>{
     (navigator.clipboard?navigator.clipboard.writeText(location.href):Promise.reject()).then(()=>toast('기사 링크를 복사했습니다.')).catch(()=>toast(location.href));
   };
@@ -926,7 +925,7 @@ const ABOUT = {
     </div>
     <h3>회원의 권리 (정관 제8조)</h3>
     <p>정회원은 임원의 선거권 및 피선거권을 가지며, 총회에 출석하여 의견을 제안하고 의결에 참여할 권리를 가집니다. 모든 회원은 본회의 사업에 참여하고, 총회 의사록 및 결산서를 열람할 권리를 가집니다.</p>
-    <p style="margin-top:20px"><a class="btn red" href="#/about/join">회원 가입 신청하기</a></p>`],
+    <p style="margin-top:20px"><a class="btn red" href="#about-join">회원 가입 신청하기</a></p>`],
   join:['회원 가입 안내',`
     <p class="lead">함께할 언론인을 기다립니다</p>
     <p>본회의 설립 취지에 찬동하여 입회원서를 제출하고 이사회의 승인을 받으면 회원이 됩니다(정관 제7조).</p>
@@ -998,7 +997,7 @@ function pageAbout(k){
   const m = MENU.find(x=>x.key==='about');
   return `${pageHead('ABOUT US', v[0], '협회 소개 › '+v[0])}
   <div class="wrap page-body">
-    <nav class="lnb"><h4>협회 소개</h4>${m.subs.map(([s,n])=>`<a href="#/about/${s}" class="${s===k?'on':''}">${n}</a>`).join('')}</nav>
+    <nav class="lnb"><h4>협회 소개</h4>${m.subs.map(([s,n])=>`<a href="#about-${s}" class="${s===k?'on':''}">${n}</a>`).join('')}</nav>
     <section class="content"><h2>${v[0]}</h2>${v[1]}</section>
   </div>`;
 }
@@ -1011,7 +1010,7 @@ function pageSimple(kind){
   const forms = {
     login:['로그인','MEMBER',`<form class="form" id="loginForm" style="max-width:420px">
       <label>아이디<input required autocomplete="username"></label><label>비밀번호<input type="password" required autocomplete="current-password"></label>
-      <button class="btn" type="submit">로그인</button><p class="meta">아직 회원이 아니신가요? <a href="#/about/join" style="color:var(--navy);font-weight:700">회원가입</a></p></form>`],
+      <button class="btn" type="submit">로그인</button><p class="meta">아직 회원이 아니신가요? <a href="#about-join" style="color:var(--navy);font-weight:700">회원가입</a></p></form>`],
     report:['기사제보','REPORT',`<p>제보해 주신 내용은 사실 확인 후 기사화 여부를 결정하며, 제보자의 신원은 철저히 보호됩니다.</p>
       <form class="form" id="reportForm" style="margin-top:16px"><div class="two"><label>이름(익명 가능)<input></label><label>연락처 *<input required></label></div>
       <label>제목 *<input required></label><label>제보 내용 *<textarea rows="7" required></textarea></label><button class="btn" type="submit">제보하기</button></form>`],
@@ -1033,27 +1032,28 @@ function pagePolicy(k){
 function pageHead(en, title, crumb){
   return `<div class="page-head"><div class="wrap"><small>${en}</small><h1>${title}</h1><p class="crumb">홈 › ${crumb}</p></div></div>`;
 }
-function page404(){ renderSubnav('issue'); return `<div class="wrap empty"><h2 style="color:var(--text);margin-bottom:8px">페이지를 찾을 수 없습니다</h2><a class="btn" href="#/">홈으로</a></div>`; }
+function page404(){ renderSubnav('issue'); return `<div class="wrap empty"><h2 style="color:var(--text);margin-bottom:8px">페이지를 찾을 수 없습니다</h2><a class="btn" href="#home">홈으로</a></div>`; }
 
 /* =====================================================================
    9) 라우터 (해시 기반: 서버 설정 없이 어디서나 동작)
    ===================================================================== */
 let timers=[];
+let lastQuery='', searchPage=1;
 function route(){
   timers.forEach(clearInterval); timers=[];
-  const [, p1='', p2='', p3=''] = location.hash.replace(/^#/,'').split('/');
+  const [p1='', p2='', p3=''] = location.hash.replace(/^#/,'').split('-');
   const app=document.getElementById('app');
   let html, after=()=>{};
-  if(!p1){ html=pageHome(); after=bindHome; }
+  if(!p1 || p1==='home'){ html=pageHome(); after=bindHome; }
   else if(p1==='list'){ html=pageList(p2||'all', +p3||1); after=()=>bindList(p2); }
-  else if(p1==='search'){ const q=decodeURIComponent(p2); html=pageList('search', +p3||1, q); after=()=>bindList('search', q); }
+  else if(p1==='search'){ html=pageList('search', searchPage, lastQuery); after=()=>bindList('search', lastQuery); }
   else if(p1==='article'){ html=pageArticle(p2); after=bindArticle; }
   else if(p1==='about'){ html=pageAbout(p2||'greeting'); }
   else if(p1==='policy'){ html=pagePolicy(p2); }
   else if(['login','report','ad'].includes(p1)){ html=pageSimple(p1); }
   else html=page404();
   app.innerHTML=html; after(); bindForms();
-  document.title = (p1 ? (document.querySelector('.page-head h1, .art-head h1')?.textContent+' - ') : '') + '한국일간기자협회';
+  document.title = (p1 && p1!=='home' ? (document.querySelector('.page-head h1, .art-head h1')?.textContent+' - ') : '') + '한국일간기자협회';
   document.body.classList.remove('drawer-open');
   scrollTo({top:0});
 }
@@ -1071,7 +1071,7 @@ document.getElementById('openDrawer').onclick=()=>document.body.classList.add('d
 document.getElementById('closeDrawer').onclick=()=>document.body.classList.remove('drawer-open');
 document.getElementById('drawerBg').onclick=()=>document.body.classList.remove('drawer-open');
 document.getElementById('toggleSearch').onclick=()=>{ const s=document.getElementById('searchBar'); s.classList.toggle('open'); if(s.classList.contains('open')) document.getElementById('q').focus(); };
-document.getElementById('searchForm').onsubmit=e=>{ e.preventDefault(); const q=document.getElementById('q').value.trim(); if(q) location.hash=`#/search/${encodeURIComponent(q)}`; };
+document.getElementById('searchForm').onsubmit=e=>{ e.preventDefault(); const q=document.getElementById('q').value.trim(); if(q) { lastQuery=q; searchPage=1; if(location.hash==='#search') route(); else location.hash='#search'; }; };
 addEventListener('keydown',e=>{ if(e.key==='Escape') document.body.classList.remove('drawer-open'); });
 addEventListener('hashchange', route);
 route();
