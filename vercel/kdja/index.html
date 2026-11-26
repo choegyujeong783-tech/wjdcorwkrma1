@@ -738,7 +738,7 @@ function bindHome(){
   document.querySelector('.s-arrow.next').onclick=()=>go(i+1);
   timers.push(setInterval(()=>go(i+1), 5000));
   // ops carousel
-  carousel('opsRow','opsPrev','opsNext', () => innerWidth<=640?1:2);
+  marquee('opsRow','opsPrev','opsNext', 40);
   carousel('pRow','pPrev','pNext', () => innerWidth<=640?2:innerWidth<=960?3:5, 3000);
   // photo rotator
   const photos = inCat('photo').concat(inCat('culture')).slice(0,3); let p=0;
@@ -755,6 +755,30 @@ function carousel(rowId, prevId, nextId, perView, auto){
   document.getElementById(prevId).onclick=()=>go(i-1);
   document.getElementById(nextId).onclick=()=>go(i+1);
   if(auto) timers.push(setInterval(()=>go(i+1), auto));
+}
+/* 끊김 없이 왼쪽으로 계속 흘러가는 슬라이드 (마우스를 올리면 멈춤, 화살표로 한 칸씩 이동) */
+function marquee(rowId, prevId, nextId, speed){
+  const row=document.getElementById(rowId); if(!row) return;
+  const items=[...row.children]; if(!items.length) return;
+  items.forEach(el=>{ const c=el.cloneNode(true); c.setAttribute('aria-hidden','true'); c.tabIndex=-1; row.appendChild(c); });
+  row.style.transition='none';
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let off=0, nudge=0, paused=false, last=performance.now();
+  const loopW=()=>row.children[items.length].offsetLeft-row.children[0].offsetLeft;
+  const step=()=>{ const now=performance.now(), dt=Math.min(now-last,100)/1000; last=now;
+    if(!paused && !reduce) off+=speed*dt;
+    if(nudge){ const d=Math.abs(nudge)<1?nudge:nudge*0.15; off+=d; nudge-=d; }
+    const L=loopW(); if(L>0){ off%=L; if(off<0) off+=L; }
+    row.style.transform=`translateX(${-off}px)`; };
+  const card=()=>items[0].getBoundingClientRect().width+parseFloat(getComputedStyle(row).gap||0);
+  document.getElementById(prevId).onclick=()=>{ nudge-=card(); };
+  document.getElementById(nextId).onclick=()=>{ nudge+=card(); };
+  const track=row.parentElement;
+  track.addEventListener('mouseenter',()=>paused=true);
+  track.addEventListener('mouseleave',()=>paused=false);
+  track.addEventListener('focusin',()=>paused=true);
+  track.addEventListener('focusout',()=>paused=false);
+  timers.push(setInterval(step, 16));
 }
 
 /* =====================================================================
