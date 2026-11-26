@@ -785,7 +785,7 @@ function bindHome(){
   document.querySelector('.s-arrow.next').onclick=()=>go(i+1);
   timers.push(setInterval(()=>go(i+1), 5000));
   // ops carousel
-  marquee('opsRow','opsPrev','opsNext', 40);
+  marquee('opsRow','opsPrev','opsNext', 0, 1000);
   carousel('pRow','pPrev','pNext', () => innerWidth<=640?2:innerWidth<=960?3:5, 3000);
   // photo rotator
   const photos = inCat('photo').concat(inCat('culture')).slice(0,3); let p=0;
@@ -793,8 +793,8 @@ function bindHome(){
   const show=()=>{ const a=photos[p]; document.getElementById('photoSlot').innerHTML=`<a href="${url(a)}">${thumb(a)}<div class="ttl l2">${esc(a.title)}</div></a>`; pd.forEach((d,j)=>d.classList.toggle('on',j===p)); };
   show(); timers.push(setInterval(()=>{p=(p+1)%photos.length; show();}, 4000));
 }
-/* 오른쪽에서 왼쪽으로 끊김 없이 계속 흘러가는 슬라이드 (마우스를 올리면 멈춤, 화살표로 한 칸씩 이동) */
-function marquee(rowId, prevId, nextId, speed){
+/* 오른쪽에서 왼쪽으로 끊김 없이 흘러가는 슬라이드: speed=초당 px 연속 이동, every=ms마다 카드 한 장씩 이동 (마우스를 올리면 멈춤, 화살표로 한 칸씩 이동) */
+function marquee(rowId, prevId, nextId, speed, every){
   const row=document.getElementById(rowId); if(!row) return;
   const items=[...row.children]; if(!items.length) return;
   items.forEach(el=>{ const c=el.cloneNode(true); c.setAttribute('aria-hidden','true'); c.tabIndex=-1; row.appendChild(c); });
@@ -816,6 +816,7 @@ function marquee(rowId, prevId, nextId, speed){
   track.addEventListener('focusin',()=>paused=true);
   track.addEventListener('focusout',()=>paused=false);
   timers.push(setInterval(step, 16));
+  if(every && !reduce) timers.push(setInterval(()=>{ if(!paused) nudge+=card(); }, every));
 }
 function carousel(rowId, prevId, nextId, perView, auto){
   const row=document.getElementById(rowId); if(!row) return;
